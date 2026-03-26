@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tripla · GTM System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --font:'Inter',system-ui,sans-serif;
+  --blue:#0057D5;--blue-h:#0048b8;--cyan:#38DBFF;
+  --bg:#f2f5fc;--surface:#fff;--surface2:#edf1f9;--surface3:#e4eaf6;
+  --border:#d0d9ee;--border2:#b8c6e0;
+  --text:#0f1a3a;--muted:#5a6a90;--muted2:#8090b8;
+  --z1t:#3a3a98;--z1b:rgba(90,90,184,.08);--z1c:rgba(90,90,184,.22);
+  --z2t:#904820;--z2b:rgba(184,104,48,.08);--z2c:rgba(184,104,48,.22);
+  --z3t:#003aaa;--z3b:rgba(0,87,213,.08);--z3c:rgba(0,87,213,.20);
+  --z4t:#4a5a7a;--z4b:rgba(112,128,160,.08);--z4c:rgba(112,128,160,.20);
+  --cyber:#0057D5;--gov:#0a8a5c;--infra:#c03030;--smart:#7040c0;
+  --danger:#c02020;--danger-bg:rgba(192,32,32,.07);--danger-bd:rgba(192,32,32,.2);
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
+  --r:8px;--rl:12px;--rxl:16px;
+}
+[data-theme=dark]{
+  --bg:#080d1a;--surface:#0f1623;--surface2:#151e30;--surface3:#1c2640;
+  --border:#1e2d48;--border2:#2a3d60;
+  --text:#dde5f8;--muted:#6878a8;--muted2:#8090b8;
+  --z1t:#9090d8;--z2t:#d88848;--z3t:#4898f8;--z4t:#8090b8;
+  --cyber:#60a5fa;--gov:#34d399;--infra:#f87171;--smart:#c084fc;
+  --shadow:0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── LOADING ── */
+.loading-screen{position:fixed;inset:0;z-index:2000;background:linear-gradient(135deg,#0f1a3a,#152454,#0057D5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.loading-screen img{height:36px;filter:brightness(0) invert(1)}
+.loading-spinner{width:32px;height:32px;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+.loading-msg{font-size:12px;color:rgba(255,255,255,.5)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── AUTH ── */
+.auth-screen{position:fixed;inset:0;z-index:1000;background:linear-gradient(135deg,#0f1a3a,#152454,#0057D5);display:flex;align-items:center;justify-content:center}
+.auth-card{background:rgba(255,255,255,.07);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12);border-radius:var(--rxl);padding:40px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.auth-logo{display:flex;align-items:center;justify-content:center;margin-bottom:28px}
+.auth-logo img{height:34px;filter:brightness(0) invert(1)}
+.auth-title{font-size:18px;font-weight:700;color:#fff;margin-bottom:4px;text-align:center}
+.auth-sub{font-size:12px;color:rgba(255,255,255,.5);text-align:center;margin-bottom:28px}
+.auth-field{margin-bottom:16px}
+.auth-label{display:block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:6px}
+.auth-input{width:100%;padding:10px 14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);font-family:var(--font);font-size:13px;color:#fff;outline:none;transition:border-color .2s}
+.auth-input::placeholder{color:rgba(255,255,255,.3)}
+.auth-input:focus{border-color:rgba(56,219,255,.6);background:rgba(255,255,255,.11)}
+.auth-btn{width:100%;padding:12px;background:var(--blue);border:none;border-radius:var(--r);font-family:var(--font);font-size:13px;font-weight:700;color:#fff;cursor:pointer;transition:background .2s;margin-top:8px}
+.auth-btn:hover{background:var(--blue-h)}
+.auth-btn:disabled{opacity:.5;cursor:not-allowed}
+.auth-error{font-size:11px;color:#ff8080;margin-top:10px;text-align:center;min-height:16px}
+
+/* ── CHANGE PASSWORD OVERLAY ── */
+.overlay{position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center}
+.modal-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rxl);padding:30px;width:100%;max-width:400px;box-shadow:var(--shadow)}
+.modal-title{font-size:15px;font-weight:800;margin-bottom:3px}
+.modal-sub{font-size:11px;color:var(--muted);margin-bottom:22px;line-height:1.5}
+.field-grp{margin-bottom:14px}
+.field-lbl{display:block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.field-inp{width:100%;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);font-family:var(--font);font-size:13px;color:var(--text);outline:none;transition:border-color .2s}
+.field-inp:focus{border-color:var(--blue)}
+.field-err{font-size:11px;color:var(--danger);margin-top:4px}
+.btn-row{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
+.btn-primary{padding:9px 18px;background:var(--blue);border:none;border-radius:var(--r);font-family:var(--font);font-size:12px;font-weight:700;color:#fff;cursor:pointer}
+.btn-primary:hover{background:var(--blue-h)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{padding:9px 18px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);font-family:var(--font);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer}
+.btn-ghost:hover{border-color:var(--border2);color:var(--text)}
+
+/* ── TOPBAR ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--surface);gap:16px;z-index:50}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-logo img{height:28px;width:auto}
+.brand-div{width:1px;height:28px;background:var(--border2);flex-shrink:0}
+.brand-text{display:flex;flex-direction:column}
+.brand-sup{font-size:7px;font-weight:700;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;line-height:1.2}
+.brand-name{font-size:13px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.top-nav{display:flex;gap:2px}
+.top-nav-btn{padding:5px 14px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;color:var(--muted);border:none;background:none;font-family:var(--font);transition:all .15s}
+.top-nav-btn.active{background:var(--blue);color:#fff}
+.top-right{display:flex;align-items:center;gap:8px}
+.icon-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--surface2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);transition:all .2s}
+.icon-btn:hover{border-color:var(--blue);color:var(--blue)}
+.user-chip{display:flex;align-items:center;gap:7px;padding:4px 10px 4px 4px;border:1px solid var(--border);border-radius:20px;background:var(--surface2);cursor:pointer;font-size:11px;font-weight:600;color:var(--muted);transition:all .2s}
+.user-chip:hover{border-color:var(--border2);color:var(--text)}
+.user-av{width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.legend{display:flex;gap:12px;align-items:center}
+.leg{display:flex;align-items:center;gap:5px;font-size:9px;font-weight:600;color:var(--muted);white-space:nowrap}
+.leg-dot{width:7px;height:7px;border-radius:2px}
+
+/* ── MAIN LAYOUT ── */
+.main{flex:1;display:flex;overflow:hidden;min-height:0}
+.v-hidden{display:none!important}
+
+/* ── MATRIX ── */
+.matrix-shell{flex:1;display:flex;flex-direction:column;padding:14px 16px 10px 20px;min-height:0;overflow:hidden}
+.matrix-outer{flex:1;display:flex;gap:0;min-height:0}
+.y-axis{display:flex;flex-direction:column;align-items:center;width:26px;flex-shrink:0}
+.y-axis-label{writing-mode:vertical-rl;transform:rotate(180deg);font-size:7px;font-weight:700;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;white-space:nowrap;margin-bottom:4px}
+.y-ticks{flex:1;display:flex;flex-direction:column;justify-content:space-around;align-items:flex-end;padding:2px 0}
+.y-ticks span{font-size:7px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;text-align:right;padding-right:5px}
+.matrix-body{flex:1;display:flex;flex-direction:column;min-height:0}
+.grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:4px;min-height:0}
+.cell{border-radius:var(--r);padding:8px;display:flex;flex-direction:column;gap:4px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.cell::-webkit-scrollbar{width:2px}.cell::-webkit-scrollbar-thumb{background:var(--border)}
+.cell.z1{background:var(--z1b);border:1px solid var(--z1c)}.cell.z2{background:var(--z2b);border:1px solid var(--z2c)}.cell.z3{background:var(--z3b);border:1px solid var(--z3c)}.cell.z4{background:var(--z4b);border:1px solid var(--z4c)}
+.cell-hd{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;margin-bottom:2px}
+.zone-label{font-size:7px;font-weight:700;letter-spacing:.14em;opacity:.55;text-transform:uppercase}
+.cell.z1 .zone-label{color:var(--z1t)}.cell.z2 .zone-label{color:var(--z2t)}.cell.z3 .zone-label{color:var(--z3t)}.cell.z4 .zone-label{color:var(--z4t)}
+.cell-add{width:18px;height:18px;border-radius:50%;border:1px dashed var(--border2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);line-height:1;transition:all .15s}
+.cell-add:hover{border-color:var(--blue);color:var(--blue);background:var(--surface2)}
+.chips-wrap{display:flex;flex-direction:column;gap:3px;flex:1}
+.chip{display:inline-flex;align-items:flex-start;gap:5px;padding:4px 8px;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer;line-height:1.35;border:1px solid transparent;text-align:left;font-family:var(--font);width:100%;transition:all .15s}
+.chip:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.chip.active{box-shadow:0 0 0 2px var(--cyan)}
+.cell.z1 .chip{background:rgba(90,90,184,.12);color:var(--z1t);border-color:var(--z1c)}
+.cell.z2 .chip{background:rgba(184,104,48,.12);color:var(--z2t);border-color:var(--z2c)}
+.cell.z3 .chip{background:rgba(0,87,213,.10);color:var(--z3t);border-color:var(--z3c)}
+.cell.z4 .chip{background:rgba(112,128,160,.12);color:var(--z4t);border-color:var(--z4c)}
+[data-theme=dark] .cell.z1 .chip{color:#9090d8}[data-theme=dark] .cell.z2 .chip{color:#d88848}[data-theme=dark] .cell.z3 .chip{color:#4898f8}[data-theme=dark] .cell.z4 .chip{color:#8090b8}
+.chip-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.bd-cyber{background:var(--cyber)}.bd-gov{background:var(--gov)}.bd-infra{background:var(--infra)}.bd-smart{background:var(--smart)}
+.x-row{display:flex;padding:4px 0 0 0;gap:4px}
+.x-row span{flex:1;text-align:center;font-size:7px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.x-label{text-align:center;font-size:7px;font-weight:700;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;padding-top:3px}
+.bu-legend{display:flex;gap:14px;padding:8px 0 0 26px;flex-wrap:wrap}
+.bu-l{display:flex;align-items:center;gap:5px;font-size:9px;font-weight:600;color:var(--muted)}
+.bu-ld{width:6px;height:6px;border-radius:50%}
+
+/* ── PANEL ── */
+.panel{width:0;overflow:hidden;transition:width .3s cubic-bezier(.4,0,.2,1);border-left:1px solid transparent;flex-shrink:0;display:flex;flex-direction:column;background:var(--surface)}
+.panel.open{width:430px;border-left-color:var(--border)}
+.panel-scroll{overflow-y:auto;flex:1;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.panel-scroll::-webkit-scrollbar{width:3px}.panel-scroll::-webkit-scrollbar-thumb{background:var(--border)}
+.panel-sticky{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--border);padding:14px 16px 12px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.p-bu{font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:2px}
+.p-name{font-size:16px;font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-bottom:1px}
+.p-short{font-size:11px;color:var(--muted2)}
+.panel-acts{display:flex;gap:6px;flex-shrink:0;padding-top:2px}
+.pnl-btn{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:var(--surface2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);transition:all .15s}
+.pnl-btn:hover{border-color:var(--blue);color:var(--blue)}
+.pnl-btn.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.panel-body{padding:14px 16px 56px}
+.save-indicator{position:sticky;bottom:0;background:var(--surface);border-top:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.save-status{font-size:11px;color:var(--muted)}
+.save-status.saving{color:var(--blue)}
+.save-status.saved{color:var(--gov)}
+.save-status.error{color:var(--danger)}
+
+/* SCORES */
+.scores{display:flex;gap:6px;margin-bottom:14px}
+.score-card{flex:1;padding:6px 8px;border-radius:var(--r);border:1px solid;text-align:center}
+.score-lbl{font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.6;display:block;margin-bottom:2px}
+.score-val{font-size:11px;font-weight:700}
+.score-val select{font-family:var(--font);font-size:11px;font-weight:700;background:transparent;border:none;cursor:pointer;width:100%;text-align:center;outline:none;padding:0;color:inherit}
+
+/* TABS */
+.tabs{display:flex;gap:2px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:3px;margin-bottom:16px}
+.tab-btn{flex:1;padding:5px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;color:var(--muted);border:none;background:none;font-family:var(--font);transition:all .15s}
+.tab-btn.active{background:var(--blue);color:#fff}
+.tab-pane{display:none}.tab-pane.active{display:block}
+
+/* SECTIONS */
+.sec-hd{font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px;margin-bottom:8px;margin-top:18px}
+.sec-hd:first-child{margin-top:0}
+.sec-hd::after{content:'';flex:1;height:1px;background:var(--border)}
+.just-block{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;margin-bottom:7px}
+.just-lbl{font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;display:block}
+.just-block p,.just-block textarea{font-size:12px;line-height:1.7;color:var(--muted2)}
+.just-block textarea{width:100%;background:transparent;border:none;resize:vertical;outline:none;min-height:64px;font-family:var(--font);font-size:12px;line-height:1.7;color:var(--muted2)}
+.posture-box{background:var(--surface2);border-left:3px solid var(--blue);border-top:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border);border-radius:0 var(--r) var(--r) 0;padding:10px 12px;margin-bottom:10px}
+.posture-box p,.posture-box textarea{font-size:12px;line-height:1.68;color:var(--muted2)}
+.posture-box textarea{width:100%;background:transparent;border:none;resize:vertical;outline:none;min-height:48px;font-family:var(--font)}
+.param-row{display:flex;gap:6px;margin-bottom:6px}
+.param-box{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:7px 10px}
+.param-lbl{font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.param-val{font-size:11px;font-weight:600;color:var(--text)}
+.param-box input{font-family:var(--font);font-size:11px;font-weight:600;color:var(--text);background:transparent;border:none;outline:none;width:100%}
+
+/* TAGS */
+.tags-wrap{display:flex;flex-wrap:wrap;gap:4px;padding-top:2px;align-items:center}
+.ctag{display:inline-flex;align-items:center;gap:4px;border-radius:4px;padding:3px 8px;font-size:10.5px;font-weight:500;border:1px solid var(--border);background:var(--surface2);color:var(--muted)}
+.ctag .cdot{width:4px;height:4px;border-radius:50%;flex-shrink:0}
+.mtag{display:inline-flex;align-items:center;gap:4px;border-radius:4px;padding:3px 8px;font-size:10.5px;font-weight:500;border:1px solid}
+.mdot{width:4px;height:4px;border-radius:50%;flex-shrink:0;background:currentColor}
+.mt-e{background:rgba(0,87,213,.07);border-color:rgba(0,87,213,.2);color:var(--blue)}
+.mt-d{background:rgba(0,160,255,.07);border-color:rgba(0,160,255,.2);color:#007ab8}
+[data-theme=dark] .mt-d{color:var(--cyan)}
+.mt-a{background:rgba(184,104,48,.08);border-color:rgba(184,104,48,.2);color:#904820}
+[data-theme=dark] .mt-a{color:#d88848}
+.itag{display:inline-flex;align-items:center;gap:4px;border-radius:4px;padding:3px 8px;font-size:10.5px;font-weight:500;border:1px solid}
+.idot{width:4px;height:4px;border-radius:50%;flex-shrink:0;background:currentColor}
+.ia{background:rgba(0,87,213,.07);border-color:rgba(0,87,213,.2);color:var(--blue)}
+[data-theme=dark] .ia{color:#60a5fa}
+.ib{background:rgba(112,64,192,.07);border-color:rgba(112,64,192,.2);color:#7040c0}
+[data-theme=dark] .ib{color:#c084fc}
+.ic{background:rgba(10,138,92,.07);border-color:rgba(10,138,92,.2);color:#0a8a5c}
+[data-theme=dark] .ic{color:#34d399}
+.ino{background:var(--danger-bg);border-color:var(--danger-bd);color:var(--danger)}
+[data-theme=dark] .ino{color:#f87171}
+.tag-ed{cursor:pointer;position:relative}
+.tag-ed:hover{filter:brightness(1.08);padding-right:20px}
+.tag-ed:hover::after{content:'✕';position:absolute;right:6px;font-size:9px;opacity:.7}
+.add-tag{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600;cursor:pointer;border:1px dashed var(--border2);color:var(--muted);background:transparent;font-family:var(--font);transition:all .15s}
+.add-tag:hover{border-color:var(--blue);color:var(--blue)}
+.icp-grp{margin-bottom:18px}
+.icp-lbl{font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.icp-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.cortex-note{background:rgba(0,87,213,.05);border:1px solid rgba(0,87,213,.14);border-radius:var(--r);padding:9px 11px;margin-bottom:16px;font-size:10.5px;color:var(--muted2);line-height:1.55}
+.cortex-note strong{color:var(--blue);font-weight:700}
+[data-theme=dark] .cortex-note strong{color:var(--cyan)}
+
+/* POPUP */
+.popup{position:fixed;z-index:500;background:var(--surface);border:1px solid var(--border2);border-radius:var(--rl);padding:12px;box-shadow:var(--shadow);min-width:240px;max-width:290px}
+.pop-lbl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;display:block}
+.pop-inp{width:100%;font-family:var(--font);font-size:12px;padding:6px 10px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface2);color:var(--text);outline:none;margin-bottom:8px}
+.pop-inp:focus{border-color:var(--blue)}
+.pop-types{display:flex;gap:4px;margin-bottom:9px;flex-wrap:wrap}
+.pop-type{padding:3px 8px;border-radius:4px;font-size:9.5px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-family:var(--font);transition:all .15s}
+.pop-type.sel{border-color:var(--blue);color:var(--blue);background:rgba(0,87,213,.07)}
+.pop-acts{display:flex;gap:6px}
+.pop-save{flex:1;padding:5px 10px;border-radius:var(--r);font-size:11px;font-weight:700;cursor:pointer;border:none;background:var(--blue);color:#fff;font-family:var(--font)}
+.pop-del{padding:5px 10px;border-radius:var(--r);font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--danger);font-family:var(--font)}
+
+/* ADD MODAL */
+.add-modal-overlay{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center}
+.add-modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--rxl);padding:28px;width:100%;max-width:460px;box-shadow:var(--shadow)}
+.add-modal-title{font-size:15px;font-weight:800;margin-bottom:3px}
+.add-modal-sub{font-size:11px;color:var(--muted);margin-bottom:22px}
+.modal-field{margin-bottom:14px}
+.modal-lbl{display:block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.modal-inp,.modal-sel{width:100%;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);font-family:var(--font);font-size:13px;color:var(--text);outline:none;transition:border-color .2s}
+.modal-inp:focus,.modal-sel:focus{border-color:var(--blue)}
+.modal-sel{cursor:pointer}
+.modal-row{display:flex;gap:10px}
+.modal-row .modal-field{flex:1}
+.modal-err{font-size:11px;color:var(--danger);margin-bottom:10px;min-height:16px}
+.modal-acts{display:flex;gap:8px;justify-content:flex-end}
+
+/* METHODOLOGY */
+.meto-wrap{flex:1;overflow-y:auto;padding:24px 32px 40px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.meto-wrap::-webkit-scrollbar{width:3px}.meto-wrap::-webkit-scrollbar-thumb{background:var(--border)}
+.meto-sec-title{font-size:14px;font-weight:800;letter-spacing:-.015em;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);max-width:900px}
+.meto-sub{font-size:11px;color:var(--muted2);margin-bottom:20px;max-width:680px;line-height:1.65;font-weight:500}
+.meto-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:900px;margin-bottom:24px}
+.meto-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px;transition:border-color .15s}
+.meto-card:hover{border-color:var(--blue)}
+.meto-zbadge{font-size:7px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.meto-card-title{font-size:14px;font-weight:800;margin-bottom:2px}
+.meto-card-sub{font-size:9px;color:var(--muted2);margin-bottom:8px;font-weight:600}
+.meto-card p{font-size:11px;line-height:1.7;color:var(--muted2);margin-bottom:7px}
+.meto-kpi{display:inline-flex;align-items:center;background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:2px 7px;font-size:8px;font-weight:700;margin:0 3px 3px 0}
+.meto-axes{max-width:900px;margin-bottom:28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px}
+.meto-axes-title{font-size:12px;font-weight:700;margin-bottom:10px}
+.axes-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.axis-block{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:10px}
+.axis-name{font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.axis-block p{font-size:11px;line-height:1.6;color:var(--muted2)}
+.meto-ch-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:900px;margin-bottom:28px}
+.meto-ch-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:14px}
+.meto-ch-title{font-size:12px;font-weight:700;margin-bottom:3px}
+.meto-ch-owner{font-size:10px;color:var(--blue);font-weight:600;margin-bottom:5px}
+[data-theme=dark] .meto-ch-owner{color:var(--cyan)}
+.meto-ch-role{font-size:11px;line-height:1.6;color:var(--muted2)}
+.meto-assets-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:900px}
+.meto-cat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:14px}
+.meto-cat-badge{display:inline-block;font-size:7px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:4px;margin-bottom:8px}
+.mca{background:rgba(0,87,213,.07);color:var(--blue);border:1px solid rgba(0,87,213,.18)}
+.mcb{background:rgba(0,160,255,.07);color:#007ab8;border:1px solid rgba(0,160,255,.18)}
+[data-theme=dark] .mcb{color:var(--cyan)}
+.mcc{background:rgba(184,104,48,.08);color:#904820;border:1px solid rgba(184,104,48,.2)}
+[data-theme=dark] .mcc{color:#d88848}
+.meto-ai{margin-bottom:8px}
+.meto-an{font-size:11px;font-weight:600;color:var(--text);margin-bottom:1px}
+.meto-ad{font-size:10.5px;color:var(--muted2);line-height:1.55}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--text);color:var(--bg);padding:10px 18px;border-radius:var(--r);font-size:12px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="loading-screen" id="loadingScreen">
+  <img src="https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-horizontal-color-white-png-transparente-02.png" alt="Tripla">
+  <div class="loading-spinner"></div>
+  <div class="loading-msg">Conectando ao sistema...</div>
+</div>
+
+<!-- AUTH -->
+<div class="auth-screen" id="authScreen" style="display:none">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <img src="https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-horizontal-color-white-png-transparente-02.png" alt="Tripla">
+    </div>
+    <div class="auth-title">GTM System</div>
+    <div class="auth-sub">Acesse com suas credenciais</div>
+    <div class="auth-field">
+      <label class="auth-label">E-mail</label>
+      <input class="auth-input" id="authEmail" type="email" placeholder="seu@email.com" autocomplete="email">
+    </div>
+    <div class="auth-field">
+      <label class="auth-label">Senha</label>
+      <input class="auth-input" id="authPass" type="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <div class="auth-error" id="authError"></div>
+    <button class="auth-btn" id="loginBtn" onclick="doLogin()">Entrar</button>
+  </div>
+</div>
+
+<!-- CHANGE PASSWORD -->
+<div class="overlay" id="changePwOverlay" style="display:none">
+  <div class="modal-card">
+    <div class="modal-title">Alterar senha</div>
+    <div class="modal-sub" id="pwSub">Crie uma nova senha para continuar.</div>
+    <div class="field-grp">
+      <label class="field-lbl">Nova senha</label>
+      <input class="field-inp" id="pw1" type="password" placeholder="Mínimo 6 caracteres">
+    </div>
+    <div class="field-grp">
+      <label class="field-lbl">Confirmar senha</label>
+      <input class="field-inp" id="pw2" type="password" placeholder="Repita a nova senha">
+    </div>
+    <div class="field-err" id="pwErr"></div>
+    <div class="btn-row">
+      <button class="btn-ghost" id="cancelPwBtn" style="display:none" onclick="closePwModal()">Cancelar</button>
+      <button class="btn-primary" onclick="saveNewPw()">Salvar senha</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD SOLUTION MODAL -->
+<div class="add-modal-overlay" id="addModal" style="display:none" onclick="if(event.target===this)closeAddModal()">
+  <div class="add-modal">
+    <div class="add-modal-title">Nova Solução</div>
+    <div class="add-modal-sub">Preencha as informações básicas. Conteúdo detalhado pode ser editado depois.</div>
+    <div class="modal-field">
+      <label class="modal-lbl">Nome da Solução</label>
+      <input class="modal-inp" id="mName" placeholder="Ex: EDR / XDR">
+    </div>
+    <div class="modal-field">
+      <label class="modal-lbl">Nome Estendido / Tecnologia</label>
+      <input class="modal-inp" id="mShort" placeholder="Ex: Trend Micro — Endpoint Security">
+    </div>
+    <div class="modal-row">
+      <div class="modal-field">
+        <label class="modal-lbl">BU</label>
+        <select class="modal-sel" id="mBU">
+          <option value="bd-cyber">Cibersegurança</option>
+          <option value="bd-gov">Governança & Compliance</option>
+          <option value="bd-infra">Infraestrutura</option>
+          <option value="bd-smart">SmartOps</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label class="modal-lbl">Complexidade</label>
+        <select class="modal-sel" id="mCx"><option>Alta</option><option>Média</option><option>Baixa</option></select>
+      </div>
+      <div class="modal-field">
+        <label class="modal-lbl">Conscientização</label>
+        <select class="modal-sel" id="mCo"><option>Alta</option><option>Média</option><option>Baixa</option></select>
+      </div>
+    </div>
+    <div class="modal-err" id="mErr"></div>
+    <div class="modal-acts">
+      <button class="btn-ghost" onclick="closeAddModal()">Cancelar</button>
+      <button class="btn-primary" id="createBtn" onclick="createSolution()">Criar Solução</button>
+    </div>
+  </div>
+</div>
+
+<!-- TAG POPUP -->
+<div class="popup" id="tagPopup" style="display:none" onclick="event.stopPropagation()">
+  <span class="pop-lbl" id="popLbl">Tag</span>
+  <input class="pop-inp" id="popInp" maxlength="60" placeholder="Texto (até 60 caracteres)">
+  <div id="popTypeWrap" style="display:none">
+    <span class="pop-lbl">Tipo de Material</span>
+    <div class="pop-types">
+      <button class="pop-type" data-type="e" onclick="selType(this)">Enablement</button>
+      <button class="pop-type" data-type="d" onclick="selType(this)">Geração de Demanda</button>
+      <button class="pop-type" data-type="a" onclick="selType(this)">ABM</button>
+    </div>
+  </div>
+  <div class="pop-acts">
+    <button class="pop-del" id="popDel" onclick="deleteTag()">Excluir</button>
+    <button class="pop-save" onclick="saveTag()">Salvar</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- APP -->
+<div id="app" style="display:none;flex-direction:column;height:100vh">
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-logo"><img id="brandLogo" src="https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-color-horizontal-png-transparente-02.png" alt="Tripla"></div>
+      <div class="brand-div"></div>
+      <div class="brand-text">
+        <span class="brand-sup">Inteligência de Mercado</span>
+        <span class="brand-name">Matriz GTM 2026</span>
+      </div>
+    </div>
+    <div class="top-nav">
+      <button class="top-nav-btn active" onclick="setView('matrix',this)">Matriz</button>
+      <button class="top-nav-btn" onclick="setView('meto',this)">Metodologia</button>
+    </div>
+    <div class="top-right">
+      <div class="legend">
+        <div class="leg"><div class="leg-dot" style="background:var(--z1t)"></div>Z1 · Evangelização</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--z2t)"></div>Z2 · Especialização</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--z3t)"></div>Z3 · Captura</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--z4t)"></div>Z4 · Passivo</div>
+      </div>
+      <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">☀</button>
+      <div class="user-chip" onclick="openPwModal('voluntary')">
+        <div class="user-av" id="userAv">?</div>
+        <span id="userLbl">–</span>
+      </div>
+      <button class="icon-btn" onclick="doLogout()" title="Sair">⏻</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div id="matrixView" style="display:flex;flex:1;overflow:hidden;min-height:0">
+      <div class="matrix-shell">
+        <div class="matrix-outer">
+          <div class="y-axis">
+            <div class="y-axis-label">Complexidade ↑</div>
+            <div class="y-ticks"><span>Alta</span><span>Média</span><span>Baixa</span></div>
+          </div>
+          <div class="matrix-body">
+            <div class="grid" id="grid"></div>
+            <div class="x-row"><span>Baixa</span><span>Média</span><span>Alta</span></div>
+            <div class="x-label">Conscientização →</div>
+          </div>
+        </div>
+        <div class="bu-legend">
+          <div class="bu-l"><div class="bu-ld" style="background:var(--cyber)"></div>Cibersegurança</div>
+          <div class="bu-l"><div class="bu-ld" style="background:var(--gov)"></div>Governança & Compliance</div>
+          <div class="bu-l"><div class="bu-ld" style="background:var(--infra)"></div>Infraestrutura</div>
+          <div class="bu-l"><div class="bu-ld" style="background:var(--smart)"></div>SmartOps</div>
+        </div>
+      </div>
+      <div class="panel" id="panel" onclick="event.stopPropagation()">
+        <div class="panel-scroll">
+          <div class="panel-sticky" id="panelHead" style="display:none"></div>
+          <div class="panel-body" id="panelBody"></div>
+        </div>
+        <div class="save-indicator" id="saveIndicator" style="display:none">
+          <span class="save-status" id="saveStatus">Aguardando alterações...</span>
+          <button class="btn-primary" onclick="saveSolution()" id="saveBtn">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="meto-wrap v-hidden" id="metoView">
+      <div class="meto-sec-title">Lógica da Matriz GTM</div>
+      <div class="meto-sub">A Matriz posiciona cada solução em dois eixos — Conscientização e Complexidade — gerando quatro zonas com lógicas de investimento, canal e material distintas.</div>
+      <div class="meto-grid">
+        <div class="meto-card"><div class="meto-zbadge" style="color:var(--z1t)"><span style="background:var(--z1t);width:8px;height:8px;border-radius:2px;display:inline-block"></span>Zona 1</div><div class="meto-card-title">Evangelização de Riscos Emergentes</div><div class="meto-card-sub">Baixa Consciência + Média/Alta Complexidade</div><p>O cliente não tem consciência do risco. Quem se posicionar agora vai dominar o espaço quando a demanda explodir. Foco em criar consciência — não converter leads.</p><div><span class="meto-kpi">Awareness</span><span class="meto-kpi">Sem outbound frio</span><span class="meto-kpi">Thought Leadership</span></div></div>
+        <div class="meto-card"><div class="meto-zbadge" style="color:var(--z2t)"><span style="background:var(--z2t);width:8px;height:8px;border-radius:2px;display:inline-block"></span>Zona 2</div><div class="meto-card-title">Especialização Competitiva</div><div class="meto-card-sub">Alta/Média Consciência + Alta/Média Complexidade</div><p>O cliente sabe que precisa, mas tem medo de quem vai operar. A Tripla precisa provar diferenciação. ABM é o motor central desta zona.</p><div><span class="meto-kpi">Pipeline qualificado</span><span class="meto-kpi">WinRate</span><span class="meto-kpi">Petit Comité</span></div></div>
+        <div class="meto-card"><div class="meto-zbadge" style="color:var(--z3t)"><span style="background:var(--z3t);width:8px;height:8px;border-radius:2px;display:inline-block"></span>Zona 3</div><div class="meto-card-title">Captura de Demanda</div><div class="meto-card-sub">Alta Consciência + Baixa/Média Complexidade</div><p>A venda é transacional. O mercado entende o problema. O trabalho do Marketing é capturar demanda existente com velocidade — não criar percepção.</p><div><span class="meto-kpi">Velocidade</span><span class="meto-kpi">CAC baixo</span><span class="meto-kpi">Volume + cadência rápida</span></div></div>
+        <div class="meto-card"><div class="meto-zbadge" style="color:var(--z4t)"><span style="background:var(--z4t);width:8px;height:8px;border-radius:2px;display:inline-block"></span>Zona 4</div><div class="meto-card-title">Zona Morta</div><div class="meto-card-sub">Baixa Consciência + Baixa Complexidade</div><p>Custo de conscientização supera o retorno. Sem investimento proativo. Cross-sell reativo apenas.</p><div><span class="meto-kpi">Sem SDR ativo</span><span class="meto-kpi">Revisão periódica</span></div></div>
+      </div>
+      <div class="meto-axes"><div class="meto-axes-title">Os dois eixos</div><div class="axes-grid"><div class="axis-block"><div class="axis-name" style="color:var(--blue)">Conscientização — Eixo X</div><p>Quanto o prospect reconhece e valoriza a dor que a solução resolve. Não mede conhecimento sobre a Tripla — mede consciência do problema.</p></div><div class="axis-block"><div class="axis-name" style="color:var(--z2t)">Complexidade — Eixo Y</div><p>Nível de dificuldade de implementação, venda e entrega. Alta complexidade = ciclo longo, múltiplos decisores, prova técnica obrigatória.</p></div></div></div>
+      <div class="meto-sec-title">Canais de Marketing</div>
+      <div class="meto-ch-grid">
+        <div class="meto-ch-card"><div class="meto-ch-title">Outbound e Prospecção Ativa</div><div class="meto-ch-owner">Dono: Líder de Prospecção + 6 SDRs</div><div class="meto-ch-role">Geração de demanda ativa e motor de abertura de portas.</div></div>
+        <div class="meto-ch-card"><div class="meto-ch-title">Eventos</div><div class="meto-ch-owner">Dono: Gerente de Marketing (interino)</div><div class="meto-ch-role">Geração de demanda, relacionamento, posicionamento e diferenciação.</div></div>
+        <div class="meto-ch-card"><div class="meto-ch-title">Digital e Inbound</div><div class="meto-ch-owner">Dono: SEO</div><div class="meto-ch-role">Captura de demanda com alta conscientização, educação sobre a dor e motor de escala orgânica.</div></div>
+        <div class="meto-ch-card"><div class="meto-ch-title">PR e Thought Leadership</div><div class="meto-ch-owner">Dono: Assessoria de Imprensa + Gerente de Marketing e Inteligência de Mercado</div><div class="meto-ch-role">Posicionamento de marca e expansão de superfície de contato.</div></div>
+        <div class="meto-ch-card"><div class="meto-ch-title">ABM — Account-Based Marketing</div><div class="meto-ch-owner">Dono: Gerente de Marketing</div><div class="meto-ch-role">Estratégia transversal de orquestração multi-canal para contas estratégicas.</div></div>
+      </div>
+      <div class="meto-sec-title">Ativos de Conversão e Habilitação</div>
+      <div class="meto-assets-grid">
+        <div class="meto-cat-card"><div class="meto-cat-badge mca">Categoria A · Enablement Comercial</div><div class="meto-ai"><div class="meto-an">Apresentação Comercial</div><div class="meto-ad">Deck padrão com proposta de valor focada no negócio do cliente.</div></div><div class="meto-ai"><div class="meto-an">Battle Card</div><div class="meto-ad">Guia com argumentos de custo-benefício e diferenciadores técnicos contra concorrentes específicos.</div></div><div class="meto-ai"><div class="meto-an">Case de Sucesso</div><div class="meto-ad">Documentação de problemas reais resolvidos para reduzir o risco percebido do prospect.</div></div><div class="meto-ai"><div class="meto-an">E-book Interno</div><div class="meto-ad">Guia de onboarding com orientações de abordagem e persona por solução.</div></div><div class="meto-ai"><div class="meto-an">Pitch Documentado</div><div class="meto-ad">Estrutura clara de valores centrais para defesa de margem em negociações.</div></div></div>
+        <div class="meto-cat-card"><div class="meto-cat-badge mcb">Categoria B · Geração de Demanda</div><div class="meto-ai"><div class="meto-an">One-page</div><div class="meto-ad">Resumo objetivo focado em preço e benefício direto.</div></div><div class="meto-ai"><div class="meto-an">Folder e Flyer</div><div class="meto-ad">Material visual tático para distribuição física em eventos.</div></div><div class="meto-ai"><div class="meto-an">Assessment e Diagnóstico</div><div class="meto-ad">Ferramentas que revelam gaps no ambiente do cliente para gerar reuniões diagnósticas.</div></div><div class="meto-ai"><div class="meto-an">Whitepaper e Material Rico</div><div class="meto-ad">Conteúdo denso com análise de riscos e dados técnicos para as Zonas 1 e 2.</div></div><div class="meto-ai"><div class="meto-an">Checklist Diagnóstico</div><div class="meto-ad">Material leve de ação rápida para identificar riscos ocultos em fluxos de nutrição.</div></div><div class="meto-ai"><div class="meto-an">Artigo Assinado</div><div class="meto-ad">Peças de autoridade publicadas em veículos de imprensa de grande porte.</div></div><div class="meto-ai"><div class="meto-an">Conteúdo de Blog (SEO)</div><div class="meto-ad">Artigos otimizados para captura orgânica em topo e meio de funil.</div></div><div class="meto-ai"><div class="meto-an">Vídeos e TriplaCast</div><div class="meto-ad">Conteúdo audiovisual para demonstração estratégica e educação de mercado.</div></div></div>
+        <div class="meto-cat-card"><div class="meto-cat-badge mcc">Categoria C · Materiais ABM</div><div class="meto-ai"><div class="meto-an">Apresentação Personalizada por Conta</div><div class="meto-ad">Deck adaptado com dados do setor e desafios específicos da empresa-alvo.</div></div><div class="meto-ai"><div class="meto-an">Conteúdo Personalizado por Segmento</div><div class="meto-ad">Materiais ricos e diagnósticos adaptados para a vertical da conta estratégica.</div></div><div class="meto-ai"><div class="meto-an">Mapeamento de Conta</div><div class="meto-ad">Documento interno com estrutura do comitê de compras e histórico de interações.</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword, signOut, updatePassword, onAuthStateChanged }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, serverTimestamp }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+// ── FIREBASE CONFIG ──────────────────────────────────────────────────────────
+const firebaseConfig = {
+  apiKey: "AIzaSyAcV8Je-JTYgJUPrqcAuLnmovRcUIIX9g4",
+  authDomain: "matriz-gtm.firebaseapp.com",
+  projectId: "matriz-gtm",
+  storageBucket: "matriz-gtm.firebasestorage.app",
+  messagingSenderId: "538878064173",
+  appId: "1:538878064173:web:dd47e64ccb0c6f024feaa4"
+};
+const fbApp = initializeApp(firebaseConfig);
+const auth  = getAuth(fbApp);
+const db    = getFirestore(fbApp);
+
+// ── CONSTANTS ────────────────────────────────────────────────────────────────
+const LOGO_LIGHT = 'https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-color-horizontal-png-transparente-02.png';
+const LOGO_DARK  = 'https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-horizontal-color-white-png-transparente-02.png';
+const BU_MAP = {'bd-cyber':'Cibersegurança','bd-gov':'Governança & Compliance','bd-infra':'Infraestrutura','bd-smart':'SmartOps'};
+const AXES_CELL = {'Alta|Baixa':0,'Alta|Média':1,'Alta|Alta':2,'Média|Baixa':3,'Média|Média':4,'Média|Alta':5,'Baixa|Baixa':6,'Baixa|Média':7,'Baixa|Alta':8};
+const CELL_ZONE = [1,2,2,1,2,3,4,3,3];
+const ZONE_LBL  = {1:'Z1 · Evan.',2:'Z2 · Espec.',3:'Z3 · Captura',4:'Z4 · Passivo'};
+const ZC = {1:{col:'var(--z1t)',bg:'var(--z1b)'},2:{col:'var(--z2t)',bg:'var(--z2b)'},3:{col:'var(--z3t)',bg:'var(--z3b)'},4:{col:'var(--z4t)',bg:'var(--z4b)'}};
+const MAT_E = ['apresentação comercial','battle card','case de sucesso','e-book','pitch documentado'];
+const MAT_D = ['one-page','folder','flyer','assessment','diagnóstico','whitepaper','material rico','checklist','artigo assinado','conteúdo de blog','seo','vídeo','triplacast'];
+const MAT_A = ['apresentação personalizada','conteúdo personalizado por segmento','mapeamento de conta'];
+const ICP_GROUPS = [
+  {k:'setores',l:'Setores',tc:'ia'},{k:'subsetores',l:'Sub-setores / Verticais',tc:'ia'},
+  {k:'faturamento',l:'Faturamento / Porte',tc:'ia'},{k:'headcount',l:'Funcionários / Headcount',tc:'ia'},
+  {k:'caracteristicas',l:'Características da Empresa',tc:'ib'},{k:'sinais',l:'Sinais de Compra / Gatilhos',tc:'ib'},
+  {k:'regulacao',l:'Regulação / Compliance',tc:'ic'},{k:'tech',l:'Stack Tecnológico',tc:'ic'},
+  {k:'no',l:'Critérios Eliminatórios',tc:'ino'},{k:'geo',l:'Geolocalização Prioritária',tc:'ia'},
+];
+const CH_COLORS = {'petit comité':'#b86830','abm':'#5a5ab8','battle card':'#b89820','landing page':'#0a8a5c','evento':'#0057D5','prospecção':'#0078b8','account manager':'#0057D5','cross-sell':'#7040c0','poc':'#0a8a5c','webinar':'#5050a8'};
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let S = {};          // { firestoreDocId: solutionObject }
+let activeSolId = null;
+let isEditing   = false;
+let currentTab  = 'est';
+let pendingCell = null;
+let pwMode      = 'voluntary';
+let unsubSnap   = null;
+let saveTimeout = null;
+
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+function classifyItem(item){
+  const l = item.toLowerCase();
+  if(MAT_E.some(m=>l.includes(m))) return 'e';
+  if(MAT_D.some(m=>l.includes(m))) return 'd';
+  if(MAT_A.some(m=>l.includes(m))) return 'a';
+  return null;
+}
+function cellToZone(c){ return CELL_ZONE[c] ?? 1; }
+function chColor(c){ const l=c.toLowerCase(); for(const k of Object.keys(CH_COLORS)) if(l.includes(k)) return CH_COLORS[k]; return '#6080a8'; }
+function emptyICP(){ return {setores:[],subsetores:[],faturamento:[],headcount:[],caracteristicas:[],sinais:[],regulacao:[],tech:[],no:[],geo:[]}; }
+function getSol(){ return S[activeSolId]; }
+
+function showToast(msg, dur=2500){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
+
+// ── AUTH STATE ────────────────────────────────────────────────────────────────
+onAuthStateChanged(auth, user => {
+  document.getElementById('loadingScreen').style.display = 'none';
+  if(user){
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('userAv').textContent  = user.email[0].toUpperCase();
+    document.getElementById('userLbl').textContent = user.email.split('@')[0];
+    showApp();
+  } else {
+    if(unsubSnap){ unsubSnap(); unsubSnap=null; }
+    document.getElementById('app').style.display   = 'none';
+    document.getElementById('authScreen').style.display = 'flex';
+  }
+});
+
+// ── LOGIN / LOGOUT ────────────────────────────────────────────────────────────
+window.doLogin = async function(){
+  const email = document.getElementById('authEmail').value.trim();
+  const pass  = document.getElementById('authPass').value;
+  const btn   = document.getElementById('loginBtn');
+  const err   = document.getElementById('authError');
+  err.textContent = '';
+  btn.disabled = true; btn.textContent = 'Entrando...';
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch(e){
+    const msgs = {'auth/invalid-email':'E-mail inválido.','auth/user-not-found':'Usuário não encontrado.','auth/wrong-password':'Senha incorreta.','auth/invalid-credential':'E-mail ou senha incorretos.'};
+    err.textContent = msgs[e.code] || 'Erro ao entrar. Tente novamente.';
+    btn.disabled = false; btn.textContent = 'Entrar';
+  }
+};
+
+window.doLogout = async function(){
+  closePanel();
+  await signOut(auth);
+};
+
+// ── PASSWORD CHANGE ───────────────────────────────────────────────────────────
+window.openPwModal = function(mode){
+  pwMode = mode;
+  document.getElementById('pwSub').textContent = mode==='force'
+    ? 'Este é seu primeiro acesso. Crie uma senha personalizada para continuar.'
+    : 'Altere sua senha atual.';
+  document.getElementById('cancelPwBtn').style.display = mode==='voluntary' ? 'block' : 'none';
+  document.getElementById('pw1').value = '';
+  document.getElementById('pw2').value = '';
+  document.getElementById('pwErr').textContent = '';
+  document.getElementById('changePwOverlay').style.display = 'flex';
+};
+window.closePwModal = function(){ document.getElementById('changePwOverlay').style.display='none'; };
+
+window.saveNewPw = async function(){
+  const p1=document.getElementById('pw1').value;
+  const p2=document.getElementById('pw2').value;
+  const err=document.getElementById('pwErr');
+  if(p1.length<6){err.textContent='A senha deve ter pelo menos 6 caracteres.';return;}
+  if(p1!==p2){err.textContent='As senhas não coincidem.';return;}
+  try{
+    await updatePassword(auth.currentUser, p1);
+    closePwModal();
+    showToast('Senha alterada com sucesso!');
+  } catch(e){
+    err.textContent = e.code==='auth/requires-recent-login'
+      ? 'Por segurança, faça login novamente antes de alterar a senha.'
+      : 'Erro ao alterar senha. Tente novamente.';
+  }
+};
+
+// ── APP INIT ─────────────────────────────────────────────────────────────────
+function showApp(){
+  document.getElementById('app').style.display = 'flex';
+  buildGrid();
+  subscribeToSolutions();
+}
+
+function subscribeToSolutions(){
+  if(unsubSnap){ unsubSnap(); }
+  unsubSnap = onSnapshot(collection(db,'solutions'), snapshot => {
+    snapshot.docChanges().forEach(change => {
+      if(change.type==='added'||change.type==='modified'){
+        S[change.doc.id] = { ...change.doc.data(), _id: change.doc.id };
+        refreshChip(change.doc.id);
+      }
+      if(change.type==='removed'){
+        delete S[change.doc.id];
+        const chip = document.getElementById('chip-'+change.doc.id);
+        if(chip) chip.remove();
+        if(activeSolId===change.doc.id) closePanel();
+      }
+    });
+  });
+}
+
+// ── GRID ─────────────────────────────────────────────────────────────────────
+function buildGrid(){
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  for(let c=0;c<9;c++){
+    const z = CELL_ZONE[c];
+    const div = document.createElement('div');
+    div.className = `cell z${z}`;
+    div.id = 'cell-'+c;
+    div.innerHTML = `<div class="cell-hd"><span class="zone-label">${ZONE_LBL[z]}</span><button class="cell-add" onclick="openAddModal(${c})" title="Nova solução">+</button></div><div class="chips-wrap" id="chips-${c}"></div>`;
+    grid.appendChild(div);
+  }
+}
+
+function refreshChip(id){
+  const s = S[id];
+  if(!s) return;
+  let chip = document.getElementById('chip-'+id);
+  if(chip) chip.remove();
+  const wrap = document.getElementById('chips-'+s.cell);
+  if(!wrap) return;
+  chip = document.createElement('button');
+  chip.className = 'chip';
+  chip.id = 'chip-'+id;
+  chip.innerHTML = `<span class="chip-dot ${s.buc}"></span>${s.name}`;
+  chip.onclick = e => { e.stopPropagation(); openPanel(id); };
+  wrap.appendChild(chip);
+}
+
+// ── ADD MODAL ─────────────────────────────────────────────────────────────────
+window.openAddModal = function(cell){
+  pendingCell = cell;
+  document.getElementById('mName').value = '';
+  document.getElementById('mShort').value = '';
+  document.getElementById('mBU').value = 'bd-cyber';
+  document.getElementById('mErr').textContent = '';
+  const axisMap = ['Alta|Baixa','Alta|Média','Alta|Alta','Média|Baixa','Média|Média','Média|Alta','Baixa|Baixa','Baixa|Média','Baixa|Alta'];
+  const [cx,co] = axisMap[cell].split('|');
+  document.getElementById('mCx').value = cx;
+  document.getElementById('mCo').value = co;
+  document.getElementById('addModal').style.display = 'flex';
+  setTimeout(()=>document.getElementById('mName').focus(),50);
+};
+window.closeAddModal = function(){ document.getElementById('addModal').style.display='none'; };
+
+window.createSolution = async function(){
+  const name  = document.getElementById('mName').value.trim();
+  const short = document.getElementById('mShort').value.trim();
+  const buc   = document.getElementById('mBU').value;
+  const cx    = document.getElementById('mCx').value;
+  const co    = document.getElementById('mCo').value;
+  if(!name){ document.getElementById('mErr').textContent='O nome da solução é obrigatório.'; return; }
+  const btn = document.getElementById('createBtn');
+  btn.disabled=true; btn.textContent='Criando...';
+  const cell = pendingCell ?? (AXES_CELL[cx+'|'+co] ?? 4);
+  const z    = cellToZone(cell);
+  const data = {
+    name, short: short||name, buc, bu: BU_MAP[buc], cx, co, cell, z,
+    jcx:'', jco:'', postura:'', canais:[], ticket:'', contrato:'', ciclo:'',
+    icp: emptyICP(), createdAt: serverTimestamp(), updatedAt: serverTimestamp()
+  };
+  try {
+    const ref = doc(collection(db,'solutions'));
+    await setDoc(ref, data);
+    closeAddModal();
+    openPanel(ref.id);
+  } catch(e){
+    document.getElementById('mErr').textContent = 'Erro ao criar. Tente novamente.';
+  }
+  btn.disabled=false; btn.textContent='Criar Solução';
+};
+
+// ── PANEL ─────────────────────────────────────────────────────────────────────
+window.openPanel = function(id){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  const chip = document.getElementById('chip-'+id);
+  if(chip) chip.classList.add('active');
+  activeSolId = id; isEditing = false; currentTab = 'est';
+  renderPanel();
+  document.getElementById('panel').classList.add('open');
+  document.getElementById('saveIndicator').style.display = 'flex';
+};
+
+window.closePanel = function(){
+  document.getElementById('panel').classList.remove('open');
+  document.getElementById('panelHead').style.display = 'none';
+  document.getElementById('saveIndicator').style.display = 'none';
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  activeSolId = null; isEditing = false;
+};
+
+function renderPanel(){
+  const s = getSol(); if(!s) return;
+  const z = ZC[s.z];
+  const buColor = {'bd-cyber':'var(--cyber)','bd-gov':'var(--gov)','bd-infra':'var(--infra)','bd-smart':'var(--smart)'}[s.buc];
+  const zName   = {1:'Zona 1 — Evangelização',2:'Zona 2 — Especialização',3:'Zona 3 — Captura',4:'Zona 4 — Passivo'}[s.z];
+  const lvls    = ['Alta','Média','Baixa'];
+
+  // Sticky header
+  const head = document.getElementById('panelHead');
+  head.style.display = 'flex';
+  head.innerHTML = `
+    <div>
+      <div class="p-bu" style="color:${buColor}">${s.bu}</div>
+      <div class="p-name">${s.name}</div>
+      <div class="p-short">${s.short}</div>
+    </div>
+    <div class="panel-acts">
+      <button class="pnl-btn${isEditing?' on':''}" onclick="toggleEdit()" title="${isEditing?'Sair da edição':'Editar'}">✏</button>
+      <button class="pnl-btn" style="color:var(--danger)" onclick="confirmDelete()" title="Excluir solução">🗑</button>
+      <button class="pnl-btn" onclick="closePanel()">✕</button>
+    </div>`;
+
+  const ed = isEditing;
+  const cxEl = ed ? `<select onchange="updateAxis('cx',this.value)" style="color:${z.col}">${lvls.map(v=>`<option${v===s.cx?' selected':''}>${v}</option>`).join('')}</select>` : `<span>${s.cx}</span>`;
+  const coEl = ed ? `<select onchange="updateAxis('co',this.value)" style="color:${z.col}">${lvls.map(v=>`<option${v===s.co?' selected':''}>${v}</option>`).join('')}</select>` : `<span>${s.co}</span>`;
+
+  const {mats,chs} = splitItems(s.canais||[]);
+  const mCls = {e:'mt-e',d:'mt-d',a:'mt-a'};
+
+  const chsHTML  = chs.map(({item,ri})=>`<span class="ctag${ed?' tag-ed':''}" ${ed?`onclick="openPopup(event,'ch',${ri})"`:''}><span class="cdot" style="background:${chColor(item)}"></span>${item}</span>`).join('');
+  const matsHTML = mats.map(({item,type,ri})=>`<span class="mtag ${mCls[type]||'mt-d'}${ed?' tag-ed':''}" ${ed?`onclick="openPopup(event,'mat',${ri})"`:''}><span class="mdot"></span>${item}</span>`).join('');
+
+  const tx = (f,ph,mh=64) => ed
+    ? `<textarea onblur="sf('${f}',this.value)" style="min-height:${mh}px">${s[f]||''}</textarea>`
+    : `<p>${s[f]||'<span style="opacity:.35;font-style:italic">Não preenchido</span>'}</p>`;
+  const inp = (f,ph) => ed
+    ? `<input style="width:100%;font-family:var(--font);font-size:11px;font-weight:600;color:var(--text);background:transparent;border:none;outline:none" value="${s[f]||''}" onblur="sf('${f}',this.value)" placeholder="${ph}">`
+    : `<div class="param-val">${s[f]||'<span style="opacity:.35;font-style:italic">—</span>'}</div>`;
+
+  let icpHTML = `<div class="cortex-note"><strong>Filtros Cortex</strong> — Combine Setores + Faturamento + Características como base. Adicione Sinais/Gatilhos como filtro de inteligência.</div>`;
+  ICP_GROUPS.forEach(g=>{
+    const items = (s.icp||{})[g.k]||[];
+    if(!items.length&&!ed) return;
+    const th = items.map((t,i)=>`<span class="itag ${g.tc}${ed?' tag-ed':''}" ${ed?`onclick="openPopup(event,'icp:${g.k}',${i})"`:''}><span class="idot"></span>${t}</span>`).join('');
+    const ab = ed ? `<button class="add-tag" onclick="openPopup(event,'icp:${g.k}',-1)">+</button>` : '';
+    icpHTML += `<div class="icp-grp"><div class="icp-lbl">${g.l}</div><div class="tags-wrap">${th}${ab}</div></div>`;
+  });
+
+  document.getElementById('panelBody').innerHTML = `
+    <div class="scores">
+      <div class="score-card" style="border-color:${z.col}28;background:${z.bg}"><span class="score-lbl">Complexidade</span><div class="score-val" style="color:${z.col}">${cxEl}</div></div>
+      <div class="score-card" style="border-color:${z.col}28;background:${z.bg}"><span class="score-lbl">Conscientização</span><div class="score-val" style="color:${z.col}">${coEl}</div></div>
+      <div class="score-card" style="border-color:${z.col}28;background:${z.bg}"><span class="score-lbl">Zona GTM</span><div class="score-val" style="color:${z.col};font-size:9px">${zName}</div></div>
+    </div>
+    <div class="tabs" onclick="event.stopPropagation()">
+      <button class="tab-btn${currentTab==='est'?' active':''}" onclick="switchTab('est')">Estratégia</button>
+      <button class="tab-btn${currentTab==='icp'?' active':''}" onclick="switchTab('icp')">ICP</button>
+    </div>
+    <div class="tab-pane${currentTab==='est'?' active':''}" id="tab-est">
+      <div class="sec-hd">Por que aqui na Matriz</div>
+      <div class="just-block"><span class="just-lbl" style="color:${z.col}">Complexidade — ${s.cx}</span>${tx('jcx','Justifique a complexidade...')}</div>
+      <div class="just-block"><span class="just-lbl" style="color:${z.col}">Conscientização — ${s.co}</span>${tx('jco','Justifique a conscientização...')}</div>
+      <div class="sec-hd">Postura de Prospecção</div>
+      <div class="posture-box">${tx('postura','Descreva a postura de prospecção...',48)}</div>
+      <div class="sec-hd">Parâmetros Comerciais</div>
+      <div class="param-row">
+        <div class="param-box"><div class="param-lbl">Ticket</div>${inp('ticket','Ex: R$300K–R$500K/ano')}</div>
+        <div class="param-box"><div class="param-lbl">Contrato</div>${inp('contrato','Ex: Anual ou bianual')}</div>
+      </div>
+      <div class="param-row"><div class="param-box"><div class="param-lbl">Ciclo de Venda</div>${inp('ciclo','Ex: 2–4 meses')}</div></div>
+      ${chs.length||ed?`<div class="sec-hd">Canais</div><div class="tags-wrap">${chsHTML}${ed?`<button class="add-tag" onclick="openPopup(event,'ch',-1)">+ Canal</button>`:''}</div>`:''}
+      ${mats.length||ed?`<div class="sec-hd">Materiais</div><div class="tags-wrap">${matsHTML}${ed?`<button class="add-tag" onclick="openPopup(event,'mat',-1)">+ Material</button>`:''}</div>`:''}
+    </div>
+    <div class="tab-pane${currentTab==='icp'?' active':''}" id="tab-icp">${icpHTML}</div>`;
+}
+
+function splitItems(canais){
+  const mats=[],chs=[];
+  (canais||[]).forEach((item,ri)=>{ const t=classifyItem(item); if(t) mats.push({item,type:t,ri}); else chs.push({item,ri}); });
+  return{mats,chs};
+}
+
+window.sf = function(f,v){
+  const s=getSol(); if(!s) return;
+  s[f]=v.trim();
+  setSaveStatus('unsaved');
+};
+
+window.toggleEdit = function(){ isEditing=!isEditing; renderPanel(); };
+window.switchTab  = function(t){ currentTab=t; renderPanel(); };
+
+window.updateAxis = function(axis,val){
+  const s=getSol(); if(!s) return;
+  s[axis]=val;
+  const newCell = AXES_CELL[s.cx+'|'+s.co] ?? s.cell;
+  if(newCell!==s.cell){
+    const chip=document.getElementById('chip-'+s._id);
+    if(chip) chip.remove();
+    s.cell=newCell; s.z=cellToZone(newCell);
+    refreshChip(s._id);
+  } else { s.z=cellToZone(s.cell); }
+  setSaveStatus('unsaved');
+  renderPanel();
+};
+
+// ── SAVE ──────────────────────────────────────────────────────────────────────
+function setSaveStatus(state){
+  const el=document.getElementById('saveStatus');
+  if(!el) return;
+  if(state==='unsaved'){el.textContent='Alterações não salvas';el.className='save-status';}
+  else if(state==='saving'){el.textContent='Salvando...';el.className='save-status saving';}
+  else if(state==='saved'){el.textContent='Salvo com sucesso';el.className='save-status saved';}
+  else if(state==='error'){el.textContent='Erro ao salvar';el.className='save-status error';}
+}
+
+window.saveSolution = async function(){
+  const s=getSol(); if(!s) return;
+  setSaveStatus('saving');
+  try{
+    const {_id,...data}=s;
+    data.updatedAt=serverTimestamp();
+    await setDoc(doc(db,'solutions',_id), data);
+    setSaveStatus('saved');
+    showToast('Salvo com sucesso!');
+  } catch(e){
+    setSaveStatus('error');
+    showToast('Erro ao salvar. Tente novamente.');
+  }
+};
+
+// ── DELETE ─────────────────────────────────────────────────────────────────────
+window.confirmDelete = function(){
+  const s=getSol(); if(!s) return;
+  if(!confirm(`Excluir "${s.name}"? Esta ação não pode ser desfeita.`)) return;
+  deleteDoc(doc(db,'solutions',s._id));
+};
+
+// ── POPUP ─────────────────────────────────────────────────────────────────────
+let popField=null,popRI=null,popIsNew=false,popIsMat=false,selMatType='d';
+
+window.openPopup = function(e,field,ri){
+  if(!isEditing) return;
+  e.stopPropagation();
+  popField=field; popRI=ri; popIsNew=(ri===-1); popIsMat=(field==='mat');
+  const s=getSol();
+  let val='', mtype='d';
+  if(!popIsNew){
+    if(field.startsWith('icp:')) val=(s.icp[field.split(':')[1]]||[])[ri]||'';
+    else if(field==='mat'){ val=s.canais[ri]||''; mtype=classifyItem(val)||'d'; }
+    else val=s.canais[ri]||'';
+  }
+  selMatType=mtype;
+  document.getElementById('popLbl').textContent   = popIsNew?'Nova tag':'Editar tag';
+  document.getElementById('popInp').value         = val;
+  document.getElementById('popTypeWrap').style.display = popIsMat?'block':'none';
+  document.querySelectorAll('.pop-type').forEach(b=>b.classList.toggle('sel',b.dataset.type===selMatType));
+  document.getElementById('popDel').style.display = popIsNew?'none':'block';
+  const popup=document.getElementById('tagPopup');
+  popup.style.display='block';
+  const rect=e.currentTarget.getBoundingClientRect();
+  const pw=260,ph=popIsMat?190:120;
+  let top=rect.bottom+6,left=rect.left;
+  if(top+ph>window.innerHeight-10) top=Math.max(rect.top-ph-6,8);
+  if(left+pw>window.innerWidth-10) left=window.innerWidth-pw-10;
+  if(left<8) left=8;
+  popup.style.top=top+'px'; popup.style.left=left+'px';
+  const inp=document.getElementById('popInp');
+  inp.focus(); inp.select();
+  inp.onkeydown=ev=>{
+    if(ev.key==='Enter'){ev.preventDefault();saveTag();}
+    if(ev.key==='Escape'){ev.preventDefault();closePopup();}
+  };
+};
+
+window.selType = function(btn){
+  selMatType=btn.dataset.type;
+  document.querySelectorAll('.pop-type').forEach(b=>b.classList.toggle('sel',b===btn));
+};
+
+window.saveTag = function(){
+  const val=document.getElementById('popInp').value.trim();
+  if(!val){closePopup();return;}
+  const s=getSol();
+  if(!s.canais) s.canais=[];
+  if(!s.icp) s.icp=emptyICP();
+  if(popField.startsWith('icp:')){
+    const key=popField.split(':')[1];
+    if(!s.icp[key]) s.icp[key]=[];
+    if(popIsNew) s.icp[key].push(val);
+    else s.icp[key][popRI]=val;
+  } else {
+    if(popIsNew) s.canais.push(val);
+    else s.canais[popRI]=val;
+  }
+  setSaveStatus('unsaved');
+  closePopup(); renderPanel();
+};
+
+window.deleteTag = function(){
+  const s=getSol();
+  if(popField.startsWith('icp:')){
+    const key=popField.split(':')[1];
+    if(s.icp[key]) s.icp[key].splice(popRI,1);
+  } else {
+    s.canais.splice(popRI,1);
+  }
+  setSaveStatus('unsaved');
+  closePopup(); renderPanel();
+};
+
+window.closePopup = function(){ document.getElementById('tagPopup').style.display='none'; };
+
+// ── VIEWS / THEME ──────────────────────────────────────────────────────────────
+window.setView = function(v,btn){
+  document.querySelectorAll('.top-nav-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('matrixView').style.display = v==='matrix'?'flex':'none';
+  document.getElementById('metoView').classList.toggle('v-hidden',v!=='meto');
+};
+
+window.toggleTheme = function(){
+  const dark=document.documentElement.getAttribute('data-theme')==='dark';
+  document.documentElement.setAttribute('data-theme',dark?'light':'dark');
+  document.getElementById('themeBtn').textContent = dark?'☀':'☾';
+  document.getElementById('brandLogo').src = dark?LOGO_LIGHT:LOGO_DARK;
+};
+
+// ── GLOBAL CLICK ──────────────────────────────────────────────────────────────
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.panel')&&!e.target.closest('#tagPopup')&&!e.target.closest('#addModal')) closePanel();
+  if(!e.target.closest('#tagPopup')) closePopup();
+});
+document.getElementById('authEmail').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('authPass').focus();});
+document.getElementById('authPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+</script>
+</body>
+</html>
