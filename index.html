@@ -105,41 +105,29 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
 .main{flex:1;display:flex;overflow:hidden;min-height:0}
 .v-hidden{display:none!important}
 
-/* ── MATRIX ── */
-.matrix-shell{flex:1;display:flex;flex-direction:column;padding:14px 14px 10px 8px;min-height:0;overflow:hidden}
-.matrix-outer{flex:1;display:flex;gap:0;min-height:0}
-.y-axis{display:flex;flex-direction:column;align-items:center;width:52px;flex-shrink:0}
-.y-axis-label{writing-mode:vertical-rl;transform:rotate(180deg);font-size:9px;font-weight:700;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;white-space:nowrap;margin-bottom:4px;text-align:center}
-.y-ticks{flex:1;display:flex;flex-direction:column;justify-content:space-around;align-items:center;padding:2px 0;width:100%}
-.y-ticks span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;text-align:center}
-.matrix-body{flex:1;display:flex;flex-direction:column;min-height:0}
-.grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:5px;min-height:0}
-.cell{border-radius:var(--r);padding:10px;display:flex;flex-direction:column;gap:5px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
-.cell::-webkit-scrollbar{width:3px}.cell::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-.cell.z1{background:var(--z1b);border:1.5px solid var(--z1c)}.cell.z2{background:var(--z2b);border:1.5px solid var(--z2c)}.cell.z3{background:var(--z3b);border:1.5px solid var(--z3c)}.cell.z4{background:var(--z4b);border:1.5px solid var(--z4c)}
-.cell-hd{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;margin-bottom:3px}
-.zone-label{font-size:9px;font-weight:700;letter-spacing:.10em;opacity:.65;text-transform:uppercase}
-.cell.z1 .zone-label{color:var(--z1t)}.cell.z2 .zone-label{color:var(--z2t)}.cell.z3 .zone-label{color:var(--z3t)}.cell.z4 .zone-label{color:var(--z4t)}
-.cell-add{width:22px;height:22px;border-radius:50%;border:1.5px dashed var(--border2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);line-height:1;transition:all .15s;font-weight:400}
-.cell-add:hover{border-color:var(--blue);color:var(--blue);background:var(--s2)}
-.chips-wrap{display:flex;flex-direction:column;gap:4px;flex:1}
-.chip{display:inline-flex;align-items:center;gap:7px;padding:5px 9px;border-radius:6px;font-size:var(--fs-sm);font-weight:600;cursor:pointer;line-height:1.3;border:1.5px solid transparent;text-align:left;font-family:var(--font);width:100%;transition:all .15s}
-.chip:hover{filter:brightness(1.08);transform:translateY(-1px)}
-.chip.active{box-shadow:0 0 0 2.5px var(--cyan)}
-.cell.z1 .chip{background:rgba(80,80,180,.11);color:var(--z1t);border-color:var(--z1c)}
-.cell.z2 .chip{background:rgba(180,100,48,.11);color:var(--z2t);border-color:var(--z2c)}
-.cell.z3 .chip{background:rgba(0,87,213,.09);color:var(--z3t);border-color:var(--z3c)}
-.cell.z4{background:rgba(110,128,160,.11);color:var(--z4t);border-color:var(--z4c)}
-[data-theme=dark] .cell.z1 .chip{color:#8888d8}[data-theme=dark] .cell.z2 .chip{color:#d08040}[data-theme=dark] .cell.z3 .chip{color:#4898f8}[data-theme=dark] .cell.z4 .chip{color:#7888a8}
-/* BU square badge on chip */
-.chip-bu{width:10px;height:10px;border-radius:2px;flex-shrink:0}
-.bd-cyber{background:var(--cyber)}.bd-gov{background:var(--gov)}.bd-infra{background:var(--infra)}.bd-smart{background:var(--smart)}
-.x-row{display:flex;padding:5px 0 0 0;gap:5px}
-.x-row span{flex:1;text-align:center;font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
-.x-label{text-align:center;font-size:9px;font-weight:700;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;padding-top:4px}
-.bu-legend{display:flex;gap:16px;padding:8px 0 0 52px;flex-wrap:wrap}
-.bu-l{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--muted)}
-.bu-ld{width:11px;height:11px;border-radius:3px}
+/* ── MATRIX Y-AXIS fix ── */
+.matrix-shell{flex:1;display:flex;flex-direction:column;padding:14px 14px 10px 4px;min-height:0;overflow:hidden}
+.matrix-outer{flex:1;display:flex;gap:0;min-height:0;overflow:hidden}
+.y-axis{display:flex;flex-direction:column;align-items:center;width:40px;flex-shrink:0;overflow:hidden}
+.y-axis-label{writing-mode:vertical-rl;transform:rotate(180deg);font-size:8px;font-weight:700;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;white-space:nowrap;margin-bottom:4px;text-align:center;flex-shrink:0}
+.y-ticks{flex:1;display:flex;flex-direction:column;justify-content:space-around;align-items:center;padding:2px 0;width:100%;min-height:0}
+.y-ticks span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:8px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;text-align:center;flex-shrink:0}
+/* BU square — smaller */
+.chip-bu{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.bu-ld{width:10px;height:10px;border-radius:2px}
+.bu-l{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--muted)}
+/* Methodology zones grid — always 2 cols */
+.meto-zones-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:28px;max-width:1200px}
+.meto-zone-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);padding:20px;transition:border-color .15s;position:relative;min-width:0}
+.meto-zone-card:hover{border-color:var(--blue)}
+/* pencil button — use text not emoji to avoid broken rendering */
+.zone-card-edit{position:absolute;top:12px;right:12px;background:none;border:none;cursor:pointer;color:var(--muted);opacity:.3;font-size:12px;padding:2px 5px;transition:opacity .15s;line-height:1;border-radius:4px}
+.zone-card-edit:hover{opacity:1;color:var(--blue);background:var(--s2)}
+/* page title edit inline */
+.meto-title-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.meto-page-title{font-size:var(--fs-xl);font-weight:800;letter-spacing:-.025em}
+.meto-inline-edit{background:none;border:none;cursor:pointer;color:var(--muted2);opacity:.35;font-size:13px;padding:0 2px;transition:opacity .15s;flex-shrink:0;margin-top:2px}
+.meto-inline-edit:hover{opacity:1;color:var(--blue)}
 
 /* ── PANEL ── */
 .panel{width:0;overflow:hidden;transition:width .3s cubic-bezier(.4,0,.2,1);border-left:1px solid transparent;flex-shrink:0;display:flex;flex-direction:column;background:var(--surface)}
@@ -489,7 +477,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
     </div>
 
     <div class="meto-wrap v-hidden" id="metoView">
-      <div class="meto-page-title">Metodologia GTM</div>
+      <div class="meto-title-row">
+        <div class="meto-page-title">Metodologia GTM</div>
+        <button class="meto-inline-edit" onclick="editMetoSection('pagina')" title="Editar descrição da página">✏</button>
+      </div>
       <div class="meto-page-sub">Documentação das zonas estratégicas, canais e ativos de conversão da Tripla. Use esta seção para gerenciar as opções disponíveis ao preencher soluções na Matriz.</div>
 
       <!-- EIXOS PRIMEIRO -->
@@ -506,10 +497,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
       <!-- ZONAS (sem título "Lógica das Zonas") -->
       <div class="meto-section">
         <div class="meto-zones-grid">
-          <div class="meto-zone-card"><button class="zone-card-edit" onclick="openMetoEdit('zone','1',-1)" title="Editar">✏</button><div class="meto-zbadge" style="color:var(--z1t)"><span style="background:var(--z1t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 1</div><div class="meto-card-title">Evangelização</div><div class="meto-card-sub">Baixa Consciência + Média/Alta Complexidade</div><p>O cliente não tem consciência do risco. Foco em criar consciência — não converter leads imediatamente.</p><div><span class="meto-kpi">Awareness</span><span class="meto-kpi">Sem outbound frio</span><span class="meto-kpi">Thought Leadership</span></div></div>
-          <div class="meto-zone-card"><button class="zone-card-edit" onclick="openMetoEdit('zone','2',-1)" title="Editar">✏</button><div class="meto-zbadge" style="color:var(--z2t)"><span style="background:var(--z2t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 2</div><div class="meto-card-title">Especialização Competitiva</div><div class="meto-card-sub">Alta/Média Consciência + Alta/Média Complexidade</div><p>O cliente sabe que precisa, mas tem medo de quem vai operar. A Tripla precisa provar diferenciação.</p><div><span class="meto-kpi">Pipeline qualificado</span><span class="meto-kpi">WinRate</span><span class="meto-kpi">ABM</span></div></div>
-          <div class="meto-zone-card"><button class="zone-card-edit" onclick="openMetoEdit('zone','3',-1)" title="Editar">✏</button><div class="meto-zbadge" style="color:var(--z3t)"><span style="background:var(--z3t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 3</div><div class="meto-card-title">Captura de Demanda</div><div class="meto-card-sub">Alta Consciência + Baixa/Média Complexidade</div><p>A venda é transacional. O mercado entende o problema. Foco em capturar demanda existente com velocidade.</p><div><span class="meto-kpi">Velocidade</span><span class="meto-kpi">CAC baixo</span><span class="meto-kpi">Volume</span></div></div>
-          <div class="meto-zone-card"><button class="zone-card-edit" onclick="openMetoEdit('zone','4',-1)" title="Editar">✏</button><div class="meto-zbadge" style="color:var(--z4t)"><span style="background:var(--z4t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 4</div><div class="meto-card-title">Zona Morta</div><div class="meto-card-sub">Baixa Consciência + Baixa Complexidade</div><p>Custo de conscientização supera o retorno esperado. Sem investimento proativo — cross-sell reativo apenas.</p><div><span class="meto-kpi">Sem SDR ativo</span><span class="meto-kpi">Revisão periódica</span></div></div>
+          <div class="meto-zone-card"><button class="zone-card-edit" onclick="openMetoEdit('zone','1',-1)" title="Editar">edit</button><div class="meto-zbadge" style="color:var(--z1t)"><span style="background:var(--z1t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 1</div><div class="meto-card-title">Evangelização</div><div class="meto-card-sub">Baixa Consciência + Média/Alta Complexidade</div><p>O cliente não tem consciência do risco. Foco em criar consciência — não converter leads imediatamente.</p><div><span class="meto-kpi">Awareness</span><span class="meto-kpi">Sem outbound frio</span><span class="meto-kpi">Thought Leadership</span></div></div>
+          <div class="meto-zone-card"><button class="zone-card-edit" onclick="openMetoEdit('zone','2',-1)" title="Editar">edit</button><div class="meto-zbadge" style="color:var(--z2t)"><span style="background:var(--z2t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 2</div><div class="meto-card-title">Especialização Competitiva</div><div class="meto-card-sub">Alta/Média Consciência + Alta/Média Complexidade</div><p>O cliente sabe que precisa, mas tem medo de quem vai operar. A Tripla precisa provar diferenciação.</p><div><span class="meto-kpi">Pipeline qualificado</span><span class="meto-kpi">WinRate</span><span class="meto-kpi">ABM</span></div></div>
+          <div class="meto-zone-card"><button class="zone-card-edit" onclick="openMetoEdit('zone','3',-1)" title="Editar">edit</button><div class="meto-zbadge" style="color:var(--z3t)"><span style="background:var(--z3t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 3</div><div class="meto-card-title">Captura de Demanda</div><div class="meto-card-sub">Alta Consciência + Baixa/Média Complexidade</div><p>A venda é transacional. O mercado entende o problema. Foco em capturar demanda existente com velocidade.</p><div><span class="meto-kpi">Velocidade</span><span class="meto-kpi">CAC baixo</span><span class="meto-kpi">Volume</span></div></div>
+          <div class="meto-zone-card"><button class="zone-card-edit" onclick="openMetoEdit('zone','4',-1)" title="Editar">edit</button><div class="meto-zbadge" style="color:var(--z4t)"><span style="background:var(--z4t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 4</div><div class="meto-card-title">Zona Morta</div><div class="meto-card-sub">Baixa Consciência + Baixa Complexidade</div><p>Custo de conscientização supera o retorno esperado. Sem investimento proativo — cross-sell reativo apenas.</p><div><span class="meto-kpi">Sem SDR ativo</span><span class="meto-kpi">Revisão periódica</span></div></div>
         </div>
       </div>
 
@@ -543,7 +534,7 @@ import { getAuth, signInWithEmailAndPassword, signOut, updatePassword, onAuthSta
 import { getFirestore, collection, doc, setDoc, deleteDoc, getDoc, onSnapshot, serverTimestamp }
   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
-const firebaseConfig={apiKey:"AIzaSyBUhkJQPT2mN8bXaa6pMBhCzN3Q7nq4c8E",authDomain:"matriz-gtm.firebaseapp.com",projectId:"matriz-gtm",storageBucket:"matriz-gtm.firebasestorage.app",messagingSenderId:"538878064173",appId:"1:538878064173:web:dd47e64ccb0c6f024feaa4"};
+const firebaseConfig={apiKey:"AIzaSyAcV8Je-JTYgJUPrqcAuLnmovRcUIIX9g4",authDomain:"matriz-gtm.firebaseapp.com",projectId:"matriz-gtm",storageBucket:"matriz-gtm.firebasestorage.app",messagingSenderId:"538878064173",appId:"1:538878064173:web:dd47e64ccb0c6f024feaa4"};
 const fbApp=initializeApp(firebaseConfig);
 const auth=getAuth(fbApp);
 const db=getFirestore(fbApp);
@@ -1121,14 +1112,23 @@ function renderMatGrid(){
 
 // ── METHODOLOGY EDIT
 window.editMetoSection=function(sec){
-  const isCanal=sec==='canais';
   metoCtx={mode:'section',sec};
-  document.getElementById('metoEditTitle').textContent=isCanal?'Editar descrição — Canais Relevantes':'Editar descrição — Materiais Aderentes';
+  let title,current;
+  if(sec==='pagina'){
+    title='Editar descrição da página';
+    current=document.querySelector('.meto-page-sub')?.textContent||'';
+  } else if(sec==='canais'){
+    title='Editar descrição — Canais Relevantes';
+    current=CCONF.canaisDesc||'';
+  } else {
+    title='Editar descrição — Materiais Aderentes';
+    current=CCONF.materiaisDesc||'';
+  }
+  document.getElementById('metoEditTitle').textContent=title;
   document.getElementById('metoEditSub').textContent='';
   document.getElementById('metoDelBtn').style.display='none';
   document.getElementById('metoEditErr').textContent='';
-  const current=isCanal?CCONF.canaisDesc||'':CCONF.materiaisDesc||'';
-  document.getElementById('metoEditFields').innerHTML=`<div class="f-grp"><label class="f-lbl">Descrição da seção</label><textarea class="f-inp" id="metoF1" style="min-height:80px;resize:vertical">${current}</textarea></div>`;
+  document.getElementById('metoEditFields').innerHTML=`<div class="f-grp"><label class="f-lbl">Descrição</label><textarea class="f-inp" id="metoF1" style="min-height:80px;resize:vertical">${current}</textarea></div>`;
   document.getElementById('metoEditOverlay').style.display='flex';
 };
 
@@ -1154,8 +1154,14 @@ window.saveMetoItem=async function(){
   const err=document.getElementById('metoEditErr');err.textContent='';
   if(metoCtx.mode==='section'){
     const desc=document.getElementById('metoF1').value.trim();
-    if(metoCtx.sec==='canais'){CCONF.canaisDesc=desc;document.getElementById('metoCanaisDesc').textContent=desc;}
-    else{CCONF.materiaisDesc=desc;document.getElementById('metoMatDesc').textContent=desc;}
+    if(metoCtx.sec==='pagina'){
+      const el=document.querySelector('.meto-page-sub');
+      if(el)el.textContent=desc;
+    } else if(metoCtx.sec==='canais'){
+      CCONF.canaisDesc=desc;document.getElementById('metoCanaisDesc').textContent=desc;
+    } else {
+      CCONF.materiaisDesc=desc;document.getElementById('metoMatDesc').textContent=desc;
+    }
     await saveConfig();closeMetoEdit();showToast('Descrição atualizada!');return;
   }
   const name=document.getElementById('metoF1').value.trim();
