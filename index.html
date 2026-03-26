@@ -106,39 +106,40 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
 .v-hidden{display:none!important}
 
 /* ── MATRIX ── */
-.matrix-shell{flex:1;display:flex;flex-direction:column;padding:16px 16px 10px 22px;min-height:0;overflow:hidden}
+.matrix-shell{flex:1;display:flex;flex-direction:column;padding:14px 14px 10px 8px;min-height:0;overflow:hidden}
 .matrix-outer{flex:1;display:flex;gap:0;min-height:0}
-.y-axis{display:flex;flex-direction:column;align-items:center;width:28px;flex-shrink:0}
-.y-axis-label{writing-mode:vertical-rl;transform:rotate(180deg);font-size:9px;font-weight:700;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;white-space:nowrap;margin-bottom:5px}
-.y-ticks{flex:1;display:flex;flex-direction:column;justify-content:space-around;align-items:flex-end;padding:2px 0}
-.y-ticks span{font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;text-align:right;padding-right:6px}
+.y-axis{display:flex;flex-direction:column;align-items:center;width:52px;flex-shrink:0}
+.y-axis-label{writing-mode:vertical-rl;transform:rotate(180deg);font-size:9px;font-weight:700;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;white-space:nowrap;margin-bottom:4px;text-align:center}
+.y-ticks{flex:1;display:flex;flex-direction:column;justify-content:space-around;align-items:center;padding:2px 0;width:100%}
+.y-ticks span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;text-align:center}
 .matrix-body{flex:1;display:flex;flex-direction:column;min-height:0}
 .grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:5px;min-height:0}
 .cell{border-radius:var(--r);padding:10px;display:flex;flex-direction:column;gap:5px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
 .cell::-webkit-scrollbar{width:3px}.cell::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 .cell.z1{background:var(--z1b);border:1.5px solid var(--z1c)}.cell.z2{background:var(--z2b);border:1.5px solid var(--z2c)}.cell.z3{background:var(--z3b);border:1.5px solid var(--z3c)}.cell.z4{background:var(--z4b);border:1.5px solid var(--z4c)}
 .cell-hd{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;margin-bottom:3px}
-.zone-label{font-size:9px;font-weight:700;letter-spacing:.14em;opacity:.55;text-transform:uppercase}
+.zone-label{font-size:9px;font-weight:700;letter-spacing:.10em;opacity:.65;text-transform:uppercase}
 .cell.z1 .zone-label{color:var(--z1t)}.cell.z2 .zone-label{color:var(--z2t)}.cell.z3 .zone-label{color:var(--z3t)}.cell.z4 .zone-label{color:var(--z4t)}
 .cell-add{width:22px;height:22px;border-radius:50%;border:1.5px dashed var(--border2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);line-height:1;transition:all .15s;font-weight:400}
 .cell-add:hover{border-color:var(--blue);color:var(--blue);background:var(--s2)}
 .chips-wrap{display:flex;flex-direction:column;gap:4px;flex:1}
-.chip{display:inline-flex;align-items:flex-start;gap:6px;padding:6px 10px;border-radius:6px;font-size:var(--fs-sm);font-weight:600;cursor:pointer;line-height:1.3;border:1.5px solid transparent;text-align:left;font-family:var(--font);width:100%;transition:all .15s}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:5px 9px;border-radius:6px;font-size:var(--fs-sm);font-weight:600;cursor:pointer;line-height:1.3;border:1.5px solid transparent;text-align:left;font-family:var(--font);width:100%;transition:all .15s}
 .chip:hover{filter:brightness(1.08);transform:translateY(-1px)}
 .chip.active{box-shadow:0 0 0 2.5px var(--cyan)}
 .cell.z1 .chip{background:rgba(80,80,180,.11);color:var(--z1t);border-color:var(--z1c)}
 .cell.z2 .chip{background:rgba(180,100,48,.11);color:var(--z2t);border-color:var(--z2c)}
 .cell.z3 .chip{background:rgba(0,87,213,.09);color:var(--z3t);border-color:var(--z3c)}
-.cell.z4 .chip{background:rgba(110,128,160,.11);color:var(--z4t);border-color:var(--z4c)}
+.cell.z4{background:rgba(110,128,160,.11);color:var(--z4t);border-color:var(--z4c)}
 [data-theme=dark] .cell.z1 .chip{color:#8888d8}[data-theme=dark] .cell.z2 .chip{color:#d08040}[data-theme=dark] .cell.z3 .chip{color:#4898f8}[data-theme=dark] .cell.z4 .chip{color:#7888a8}
-.chip-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px}
+/* BU square badge on chip */
+.chip-bu{width:10px;height:10px;border-radius:2px;flex-shrink:0}
 .bd-cyber{background:var(--cyber)}.bd-gov{background:var(--gov)}.bd-infra{background:var(--infra)}.bd-smart{background:var(--smart)}
 .x-row{display:flex;padding:5px 0 0 0;gap:5px}
 .x-row span{flex:1;text-align:center;font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
 .x-label{text-align:center;font-size:9px;font-weight:700;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;padding-top:4px}
-.bu-legend{display:flex;gap:16px;padding:8px 0 0 28px;flex-wrap:wrap}
-.bu-l{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--muted)}
-.bu-ld{width:7px;height:7px;border-radius:50%}
+.bu-legend{display:flex;gap:16px;padding:8px 0 0 52px;flex-wrap:wrap}
+.bu-l{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--muted)}
+.bu-ld{width:11px;height:11px;border-radius:3px}
 
 /* ── PANEL ── */
 .panel{width:0;overflow:hidden;transition:width .3s cubic-bezier(.4,0,.2,1);border-left:1px solid transparent;flex-shrink:0;display:flex;flex-direction:column;background:var(--surface)}
@@ -177,13 +178,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
 .sec-hd::after{content:'';flex:1;height:1px;background:var(--border)}
 .sec-hd .tooltip-trigger{font-size:11px;color:var(--muted2);cursor:help;flex-shrink:0;position:relative}
 
-/* TOOLTIP */
-.tooltip-trigger{position:relative;display:inline-flex;align-items:center}
-.tooltip-trigger .tt{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#0f1a3a;color:#fff;font-size:11px;line-height:1.55;padding:8px 12px;border-radius:8px;white-space:normal;width:220px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:200;font-weight:400;letter-spacing:0;text-transform:none}
-[data-theme=dark] .tooltip-trigger .tt{background:#1e3050}
-.tooltip-trigger .tt::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#0f1a3a}
-[data-theme=dark] .tooltip-trigger .tt::after{border-top-color:#1e3050}
-.tooltip-trigger:hover .tt{opacity:1}
+/* TOOLTIP — interrogação semitransparente */
+.tip{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid currentColor;font-size:10px;font-weight:700;cursor:help;opacity:.45;position:relative;flex-shrink:0;transition:opacity .15s;margin-left:5px;line-height:1}
+.tip:hover{opacity:.9}
+.tip .tt{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#0f1a3a;color:#fff;font-size:12px;line-height:1.55;padding:9px 13px;border-radius:9px;white-space:normal;width:240px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:300;font-weight:400;letter-spacing:0;text-transform:none}
+[data-theme=dark] .tip .tt{background:#1e3050}
+.tip .tt::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#0f1a3a}
+[data-theme=dark] .tip .tt::after{border-top-color:#1e3050}
+.tip:hover .tt{opacity:1}
 
 /* BLOCKS */
 .just-block{background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:8px}
@@ -457,7 +459,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
     <div id="matrixView" style="display:flex;flex:1;overflow:hidden;min-height:0">
       <div class="matrix-shell">
         <div class="matrix-outer">
-          <div class="y-axis">
+        <div class="y-axis">
             <div class="y-axis-label">Complexidade ↑</div>
             <div class="y-ticks"><span>Alta</span><span>Média</span><span>Baixa</span></div>
           </div>
@@ -490,40 +492,45 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
       <div class="meto-page-title">Metodologia GTM</div>
       <div class="meto-page-sub">Documentação das zonas estratégicas, canais e ativos de conversão da Tripla. Use esta seção para gerenciar as opções disponíveis ao preencher soluções na Matriz.</div>
 
-      <!-- ZONES -->
-      <div class="meto-section">
-        <div class="meto-sec-hd"><div class="meto-sec-title">Lógica das Zonas</div></div>
-        <div class="meto-zones-grid">
-          <div class="meto-zone-card"><div class="meto-zbadge" style="color:var(--z1t)"><span style="background:var(--z1t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 1</div><div class="meto-card-title">Evangelização</div><div class="meto-card-sub">Baixa Consciência + Média/Alta Complexidade</div><p>O cliente não tem consciência do risco. Foco em criar consciência — não converter leads imediatamente.</p><div><span class="meto-kpi">Awareness</span><span class="meto-kpi">Sem outbound frio</span><span class="meto-kpi">Thought Leadership</span></div></div>
-          <div class="meto-zone-card"><div class="meto-zbadge" style="color:var(--z2t)"><span style="background:var(--z2t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 2</div><div class="meto-card-title">Especialização Competitiva</div><div class="meto-card-sub">Alta/Média Consciência + Alta/Média Complexidade</div><p>O cliente sabe que precisa, mas tem medo de quem vai operar. A Tripla precisa provar diferenciação.</p><div><span class="meto-kpi">Pipeline qualificado</span><span class="meto-kpi">WinRate</span><span class="meto-kpi">ABM</span></div></div>
-          <div class="meto-zone-card"><div class="meto-zbadge" style="color:var(--z3t)"><span style="background:var(--z3t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 3</div><div class="meto-card-title">Captura de Demanda</div><div class="meto-card-sub">Alta Consciência + Baixa/Média Complexidade</div><p>A venda é transacional. O mercado entende o problema. Foco em capturar demanda existente com velocidade.</p><div><span class="meto-kpi">Velocidade</span><span class="meto-kpi">CAC baixo</span><span class="meto-kpi">Volume</span></div></div>
-          <div class="meto-zone-card"><div class="meto-zbadge" style="color:var(--z4t)"><span style="background:var(--z4t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 4</div><div class="meto-card-title">Zona Morta</div><div class="meto-card-sub">Baixa Consciência + Baixa Complexidade</div><p>Custo de conscientização supera o retorno esperado. Sem investimento proativo — cross-sell reativo apenas.</p><div><span class="meto-kpi">Sem SDR ativo</span><span class="meto-kpi">Revisão periódica</span></div></div>
+      <!-- EIXOS PRIMEIRO -->
+      <div class="meto-section meto-axes-first">
+        <div class="meto-axes" style="max-width:1200px">
+          <div class="meto-axes-title">Os dois eixos</div>
+          <div class="axes-grid">
+            <div class="axis-block"><div class="axis-name" style="color:var(--blue)">Conscientização — Eixo X</div><p>Quanto o prospect reconhece e valoriza a dor que a solução resolve. Não mede conhecimento sobre a Tripla — mede consciência do problema em si.</p></div>
+            <div class="axis-block"><div class="axis-name" style="color:var(--z2t)">Complexidade — Eixo Y</div><p>Nível de dificuldade de implementação, venda e entrega. Alta complexidade significa ciclo longo, múltiplos decisores e prova técnica obrigatória.</p></div>
+          </div>
         </div>
-        <div class="meto-axes"><div class="meto-axes-title">Os dois eixos</div><div class="axes-grid"><div class="axis-block"><div class="axis-name" style="color:var(--blue)">Conscientização — Eixo X</div><p>Quanto o prospect reconhece e valoriza a dor que a solução resolve. Não mede conhecimento sobre a Tripla — mede consciência do problema em si.</p></div><div class="axis-block"><div class="axis-name" style="color:var(--z2t)">Complexidade — Eixo Y</div><p>Nível de dificuldade de implementação, venda e entrega. Alta complexidade significa ciclo longo, múltiplos decisores e prova técnica obrigatória.</p></div></div></div>
+      </div>
+
+      <!-- ZONAS (sem título "Lógica das Zonas") -->
+      <div class="meto-section">
+        <div class="meto-zones-grid">
+          <div class="meto-zone-card"><button class="zone-card-edit" onclick="openMetoEdit('zone','1',-1)" title="Editar">✏</button><div class="meto-zbadge" style="color:var(--z1t)"><span style="background:var(--z1t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 1</div><div class="meto-card-title">Evangelização</div><div class="meto-card-sub">Baixa Consciência + Média/Alta Complexidade</div><p>O cliente não tem consciência do risco. Foco em criar consciência — não converter leads imediatamente.</p><div><span class="meto-kpi">Awareness</span><span class="meto-kpi">Sem outbound frio</span><span class="meto-kpi">Thought Leadership</span></div></div>
+          <div class="meto-zone-card"><button class="zone-card-edit" onclick="openMetoEdit('zone','2',-1)" title="Editar">✏</button><div class="meto-zbadge" style="color:var(--z2t)"><span style="background:var(--z2t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 2</div><div class="meto-card-title">Especialização Competitiva</div><div class="meto-card-sub">Alta/Média Consciência + Alta/Média Complexidade</div><p>O cliente sabe que precisa, mas tem medo de quem vai operar. A Tripla precisa provar diferenciação.</p><div><span class="meto-kpi">Pipeline qualificado</span><span class="meto-kpi">WinRate</span><span class="meto-kpi">ABM</span></div></div>
+          <div class="meto-zone-card"><button class="zone-card-edit" onclick="openMetoEdit('zone','3',-1)" title="Editar">✏</button><div class="meto-zbadge" style="color:var(--z3t)"><span style="background:var(--z3t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 3</div><div class="meto-card-title">Captura de Demanda</div><div class="meto-card-sub">Alta Consciência + Baixa/Média Complexidade</div><p>A venda é transacional. O mercado entende o problema. Foco em capturar demanda existente com velocidade.</p><div><span class="meto-kpi">Velocidade</span><span class="meto-kpi">CAC baixo</span><span class="meto-kpi">Volume</span></div></div>
+          <div class="meto-zone-card"><button class="zone-card-edit" onclick="openMetoEdit('zone','4',-1)" title="Editar">✏</button><div class="meto-zbadge" style="color:var(--z4t)"><span style="background:var(--z4t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 4</div><div class="meto-card-title">Zona Morta</div><div class="meto-card-sub">Baixa Consciência + Baixa Complexidade</div><p>Custo de conscientização supera o retorno esperado. Sem investimento proativo — cross-sell reativo apenas.</p><div><span class="meto-kpi">Sem SDR ativo</span><span class="meto-kpi">Revisão periódica</span></div></div>
+        </div>
       </div>
 
       <!-- CANAIS -->
       <div class="meto-section" id="metoCanaisSection">
-        <div class="meto-sec-hd">
-          <div>
-            <div class="meto-sec-title">Canais Relevantes</div>
-            <div class="meto-sec-desc" id="metoCanaisDesc">Canais de marketing e prospecção organizados por tipo. As categorias e tags cadastradas aqui aparecem como opções ao preencher uma solução na Matriz.</div>
-          </div>
-          <button class="meto-section-edit-btn" onclick="editMetoSection('canais')">Editar descrição</button>
+        <div class="meto-sec-hd"><div class="meto-sec-title">Canais Relevantes</div></div>
+        <div class="meto-sec-desc-wrap">
+          <div class="meto-sec-desc" id="metoCanaisDesc">Canais de marketing e prospecção organizados por tipo. As categorias e tags cadastradas aqui aparecem como opções ao preencher uma solução na Matriz.</div>
+          <button class="meto-inline-edit" onclick="editMetoSection('canais')" title="Editar descrição">✏</button>
         </div>
-        <div class="meto-canal-types" id="metoCanaisGrid"></div>
+        <div class="meto-types-grid" id="metoCanaisGrid"></div>
       </div>
 
       <!-- MATERIAIS -->
       <div class="meto-section" id="metoMatSection">
-        <div class="meto-sec-hd">
-          <div>
-            <div class="meto-sec-title">Materiais Aderentes</div>
-            <div class="meto-sec-desc" id="metoMatDesc">Ativos de conversão e habilitação organizados por categoria. As tags cadastradas aqui aparecem como opções ao preencher uma solução na Matriz.</div>
-          </div>
-          <button class="meto-section-edit-btn" onclick="editMetoSection('materiais')">Editar descrição</button>
+        <div class="meto-sec-hd"><div class="meto-sec-title">Materiais Aderentes</div></div>
+        <div class="meto-sec-desc-wrap">
+          <div class="meto-sec-desc" id="metoMatDesc">Ativos de conversão e habilitação organizados por categoria. As tags cadastradas aqui aparecem como opções ao preencher uma solução na Matriz.</div>
+          <button class="meto-inline-edit" onclick="editMetoSection('materiais')" title="Editar descrição">✏</button>
         </div>
-        <div class="meto-canal-types" id="metoMatGrid"></div>
+        <div class="meto-types-grid" id="metoMatGrid"></div>
       </div>
     </div>
   </div>
@@ -550,7 +557,7 @@ const BU_MAP={'bd-cyber':'Cibersegurança','bd-gov':'Governança & Compliance','
 const AXES_CELL={'Alta|Baixa':0,'Alta|Média':1,'Alta|Alta':2,'Média|Baixa':3,'Média|Média':4,'Média|Alta':5,'Baixa|Baixa':6,'Baixa|Média':7,'Baixa|Alta':8};
 const CELL_ZONE=[1,2,2,1,2,3,4,3,3];
 const ZC={1:{col:'var(--z1t)',bg:'var(--z1b)'},2:{col:'var(--z2t)',bg:'var(--z2b)'},3:{col:'var(--z3t)',bg:'var(--z3b)'},4:{col:'var(--z4t)',bg:'var(--z4b)'}};
-const ZONE_LBL={1:'Z1 · Evan.',2:'Z2 · Espec.',3:'Z3 · Captura',4:'Z4 · Passivo'};
+const ZONE_LBL={1:'Z1 · Evangelização',2:'Z2 · Especialização',3:'Z3 · Captura',4:'Z4 · Passivo'};
 const CANAL_TYPES=[
   {id:'out',label:'Outbound',color:'var(--cyber)',dotCls:'ct-out'},
   {id:'dig',label:'Digital',color:'var(--gov)',dotCls:'ct-dig'},
@@ -718,7 +725,7 @@ function refreshChip(id){
   let chip=document.getElementById('chip-'+id);if(chip)chip.remove();
   const wrap=document.getElementById('chips-'+s.cell);if(!wrap)return;
   chip=document.createElement('button');chip.className='chip';chip.id='chip-'+id;
-  chip.innerHTML=`<span class="chip-dot ${s.buc}"></span>${s.name}`;
+  chip.innerHTML=`<span class="chip-bu ${s.buc}"></span>${s.name}`;
   chip.onclick=e=>{e.stopPropagation();openPanel(id);};
   wrap.appendChild(chip);
 }
@@ -768,6 +775,8 @@ window.closePanel=function(){
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
   activeSolId=null;isEditing=false;
 };
+
+function tip(text){return`<span class="tip">?<span class="tt">${text}</span></span>`;}
 
 function renderPanel(){
   const s=getSol();if(!s)return;
@@ -851,24 +860,24 @@ function renderPanel(){
       <button class="tab-btn${currentTab==='icp'?' active':''}" onclick="switchTab('icp')">ICP</button>
     </div>
     <div class="tab-pane${currentTab==='est'?' active':''}" id="tab-est">
-      <div class="sec-hd">Por que aqui na Matriz <span class="tooltip-trigger">ⓘ<span class="tt">${TOOLTIPS.jcx}</span></span></div>
-      <div class="just-block"><span class="just-lbl" style="color:${z.col}">Complexidade — ${s.cx}<span class="tooltip-trigger" style="margin-left:5px">ⓘ<span class="tt">${TOOLTIPS.jcx}</span></span></span>${tx('jcx','Explique por que esta solução tem este nível de complexidade...')}</div>
-      <div class="just-block"><span class="just-lbl" style="color:${z.col}">Conscientização — ${s.co}<span class="tooltip-trigger" style="margin-left:5px">ⓘ<span class="tt">${TOOLTIPS.jco}</span></span></span>${tx('jco','Explique por que o mercado tem este nível de consciência...')}</div>
-      <div class="sec-hd">Postura de Prospecção <span class="tooltip-trigger">ⓘ<span class="tt">${TOOLTIPS.postura}</span></span></div>
+      <div class="sec-hd">Por que aqui na Matriz ${tip(TOOLTIPS.jcx)}</div>
+      <div class="just-block"><span class="just-lbl" style="color:${z.col}">Complexidade — ${s.cx}${tip(TOOLTIPS.jcx)}</span>${tx('jcx','Explique por que esta solução tem este nível de complexidade...')}</div>
+      <div class="just-block"><span class="just-lbl" style="color:${z.col}">Conscientização — ${s.co}${tip(TOOLTIPS.jco)}</span>${tx('jco','Explique por que o mercado tem este nível de consciência...')}</div>
+      <div class="sec-hd">Postura de Prospecção ${tip(TOOLTIPS.postura)}</div>
       <div class="posture-box">${tx('postura','Descreva a abordagem comercial, tom e gatilho de entrada...')}</div>
       <div class="sec-hd">Parâmetros Comerciais</div>
       <div class="param-row">
-        <div class="param-box"><div class="param-lbl">Ticket Médio<span class="tooltip-trigger" style="margin-left:4px">ⓘ<span class="tt">${TOOLTIPS.ticket}</span></span></div>${inp('ticket','Ex: R$300K–R$500K/ano')}</div>
-        <div class="param-box"><div class="param-lbl">Contrato<span class="tooltip-trigger" style="margin-left:4px">ⓘ<span class="tt">${TOOLTIPS.contrato}</span></span></div>${inp('contrato','Ex: Anual ou bianual')}</div>
+        <div class="param-box"><div class="param-lbl">Ticket Médio${tip(TOOLTIPS.ticket)}</div>${inp('ticket','Ex: R$300K–R$500K/ano')}</div>
+        <div class="param-box"><div class="param-lbl">Contrato${tip(TOOLTIPS.contrato)}</div>${inp('contrato','Ex: Anual ou bianual')}</div>
       </div>
-      <div class="param-row"><div class="param-box"><div class="param-lbl">Ciclo de Venda<span class="tooltip-trigger" style="margin-left:4px">ⓘ<span class="tt">${TOOLTIPS.ciclo}</span></span></div>${inp('ciclo','Ex: 2–4 meses')}</div></div>
-      <div class="sec-hd">Canais Relevantes <span class="tooltip-trigger">ⓘ<span class="tt">${TOOLTIPS.canais}</span></span></div>
+      <div class="param-row"><div class="param-box"><div class="param-lbl">Ciclo de Venda${tip(TOOLTIPS.ciclo)}</div>${inp('ciclo','Ex: 2–4 meses')}</div></div>
+      <div class="sec-hd">Canais Relevantes ${tip(TOOLTIPS.canais)}</div>
       ${canais.length||ed?canaisHTML:'<p style="font-size:var(--fs-sm);color:var(--muted);opacity:.5;font-style:italic;padding-top:4px">Nenhum canal selecionado.</p>'}
-      <div class="sec-hd">Materiais Aderentes <span class="tooltip-trigger">ⓘ<span class="tt">${TOOLTIPS.materiais}</span></span></div>
+      <div class="sec-hd">Materiais Aderentes ${tip(TOOLTIPS.materiais)}</div>
       ${mats.length||ed?matsHTML:'<p style="font-size:var(--fs-sm);color:var(--muted);opacity:.5;font-style:italic;padding-top:4px">Nenhum material selecionado.</p>'}
     </div>
     <div class="tab-pane${currentTab==='icp'?' active':''}" id="tab-icp">
-      <div class="sec-hd">ICP <span class="tooltip-trigger">ⓘ<span class="tt">${TOOLTIPS.icp}</span></span></div>
+      <div class="sec-hd">ICP ${tip(TOOLTIPS.icp)}</div>
       ${icpHTML}
     </div>`;
 
@@ -1061,21 +1070,19 @@ function renderCanaisGrid(){
       <div class="meto-cat-item">
         <div class="meto-cat-item-hd">
           <div class="meto-cat-name">${cat.name}</div>
-          <button class="meto-edit-btn" onclick="openMetoEdit('canal-cat','${ct.id}',${ci})" title="Editar categoria">✏</button>
+          <button class="meto-edit-btn" onclick="openMetoEdit('canal-cat','${ct.id}',${ci})" title="Editar">✏</button>
         </div>
         <div class="meto-cat-desc">${cat.desc||''}</div>
         <div class="meto-cat-tags">${cat.tags.map(t=>`<span class="meto-tag-pill">${t}</span>`).join('')}</div>
       </div>`).join('');
     const card=document.createElement('div');
-    card.className='meto-canal-type-card';
+    card.className='meto-type-card';
     card.innerHTML=`
-      <div class="meto-canal-type-hd">
-        <div style="display:flex;align-items:center;gap:10px">
-          <span class="meto-canal-type-dot" style="background:${ct.color}"></span>
-          <div class="meto-canal-type-name">${ct.label}</div>
-        </div>
+      <div class="meto-type-hd">
+        <span class="meto-type-dot" style="background:${ct.color}"></span>
+        <div class="meto-type-name">${ct.label}</div>
       </div>
-      <div class="meto-cat-list">
+      <div class="meto-cats-grid">
         ${catItems}
         <button class="meto-add-cat-btn" onclick="openMetoEdit('canal-cat-new','${ct.id}',-1)">+ Nova categoria</button>
       </div>`;
@@ -1092,21 +1099,19 @@ function renderMatGrid(){
       <div class="meto-cat-item">
         <div class="meto-cat-item-hd">
           <div class="meto-cat-name">${cat.name}</div>
-          <button class="meto-edit-btn" onclick="openMetoEdit('mat-cat','${mt.id}',${ci})" title="Editar categoria">✏</button>
+          <button class="meto-edit-btn" onclick="openMetoEdit('mat-cat','${mt.id}',${ci})" title="Editar">✏</button>
         </div>
         <div class="meto-cat-desc">${cat.desc||''}</div>
         <div class="meto-cat-tags">${cat.tags.map(t=>`<span class="meto-tag-pill">${t}</span>`).join('')}</div>
       </div>`).join('');
     const card=document.createElement('div');
-    card.className='meto-canal-type-card';
+    card.className='meto-type-card';
     card.innerHTML=`
-      <div class="meto-canal-type-hd">
-        <div style="display:flex;align-items:center;gap:10px">
-          <span class="meto-canal-type-dot" style="background:${mt.color}"></span>
-          <div class="meto-canal-type-name">${mt.label}</div>
-        </div>
+      <div class="meto-type-hd">
+        <span class="meto-type-dot" style="background:${mt.color}"></span>
+        <div class="meto-type-name">${mt.label}</div>
       </div>
-      <div class="meto-cat-list">
+      <div class="meto-cats-grid">
         ${catItems}
         <button class="meto-add-cat-btn" onclick="openMetoEdit('mat-cat-new','${mt.id}',-1)">+ Nova categoria</button>
       </div>`;
