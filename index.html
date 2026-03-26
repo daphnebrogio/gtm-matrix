@@ -22,8 +22,6 @@
   --success:#0a8a5c;
   --r:10px;--rl:14px;--rxl:18px;
   --shadow:0 2px 8px rgba(0,0,0,.08),0 8px 24px rgba(0,0,0,.06);
-  --shadow-sm:0 1px 3px rgba(0,0,0,.07);
-  /* font scale — bigger for accessibility */
   --fs-xs:11px;--fs-sm:13px;--fs-base:15px;--fs-md:16px;--fs-lg:18px;--fs-xl:22px;
 }
 [data-theme=dark]{
@@ -36,17 +34,17 @@
 }
 body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:var(--fs-base);min-height:100vh;display:flex;flex-direction:column;overflow:hidden;line-height:1.5;-webkit-font-smoothing:antialiased}
 
-/* ── LOADING ── */
-.loading-screen{position:fixed;inset:0;z-index:3000;background:linear-gradient(135deg,#0a1428 0%,#152454 55%,#0057D5 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px}
+/* LOADING */
+.loading-screen{position:fixed;inset:0;z-index:3000;background:linear-gradient(135deg,#0a1428,#152454,#0057D5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px}
 .loading-screen img{height:40px;filter:brightness(0) invert(1)}
 .spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,.15);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
-.loading-msg{font-size:var(--fs-sm);color:rgba(255,255,255,.45);letter-spacing:.04em}
+.loading-msg{font-size:var(--fs-sm);color:rgba(255,255,255,.45)}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ── AUTH ── */
+/* AUTH */
 .auth-screen{position:fixed;inset:0;z-index:2000;background:#f5f7fb;display:flex;align-items:center;justify-content:center}
-.auth-wrap{display:flex;flex-direction:column;align-items:center;gap:32px;width:100%;max-width:420px;padding:24px}
-.auth-logo img{height:38px}
+.auth-wrap{display:flex;flex-direction:column;align-items:center;gap:28px;width:100%;max-width:420px;padding:24px}
+.auth-logo img{height:36px}
 .auth-card{background:#fff;border:1px solid #dde4f0;border-radius:var(--rxl);padding:40px;width:100%;box-shadow:0 4px 24px rgba(0,60,160,.08)}
 .auth-title{font-size:var(--fs-xl);font-weight:800;color:#0f1a3a;margin-bottom:6px;letter-spacing:-.025em}
 .auth-sub{font-size:var(--fs-sm);color:#6878a0;margin-bottom:28px}
@@ -54,12 +52,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
 .auth-label{display:block;font-size:var(--fs-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7080a8;margin-bottom:7px}
 .auth-input{width:100%;padding:12px 16px;background:#f5f7fb;border:1.5px solid #dde4f0;border-radius:var(--r);font-family:var(--font);font-size:var(--fs-base);color:#0f1a3a;outline:none;transition:border-color .2s,box-shadow .2s}
 .auth-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,87,213,.12)}
-.auth-btn{width:100%;padding:14px;background:var(--blue);border:none;border-radius:var(--r);font-family:var(--font);font-size:var(--fs-base);font-weight:700;color:#fff;cursor:pointer;transition:background .2s;margin-top:6px;letter-spacing:.01em}
+.auth-btn{width:100%;padding:14px;background:var(--blue);border:none;border-radius:var(--r);font-family:var(--font);font-size:var(--fs-base);font-weight:700;color:#fff;cursor:pointer;transition:background .2s;margin-top:6px}
 .auth-btn:hover{background:var(--blue-h)}
 .auth-btn:disabled{opacity:.5;cursor:not-allowed}
 .auth-error{font-size:var(--fs-sm);color:var(--danger);margin-top:12px;text-align:center;min-height:20px;font-weight:500}
 
-/* ── OVERLAYS ── */
+/* OVERLAYS */
 .overlay{position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--rxl);padding:32px;width:100%;max-width:460px;box-shadow:var(--shadow)}
 .modal-title{font-size:var(--fs-lg);font-weight:800;margin-bottom:5px;letter-spacing:-.02em}
@@ -67,8 +65,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
 .modal-err{font-size:var(--fs-sm);color:var(--danger);min-height:20px;margin-bottom:8px;font-weight:500}
 .f-grp{margin-bottom:16px}
 .f-lbl{display:block;font-size:var(--fs-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.f-inp,.f-sel{width:100%;padding:10px 14px;background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);font-family:var(--font);font-size:var(--fs-base);color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s}
-.f-inp:focus,.f-sel:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,87,213,.1)}
+.f-inp,.f-sel{width:100%;padding:10px 14px;background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);font-family:var(--font);font-size:var(--fs-base);color:var(--text);outline:none;transition:border-color .2s}
+.f-inp:focus,.f-sel:focus{border-color:var(--blue)}
 .f-sel{cursor:pointer}
 .f-row{display:flex;gap:12px}
 .f-row .f-grp{flex:1}
@@ -80,13 +78,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
 .btn-g:hover{border-color:var(--border2);color:var(--text)}
 .btn-danger{padding:10px 22px;background:var(--danger-bg);border:1.5px solid var(--danger-bd);border-radius:var(--r);font-family:var(--font);font-size:var(--fs-sm);font-weight:600;color:var(--danger);cursor:pointer}
 
-/* ── TOPBAR ── */
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:60px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--surface);gap:20px;z-index:50}
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:58px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--surface);gap:20px;z-index:50}
 .brand{display:flex;align-items:center;gap:14px}
-.brand-logo img{height:30px;width:auto}
-.brand-div{width:1px;height:30px;background:var(--border2);flex-shrink:0}
+.brand-logo img{height:28px;width:auto}
+.brand-div{width:1px;height:28px;background:var(--border2);flex-shrink:0}
 .brand-text{display:flex;flex-direction:column;gap:1px}
-.brand-sup{font-size:10px;font-weight:700;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
+.brand-sup{font-size:9px;font-weight:700;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
 .brand-name{font-size:var(--fs-md);font-weight:800;letter-spacing:-.02em}
 .top-nav{display:flex;gap:4px}
 .top-nav-btn{padding:8px 18px;border-radius:8px;font-size:var(--fs-sm);font-weight:600;cursor:pointer;color:var(--muted);border:none;background:none;font-family:var(--font);transition:all .15s}
@@ -94,52 +92,73 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
 .top-right{display:flex;align-items:center;gap:10px}
 .icon-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);background:var(--s2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--muted);transition:all .2s}
 .icon-btn:hover{border-color:var(--blue);color:var(--blue)}
-.user-chip{display:flex;align-items:center;gap:8px;padding:6px 14px 6px 6px;border:1.5px solid var(--border);border-radius:24px;background:var(--s2);cursor:pointer;font-size:var(--fs-sm);font-weight:600;color:var(--muted);transition:all .2s}
+.user-chip{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border:1.5px solid var(--border);border-radius:24px;background:var(--s2);cursor:pointer;font-size:var(--fs-sm);font-weight:600;color:var(--muted);transition:all .2s}
 .user-chip:hover{border-color:var(--border2);color:var(--text)}
 .user-av{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
-.legend{display:flex;gap:14px;align-items:center}
-.leg{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap}
-.leg-dot{width:8px;height:8px;border-radius:2px}
 
-/* ── MAIN ── */
+/* MAIN */
 .main{flex:1;display:flex;overflow:hidden;min-height:0}
 .v-hidden{display:none!important}
 
-/* ── MATRIX Y-AXIS fix ── */
-.matrix-shell{flex:1;display:flex;flex-direction:column;padding:14px 14px 10px 4px;min-height:0;overflow:hidden}
-.matrix-outer{flex:1;display:flex;gap:0;min-height:0;overflow:hidden}
-.y-axis{display:flex;flex-direction:column;align-items:center;width:40px;flex-shrink:0;overflow:hidden}
-.y-axis-label{writing-mode:vertical-rl;transform:rotate(180deg);font-size:8px;font-weight:700;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;white-space:nowrap;margin-bottom:4px;text-align:center;flex-shrink:0}
-.y-ticks{flex:1;display:flex;flex-direction:column;justify-content:space-around;align-items:center;padding:2px 0;width:100%;min-height:0}
-.y-ticks span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:8px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;text-align:center;flex-shrink:0}
-/* BU square — smaller */
-.chip-bu{width:8px;height:8px;border-radius:2px;flex-shrink:0}
-.bu-ld{width:10px;height:10px;border-radius:2px}
-.bu-l{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--muted)}
-/* Methodology zones grid — always 2 cols */
-.meto-zones-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:28px;max-width:1200px}
-.meto-zone-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);padding:20px;transition:border-color .15s;position:relative;min-width:0}
-.meto-zone-card:hover{border-color:var(--blue)}
-/* pencil button — use text not emoji to avoid broken rendering */
-.zone-card-edit{position:absolute;top:12px;right:12px;background:none;border:none;cursor:pointer;color:var(--muted);opacity:.3;font-size:12px;padding:2px 5px;transition:opacity .15s;line-height:1;border-radius:4px}
-.zone-card-edit:hover{opacity:1;color:var(--blue);background:var(--s2)}
-/* page title edit inline */
-.meto-title-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.meto-page-title{font-size:var(--fs-xl);font-weight:800;letter-spacing:-.025em}
-.meto-inline-edit{background:none;border:none;cursor:pointer;color:var(--muted2);opacity:.35;font-size:13px;padding:0 2px;transition:opacity .15s;flex-shrink:0;margin-top:2px}
-.meto-inline-edit:hover{opacity:1;color:var(--blue)}
+/* ── MATRIX ── */
+.matrix-view{display:flex;flex:1;overflow:hidden;min-height:0}
+.matrix-shell{flex:1;display:flex;flex-direction:column;padding:12px 12px 8px 4px;min-height:0;overflow:hidden}
+.matrix-outer{flex:1;display:flex;min-height:0;overflow:hidden}
 
-/* ── PANEL ── */
+/* Y axis */
+.y-axis{width:44px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding-bottom:38px}
+.y-axis-label{writing-mode:vertical-rl;transform:rotate(180deg);font-size:8px;font-weight:700;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;white-space:nowrap;margin-bottom:6px}
+.y-ticks{flex:1;display:flex;flex-direction:column;justify-content:space-around;align-items:center}
+.y-ticks span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:8px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+
+.matrix-body{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:4px;min-height:0}
+
+/* CELLS */
+.cell{border-radius:var(--r);padding:8px;display:flex;flex-direction:column;gap:4px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:var(--border) transparent;min-height:0;min-width:0}
+.cell::-webkit-scrollbar{width:2px}.cell::-webkit-scrollbar-thumb{background:var(--border)}
+.cell.z1{background:var(--z1b);border:1.5px solid var(--z1c)}
+.cell.z2{background:var(--z2b);border:1.5px solid var(--z2c)}
+.cell.z3{background:var(--z3b);border:1.5px solid var(--z3c)}
+.cell.z4{background:var(--z4b);border:1.5px solid var(--z4c)}
+.cell-hd{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;margin-bottom:2px}
+.zone-label{font-size:8px;font-weight:700;letter-spacing:.10em;opacity:.65;text-transform:uppercase;white-space:nowrap}
+.cell.z1 .zone-label{color:var(--z1t)}.cell.z2 .zone-label{color:var(--z2t)}.cell.z3 .zone-label{color:var(--z3t)}.cell.z4 .zone-label{color:var(--z4t)}
+.cell-add{width:20px;height:20px;border-radius:50%;border:1.5px dashed var(--border2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);line-height:1;transition:all .15s;flex-shrink:0}
+.cell-add:hover{border-color:var(--blue);color:var(--blue);background:var(--s2)}
+.chips-wrap{display:flex;flex-direction:column;gap:3px;flex:1;min-height:0}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;line-height:1.3;border:1.5px solid transparent;text-align:left;font-family:var(--font);width:100%;transition:all .15s;min-width:0}
+.chip:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.chip.active{box-shadow:0 0 0 2.5px var(--cyan)}
+.cell.z1 .chip{background:rgba(80,80,180,.11);color:var(--z1t);border-color:var(--z1c)}
+.cell.z2 .chip{background:rgba(180,100,48,.11);color:var(--z2t);border-color:var(--z2c)}
+.cell.z3 .chip{background:rgba(0,87,213,.09);color:var(--z3t);border-color:var(--z3c)}
+.cell.z4 .chip{background:rgba(110,128,160,.11);color:var(--z4t);border-color:var(--z4c)}
+[data-theme=dark] .cell.z1 .chip{color:#8888d8}
+[data-theme=dark] .cell.z2 .chip{color:#d08040}
+[data-theme=dark] .cell.z3 .chip{color:#4898f8}
+[data-theme=dark] .cell.z4 .chip{color:#7888a8}
+.chip-bu{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.bd-cyber{background:var(--cyber)}.bd-gov{background:var(--gov)}.bd-infra{background:var(--infra)}.bd-smart{background:var(--smart)}
+
+.x-row{display:flex;padding:4px 0 0 0;gap:4px}
+.x-row span{flex:1;text-align:center;font-size:8px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.x-label{text-align:center;font-size:8px;font-weight:700;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;padding-top:3px}
+.bu-legend{display:flex;gap:16px;padding:7px 0 0 44px;flex-wrap:wrap}
+.bu-l{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--muted)}
+.bu-ld{width:10px;height:10px;border-radius:2px}
+
+/* PANEL */
 .panel{width:0;overflow:hidden;transition:width .3s cubic-bezier(.4,0,.2,1);border-left:1px solid transparent;flex-shrink:0;display:flex;flex-direction:column;background:var(--surface)}
-.panel.open{width:460px;border-left-color:var(--border)}
+.panel.open{width:450px;border-left-color:var(--border)}
 .panel-scroll{overflow-y:auto;flex:1;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
 .panel-scroll::-webkit-scrollbar{width:3px}.panel-scroll::-webkit-scrollbar-thumb{background:var(--border)}
-.panel-sticky{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--border);padding:16px 18px 14px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.p-bu{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:3px}
+.panel-sticky{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--border);padding:14px 18px 12px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.p-bu{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:2px}
 .p-name{font-size:var(--fs-lg);font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-bottom:2px}
 .p-short{font-size:var(--fs-sm);color:var(--muted2)}
-.panel-acts{display:flex;gap:8px;flex-shrink:0;padding-top:2px}
-.pnl-btn{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border);background:var(--s2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--muted);transition:all .15s}
+.panel-acts{display:flex;gap:6px;flex-shrink:0;padding-top:2px}
+.pnl-btn{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--border);background:var(--s2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);transition:all .15s}
 .pnl-btn:hover{border-color:var(--blue);color:var(--blue)}
 .pnl-btn.on{background:var(--blue);color:#fff;border-color:var(--blue)}
 .panel-body{padding:16px 18px 24px}
@@ -148,87 +167,82 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
 .save-status.saving{color:var(--blue)}.save-status.saved{color:var(--success)}.save-status.err{color:var(--danger)}
 
 /* SCORES */
-.scores{display:flex;gap:8px;margin-bottom:16px}
-.score-card{flex:1;padding:8px 10px;border-radius:var(--r);border:1.5px solid;text-align:center}
-.score-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.6;display:block;margin-bottom:3px}
+.scores{display:flex;gap:6px;margin-bottom:14px}
+.score-card{flex:1;padding:7px 9px;border-radius:var(--r);border:1.5px solid;text-align:center}
+.score-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.6;display:block;margin-bottom:3px}
 .score-val{font-size:var(--fs-sm);font-weight:700}
 .score-val select{font-family:var(--font);font-size:var(--fs-sm);font-weight:700;background:transparent;border:none;cursor:pointer;width:100%;text-align:center;outline:none;padding:0;color:inherit}
 
 /* TABS */
-.tabs{display:flex;gap:3px;background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);padding:4px;margin-bottom:18px}
-.tab-btn{flex:1;padding:8px;border-radius:8px;font-size:var(--fs-sm);font-weight:600;cursor:pointer;color:var(--muted);border:none;background:none;font-family:var(--font);transition:all .15s}
+.tabs{display:flex;gap:3px;background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);padding:3px;margin-bottom:16px}
+.tab-btn{flex:1;padding:7px;border-radius:8px;font-size:var(--fs-sm);font-weight:600;cursor:pointer;color:var(--muted);border:none;background:none;font-family:var(--font);transition:all .15s}
 .tab-btn.active{background:var(--blue);color:#fff}
 .tab-pane{display:none}.tab-pane.active{display:block}
 
 /* SECTIONS */
-.sec-hd{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:10px;margin-top:20px}
+.sec-hd{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px;margin-bottom:8px;margin-top:20px}
 .sec-hd:first-child{margin-top:0}
 .sec-hd::after{content:'';flex:1;height:1px;background:var(--border)}
-.sec-hd .tooltip-trigger{font-size:11px;color:var(--muted2);cursor:help;flex-shrink:0;position:relative}
 
-/* TOOLTIP — interrogação semitransparente */
-.tip{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid currentColor;font-size:10px;font-weight:700;cursor:help;opacity:.45;position:relative;flex-shrink:0;transition:opacity .15s;margin-left:5px;line-height:1}
-.tip:hover{opacity:.9}
-.tip .tt{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#0f1a3a;color:#fff;font-size:12px;line-height:1.55;padding:9px 13px;border-radius:9px;white-space:normal;width:240px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:300;font-weight:400;letter-spacing:0;text-transform:none}
-[data-theme=dark] .tip .tt{background:#1e3050}
-.tip .tt::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#0f1a3a}
-[data-theme=dark] .tip .tt::after{border-top-color:#1e3050}
-.tip:hover .tt{opacity:1}
-
-/* BLOCKS */
-.just-block{background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:8px}
-.just-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+/* TEXT BLOCKS */
+.just-block{background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);padding:11px 13px;margin-bottom:7px}
+.just-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:5px}
 .just-block p{font-size:var(--fs-base);line-height:1.65;color:var(--muted2);word-break:break-word;overflow-wrap:break-word;white-space:pre-wrap}
 .just-block textarea{width:100%;background:transparent;border:none;resize:none;outline:none;font-family:var(--font);font-size:var(--fs-base);line-height:1.65;color:var(--muted2);overflow:hidden;word-break:break-word;overflow-wrap:break-word;display:block}
 .char-count{font-size:10px;color:var(--muted2);text-align:right;margin-top:4px}
 .char-count.warn{color:var(--danger);font-weight:600}
-.posture-box{background:var(--s2);border-left:3px solid var(--blue);border-top:1.5px solid var(--border);border-right:1.5px solid var(--border);border-bottom:1.5px solid var(--border);border-radius:0 var(--r) var(--r) 0;padding:12px 14px;margin-bottom:12px}
+.posture-box{background:var(--s2);border-left:3px solid var(--blue);border-top:1.5px solid var(--border);border-right:1.5px solid var(--border);border-bottom:1.5px solid var(--border);border-radius:0 var(--r) var(--r) 0;padding:11px 13px;margin-bottom:10px}
 .posture-box p{font-size:var(--fs-base);line-height:1.65;color:var(--muted2);word-break:break-word;overflow-wrap:break-word;white-space:pre-wrap}
 .posture-box textarea{width:100%;background:transparent;border:none;resize:none;outline:none;font-family:var(--font);font-size:var(--fs-base);line-height:1.65;color:var(--muted2);overflow:hidden;word-break:break-word;overflow-wrap:break-word;display:block}
-.param-row{display:flex;gap:8px;margin-bottom:8px}
-.param-box{flex:1;background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);padding:9px 12px}
-.param-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.param-row{display:flex;gap:7px;margin-bottom:7px}
+.param-box{flex:1;background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);padding:8px 11px}
+.param-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;display:flex;align-items:center;gap:5px}
 .param-val{font-size:var(--fs-sm);font-weight:600;color:var(--text);word-break:break-word}
 .param-box input{font-family:var(--font);font-size:var(--fs-sm);font-weight:600;color:var(--text);background:transparent;border:none;outline:none;width:100%}
 
-/* TAGS (matrix/panel) */
+/* TAGS */
 .tags-section{margin-top:4px}
 .tag-type-group{margin-bottom:12px}
-.tag-type-header{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.tag-type-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.tags-wrap{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
-.ctag,.mtag{display:inline-flex;align-items:center;gap:5px;border-radius:6px;padding:5px 10px;font-size:var(--fs-sm);font-weight:500;border:1.5px solid;cursor:default;line-height:1.3}
+.tag-type-hd{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.tag-type-dot{width:6px;height:6px;border-radius:2px;flex-shrink:0}
+.tags-wrap{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.ctag,.mtag{display:inline-flex;align-items:center;gap:4px;border-radius:5px;padding:4px 9px;font-size:var(--fs-sm);font-weight:500;border:1.5px solid;cursor:default;line-height:1.3}
 .ctag{background:var(--s2);border-color:var(--border);color:var(--muted)}
 .ctag .cdot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-/* canal type colors */
 .ct-out{background:rgba(0,87,213,.06);border-color:rgba(0,87,213,.2);color:#0044b0}[data-theme=dark] .ct-out{color:#60a5fa}
 .ct-dig{background:rgba(10,138,92,.06);border-color:rgba(10,138,92,.2);color:#0a7048}[data-theme=dark] .ct-dig{color:#34d399}
 .ct-evt{background:rgba(112,64,192,.06);border-color:rgba(112,64,192,.2);color:#6030a0}[data-theme=dark] .ct-evt{color:#c084fc}
 .ct-pr{background:rgba(180,100,48,.07);border-color:rgba(180,100,48,.2);color:#804020}[data-theme=dark] .ct-pr{color:#d08040}
-/* material type colors */
+.mtag{display:inline-flex;align-items:center;gap:4px;border-radius:5px;padding:4px 9px;font-size:var(--fs-sm);font-weight:500;border:1.5px solid;cursor:default}
+.mdot{width:5px;height:5px;border-radius:50%;flex-shrink:0;background:currentColor}
 .mt-e{background:rgba(0,87,213,.06);border-color:rgba(0,87,213,.2);color:#0044b0}[data-theme=dark] .mt-e{color:#60a5fa}
 .mt-d{background:rgba(0,160,255,.06);border-color:rgba(0,160,255,.2);color:#006090}[data-theme=dark] .mt-d{color:var(--cyan)}
 .mt-a{background:rgba(180,100,48,.07);border-color:rgba(180,100,48,.2);color:#804020}[data-theme=dark] .mt-a{color:#d08040}
-.mdot{width:5px;height:5px;border-radius:50%;flex-shrink:0;background:currentColor}
-
-.tag-ed{cursor:pointer}
-.tag-ed:hover{opacity:.8;text-decoration:line-through}
-.add-tag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;font-size:var(--fs-sm);font-weight:600;cursor:pointer;border:1.5px dashed var(--border2);color:var(--muted);background:transparent;font-family:var(--font);transition:all .15s}
+.tag-ed{cursor:pointer}.tag-ed:hover{opacity:.7;text-decoration:line-through}
+.add-tag{display:inline-flex;align-items:center;gap:3px;padding:4px 9px;border-radius:5px;font-size:var(--fs-sm);font-weight:600;cursor:pointer;border:1.5px dashed var(--border2);color:var(--muted);background:transparent;font-family:var(--font);transition:all .15s}
 .add-tag:hover{border-color:var(--blue);color:var(--blue)}
 
 /* ICP */
-.icp-grp{margin-bottom:20px}
-.icp-lbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.icp-grp{margin-bottom:18px}
+.icp-lbl{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .icp-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
-.itag{display:inline-flex;align-items:center;gap:5px;border-radius:6px;padding:5px 10px;font-size:var(--fs-sm);font-weight:500;border:1.5px solid;cursor:default}
+.itag{display:inline-flex;align-items:center;gap:4px;border-radius:5px;padding:4px 9px;font-size:var(--fs-sm);font-weight:500;border:1.5px solid}
 .idot{width:5px;height:5px;border-radius:50%;flex-shrink:0;background:currentColor}
 .ia{background:rgba(0,87,213,.06);border-color:rgba(0,87,213,.2);color:#0044b0}[data-theme=dark] .ia{color:#60a5fa}
 .ib{background:rgba(112,64,192,.06);border-color:rgba(112,64,192,.2);color:#6030a0}[data-theme=dark] .ib{color:#c084fc}
 .ic{background:rgba(10,138,92,.06);border-color:rgba(10,138,92,.2);color:#0a7048}[data-theme=dark] .ic{color:#34d399}
-.ino{background:var(--danger-bg);border-color:var(--danger-bd);color:var(--danger)}[data-theme=dark] .ino{color:#f87171}
+.ino{background:var(--danger-bg);border-color:var(--danger-bd);color:var(--danger)}
 .cortex-note{background:rgba(0,87,213,.04);border:1.5px solid rgba(0,87,213,.14);border-radius:var(--r);padding:10px 14px;margin-bottom:18px;font-size:var(--fs-sm);color:var(--muted2);line-height:1.6}
 .cortex-note strong{color:var(--blue);font-weight:700}
 [data-theme=dark] .cortex-note strong{color:var(--cyan)}
+
+/* TOOLTIP */
+.tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;border:1.5px solid currentColor;font-size:9px;font-weight:700;cursor:help;opacity:.4;position:relative;flex-shrink:0;transition:opacity .15s;margin-left:4px;line-height:1;vertical-align:middle}
+.tip:hover{opacity:.85}
+.tip .tt{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#0f1a3a;color:#fff;font-size:11px;line-height:1.55;padding:9px 13px;border-radius:9px;white-space:normal;width:240px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:300;font-weight:400;letter-spacing:0;text-transform:none}
+[data-theme=dark] .tip .tt{background:#1e3050}
+.tip .tt::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#0f1a3a}
+.tip:hover .tt{opacity:1}
 
 /* DROPDOWN POPUP */
 .popup{position:fixed;z-index:500;background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--rl);padding:14px;box-shadow:var(--shadow);min-width:260px;max-width:320px}
@@ -238,8 +252,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
 .pop-acts{display:flex;gap:8px}
 .pop-save{flex:1;padding:8px 12px;border-radius:var(--r);font-size:var(--fs-sm);font-weight:700;cursor:pointer;border:none;background:var(--blue);color:#fff;font-family:var(--font)}
 .pop-del{padding:8px 12px;border-radius:var(--r);font-size:var(--fs-sm);font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--s2);color:var(--danger);font-family:var(--font)}
-
-/* ICP TAG POPUP (free text) */
 .pop-inp{width:100%;font-family:var(--font);font-size:var(--fs-sm);padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--s2);color:var(--text);outline:none;margin-bottom:5px}
 .pop-inp:focus{border-color:var(--blue)}
 .pop-char{font-size:10px;color:var(--muted2);text-align:right;margin-bottom:8px}
@@ -248,49 +260,58 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
 /* ADD MODAL */
 .add-modal-ov{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px}
 
-/* METHODOLOGY */
-.meto-wrap{flex:1;overflow-y:auto;padding:28px 36px 48px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+/* ── METHODOLOGY ── */
+.meto-wrap{flex:1;overflow-y:auto;padding:32px 24px 56px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
 .meto-wrap::-webkit-scrollbar{width:3px}.meto-wrap::-webkit-scrollbar-thumb{background:var(--border)}
-.meto-page-title{font-size:var(--fs-xl);font-weight:800;letter-spacing:-.025em;margin-bottom:6px}
-.meto-page-sub{font-size:var(--fs-base);color:var(--muted2);margin-bottom:32px;max-width:680px;line-height:1.65}
-.meto-section{max-width:960px;margin-bottom:40px}
-.meto-sec-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:6px}
+/* center all content */
+.meto-inner{max-width:820px;margin:0 auto;width:100%}
+.meto-page-hd{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
+.meto-page-title{font-size:var(--fs-xl);font-weight:800;letter-spacing:-.025em}
+.meto-page-sub{font-size:var(--fs-base);color:var(--muted2);margin-bottom:36px;line-height:1.65}
+
+/* section block */
+.meto-section{margin-bottom:48px}
+.meto-sec-title-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
 .meto-sec-title{font-size:var(--fs-lg);font-weight:800;letter-spacing:-.02em}
-.meto-sec-desc{font-size:var(--fs-sm);color:var(--muted2);margin-bottom:20px;line-height:1.6;max-width:680px}
-.meto-zones-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:30px}
-.meto-zone-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);padding:20px;transition:border-color .15s}
+.meto-sec-desc{font-size:var(--fs-sm);color:var(--muted2);line-height:1.65;margin-bottom:20px}
+
+/* inline pencil — used everywhere */
+.pencil-btn{background:none;border:none;cursor:pointer;color:var(--muted);opacity:.3;font-size:13px;padding:1px 4px;border-radius:4px;transition:opacity .15s,color .15s;line-height:1;flex-shrink:0}
+.pencil-btn:hover{opacity:1;color:var(--blue)}
+
+/* type card — full width */
+.meto-type-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);margin-bottom:14px;overflow:hidden}
+.meto-type-hd{padding:16px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.meto-type-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.meto-type-name{font-size:var(--fs-md);font-weight:700;flex:1}
+
+/* category cards inside type */
+.meto-cats-list{padding:14px 20px 16px;display:flex;flex-direction:column;gap:10px}
+.meto-cat-item{background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.meto-cat-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px}
+.meto-cat-name{font-size:var(--fs-sm);font-weight:700}
+.meto-cat-desc{font-size:12px;color:var(--muted2);line-height:1.55;margin-bottom:8px}
+.meto-cat-tags{display:flex;flex-wrap:wrap;gap:4px}
+.meto-tag-pill{display:inline-flex;background:var(--s3);border:1px solid var(--border);border-radius:5px;padding:3px 9px;font-size:11px;font-weight:500;color:var(--muted)}
+.meto-add-cat-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px;border:1.5px dashed var(--border2);border-radius:var(--r);background:transparent;font-family:var(--font);font-size:var(--fs-sm);font-weight:600;color:var(--muted);cursor:pointer;width:100%;transition:all .15s}
+.meto-add-cat-btn:hover{border-color:var(--blue);color:var(--blue)}
+
+/* zone cards */
+.meto-zones-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:28px}
+.meto-zone-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);padding:20px;position:relative;min-width:0}
 .meto-zone-card:hover{border-color:var(--blue)}
-.meto-zbadge{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:7px}
+.meto-zbadge{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
 .meto-card-title{font-size:var(--fs-md);font-weight:800;margin-bottom:3px}
 .meto-card-sub{font-size:11px;color:var(--muted2);margin-bottom:10px;font-weight:600}
 .meto-card p{font-size:var(--fs-sm);line-height:1.7;color:var(--muted2);margin-bottom:8px}
-.meto-kpi{display:inline-flex;align-items:center;background:var(--s2);border:1.5px solid var(--border);border-radius:5px;padding:3px 9px;font-size:10px;font-weight:700;margin:0 4px 4px 0}
-.meto-axes{max-width:960px;margin-bottom:30px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);padding:20px}
+.meto-kpi{display:inline-flex;background:var(--s2);border:1.5px solid var(--border);border-radius:5px;padding:3px 9px;font-size:10px;font-weight:700;margin:0 4px 4px 0}
+/* axes */
+.meto-axes{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);padding:20px;margin-bottom:28px}
 .meto-axes-title{font-size:var(--fs-md);font-weight:700;margin-bottom:12px}
-.axes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.axes-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .axis-block{background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);padding:14px}
-.axis-name{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px}
+.axis-name{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px}
 .axis-block p{font-size:var(--fs-sm);line-height:1.6;color:var(--muted2)}
-
-/* CANAIS + MATERIAIS methodology cards */
-.meto-canal-types{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.meto-canal-type-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);overflow:hidden}
-.meto-canal-type-hd{padding:16px 18px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
-.meto-canal-type-name{font-size:var(--fs-md);font-weight:700}
-.meto-canal-type-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
-.meto-cat-list{padding:12px 18px 16px;display:flex;flex-direction:column;gap:12px}
-.meto-cat-item{background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px}
-.meto-cat-item-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
-.meto-cat-name{font-size:var(--fs-sm);font-weight:700}
-.meto-cat-desc{font-size:var(--fs-sm);color:var(--muted2);line-height:1.5;margin-bottom:8px}
-.meto-cat-tags{display:flex;flex-wrap:wrap;gap:4px}
-.meto-tag-pill{display:inline-flex;align-items:center;gap:4px;background:var(--s3);border:1px solid var(--border);border-radius:5px;padding:3px 9px;font-size:11px;font-weight:500;color:var(--muted)}
-.meto-edit-btn{width:28px;height:28px;border-radius:6px;border:1.5px solid var(--border);background:var(--s2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);transition:all .15s;flex-shrink:0}
-.meto-edit-btn:hover{border-color:var(--blue);color:var(--blue)}
-.meto-add-cat-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;border:1.5px dashed var(--border2);border-radius:var(--r);background:transparent;font-family:var(--font);font-size:var(--fs-sm);font-weight:600;color:var(--muted);cursor:pointer;width:100%;justify-content:center;margin-top:4px;transition:all .15s}
-.meto-add-cat-btn:hover{border-color:var(--blue);color:var(--blue)}
-.meto-section-edit-btn{padding:8px 16px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--s2);font-family:var(--font);font-size:var(--fs-sm);font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap}
-.meto-section-edit-btn:hover{border-color:var(--blue);color:var(--blue)}
 
 /* TOAST */
 .toast{position:fixed;bottom:28px;right:28px;z-index:9999;background:#0f1a3a;color:#fff;padding:12px 20px;border-radius:var(--r);font-size:var(--fs-sm);font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:var(--shadow)}
@@ -306,28 +327,20 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
   <div class="loading-msg">Conectando ao sistema...</div>
 </div>
 
-<!-- AUTH -->
 <div class="auth-screen" id="authScreen" style="display:none">
   <div class="auth-wrap">
     <div class="auth-logo"><img src="https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-color-horizontal-png-transparente-02.png" alt="Tripla"></div>
     <div class="auth-card">
       <div class="auth-title">Bem-vindo</div>
       <div class="auth-sub">Acesse com suas credenciais para continuar</div>
-      <div class="auth-field">
-        <label class="auth-label">E-mail</label>
-        <input class="auth-input" id="authEmail" type="email" placeholder="seu@email.com" autocomplete="email">
-      </div>
-      <div class="auth-field">
-        <label class="auth-label">Senha</label>
-        <input class="auth-input" id="authPass" type="password" placeholder="••••••••" autocomplete="current-password">
-      </div>
+      <div class="auth-field"><label class="auth-label">E-mail</label><input class="auth-input" id="authEmail" type="email" placeholder="seu@email.com" autocomplete="email"></div>
+      <div class="auth-field"><label class="auth-label">Senha</label><input class="auth-input" id="authPass" type="password" placeholder="••••••••" autocomplete="current-password"></div>
       <div class="auth-error" id="authError"></div>
       <button class="auth-btn" id="loginBtn" onclick="doLogin()">Entrar</button>
     </div>
   </div>
 </div>
 
-<!-- CHANGE PASSWORD -->
 <div class="overlay" id="changePwOverlay" style="display:none">
   <div class="modal">
     <div class="modal-title">Alterar senha</div>
@@ -342,11 +355,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
   </div>
 </div>
 
-<!-- ADD SOLUTION MODAL -->
 <div class="add-modal-ov" id="addModal" style="display:none" onclick="if(event.target===this)closeAddModal()">
   <div class="modal">
     <div class="modal-title">Nova Solução</div>
-    <div class="modal-sub">Preencha as informações básicas. O conteúdo detalhado pode ser editado depois no painel da solução.</div>
+    <div class="modal-sub">Preencha as informações básicas. O conteúdo detalhado pode ser editado depois.</div>
     <div class="f-grp"><label class="f-lbl">Nome da Solução</label><input class="f-inp" id="mName" placeholder="Ex: EDR / XDR"></div>
     <div class="f-grp"><label class="f-lbl">Nome Estendido / Tecnologia</label><input class="f-inp" id="mShort" placeholder="Ex: Trend Micro — Endpoint Security"></div>
     <div class="f-row">
@@ -358,12 +370,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
           <option value="bd-smart">SmartOps</option>
         </select>
       </div>
-      <div class="f-grp"><label class="f-lbl">Complexidade</label>
-        <select class="f-sel" id="mCx"><option>Alta</option><option>Média</option><option>Baixa</option></select>
-      </div>
-      <div class="f-grp"><label class="f-lbl">Conscientização</label>
-        <select class="f-sel" id="mCo"><option>Alta</option><option>Média</option><option>Baixa</option></select>
-      </div>
+      <div class="f-grp"><label class="f-lbl">Complexidade</label><select class="f-sel" id="mCx"><option>Alta</option><option>Média</option><option>Baixa</option></select></div>
+      <div class="f-grp"><label class="f-lbl">Conscientização</label><select class="f-sel" id="mCo"><option>Alta</option><option>Média</option><option>Baixa</option></select></div>
     </div>
     <div class="modal-err" id="mErr"></div>
     <div class="btn-row">
@@ -373,7 +381,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
   </div>
 </div>
 
-<!-- CANAL/MATERIAL TAG PICKER POPUP -->
 <div class="popup" id="tagPopup" style="display:none" onclick="event.stopPropagation()">
   <span class="pop-lbl" id="popLbl">Selecionar</span>
   <select class="pop-sel" id="popSel"></select>
@@ -383,7 +390,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
   </div>
 </div>
 
-<!-- ICP TAG POPUP (free text) -->
 <div class="popup" id="icpPopup" style="display:none" onclick="event.stopPropagation()">
   <span class="pop-lbl" id="icpPopLbl">Tag</span>
   <input class="pop-inp" id="icpPopInp" maxlength="80" placeholder="Texto (até 80 caracteres)">
@@ -394,7 +400,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
   </div>
 </div>
 
-<!-- METHODOLOGY EDIT MODAL -->
 <div class="overlay" id="metoEditOverlay" style="display:none" onclick="if(event.target===this)closeMetoEdit()">
   <div class="modal" style="max-width:520px">
     <div class="modal-title" id="metoEditTitle">Editar</div>
@@ -409,10 +414,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- APP -->
 <div id="app" style="display:none;flex-direction:column;height:100vh">
   <div class="topbar">
     <div class="brand">
@@ -428,12 +431,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
       <button class="top-nav-btn" onclick="setView('meto',this)">Metodologia</button>
     </div>
     <div class="top-right">
-      <div class="legend">
-        <div class="leg"><div class="leg-dot" style="background:var(--z1t)"></div>Z1 · Evangelização</div>
-        <div class="leg"><div class="leg-dot" style="background:var(--z2t)"></div>Z2 · Especialização</div>
-        <div class="leg"><div class="leg-dot" style="background:var(--z3t)"></div>Z3 · Captura</div>
-        <div class="leg"><div class="leg-dot" style="background:var(--z4t)"></div>Z4 · Passivo</div>
-      </div>
       <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">☀</button>
       <div class="user-chip" onclick="openPwModal('voluntary')">
         <div class="user-av" id="userAv">?</div>
@@ -444,10 +441,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
   </div>
 
   <div class="main">
-    <div id="matrixView" style="display:flex;flex:1;overflow:hidden;min-height:0">
+    <div class="matrix-view" id="matrixView">
       <div class="matrix-shell">
         <div class="matrix-outer">
-        <div class="y-axis">
+          <div class="y-axis">
             <div class="y-axis-label">Complexidade ↑</div>
             <div class="y-ticks"><span>Alta</span><span>Média</span><span>Baixa</span></div>
           </div>
@@ -477,51 +474,67 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
     </div>
 
     <div class="meto-wrap v-hidden" id="metoView">
-      <div class="meto-title-row">
-        <div class="meto-page-title">Metodologia GTM</div>
-        <button class="meto-inline-edit" onclick="editMetoSection('pagina')" title="Editar descrição da página">✏</button>
-      </div>
-      <div class="meto-page-sub">Documentação das zonas estratégicas, canais e ativos de conversão da Tripla. Use esta seção para gerenciar as opções disponíveis ao preencher soluções na Matriz.</div>
+      <div class="meto-inner">
 
-      <!-- EIXOS PRIMEIRO -->
-      <div class="meto-section meto-axes-first">
-        <div class="meto-axes" style="max-width:1200px">
-          <div class="meto-axes-title">Os dois eixos</div>
-          <div class="axes-grid">
-            <div class="axis-block"><div class="axis-name" style="color:var(--blue)">Conscientização — Eixo X</div><p>Quanto o prospect reconhece e valoriza a dor que a solução resolve. Não mede conhecimento sobre a Tripla — mede consciência do problema em si.</p></div>
-            <div class="axis-block"><div class="axis-name" style="color:var(--z2t)">Complexidade — Eixo Y</div><p>Nível de dificuldade de implementação, venda e entrega. Alta complexidade significa ciclo longo, múltiplos decisores e prova técnica obrigatória.</p></div>
+        <div class="meto-page-hd">
+          <div class="meto-page-title">Metodologia GTM</div>
+          <button class="pencil-btn" onclick="editMetoSection('pagina')" title="Editar descrição">✏</button>
+        </div>
+        <div class="meto-page-sub" id="metoPageSub">Documentação das zonas estratégicas, canais e ativos de conversão da Tripla. Use esta seção para gerenciar as opções disponíveis ao preencher soluções na Matriz.</div>
+
+        <!-- EIXOS -->
+        <div class="meto-section">
+          <div class="meto-axes">
+            <div class="meto-axes-title">Os dois eixos</div>
+            <div class="axes-grid">
+              <div class="axis-block"><div class="axis-name" style="color:var(--blue)">Conscientização — Eixo X</div><p>Quanto o prospect reconhece e valoriza a dor que a solução resolve. Não mede conhecimento sobre a Tripla — mede consciência do problema em si.</p></div>
+              <div class="axis-block"><div class="axis-name" style="color:var(--z2t)">Complexidade — Eixo Y</div><p>Nível de dificuldade de implementação, venda e entrega. Alta complexidade significa ciclo longo, múltiplos decisores e prova técnica obrigatória.</p></div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- ZONAS (sem título "Lógica das Zonas") -->
-      <div class="meto-section">
-        <div class="meto-zones-grid">
-          <div class="meto-zone-card"><button class="zone-card-edit" onclick="openMetoEdit('zone','1',-1)" title="Editar">edit</button><div class="meto-zbadge" style="color:var(--z1t)"><span style="background:var(--z1t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 1</div><div class="meto-card-title">Evangelização</div><div class="meto-card-sub">Baixa Consciência + Média/Alta Complexidade</div><p>O cliente não tem consciência do risco. Foco em criar consciência — não converter leads imediatamente.</p><div><span class="meto-kpi">Awareness</span><span class="meto-kpi">Sem outbound frio</span><span class="meto-kpi">Thought Leadership</span></div></div>
-          <div class="meto-zone-card"><button class="zone-card-edit" onclick="openMetoEdit('zone','2',-1)" title="Editar">edit</button><div class="meto-zbadge" style="color:var(--z2t)"><span style="background:var(--z2t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 2</div><div class="meto-card-title">Especialização Competitiva</div><div class="meto-card-sub">Alta/Média Consciência + Alta/Média Complexidade</div><p>O cliente sabe que precisa, mas tem medo de quem vai operar. A Tripla precisa provar diferenciação.</p><div><span class="meto-kpi">Pipeline qualificado</span><span class="meto-kpi">WinRate</span><span class="meto-kpi">ABM</span></div></div>
-          <div class="meto-zone-card"><button class="zone-card-edit" onclick="openMetoEdit('zone','3',-1)" title="Editar">edit</button><div class="meto-zbadge" style="color:var(--z3t)"><span style="background:var(--z3t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 3</div><div class="meto-card-title">Captura de Demanda</div><div class="meto-card-sub">Alta Consciência + Baixa/Média Complexidade</div><p>A venda é transacional. O mercado entende o problema. Foco em capturar demanda existente com velocidade.</p><div><span class="meto-kpi">Velocidade</span><span class="meto-kpi">CAC baixo</span><span class="meto-kpi">Volume</span></div></div>
-          <div class="meto-zone-card"><button class="zone-card-edit" onclick="openMetoEdit('zone','4',-1)" title="Editar">edit</button><div class="meto-zbadge" style="color:var(--z4t)"><span style="background:var(--z4t);width:9px;height:9px;border-radius:2px;display:inline-block"></span>Zona 4</div><div class="meto-card-title">Zona Morta</div><div class="meto-card-sub">Baixa Consciência + Baixa Complexidade</div><p>Custo de conscientização supera o retorno esperado. Sem investimento proativo — cross-sell reativo apenas.</p><div><span class="meto-kpi">Sem SDR ativo</span><span class="meto-kpi">Revisão periódica</span></div></div>
+        <!-- ZONAS -->
+        <div class="meto-section">
+          <div class="meto-zones-grid">
+            <div class="meto-zone-card">
+              <div class="meto-zbadge" style="color:var(--z1t)"><span style="background:var(--z1t);width:8px;height:8px;border-radius:2px;display:inline-block"></span>Zona 1 <button class="pencil-btn" onclick="openMetoEdit('zone','1',-1)" title="Editar">✏</button></div>
+              <div class="meto-card-title">Evangelização</div><div class="meto-card-sub">Baixa Consciência + Média/Alta Complexidade</div><p>O cliente não tem consciência do risco. Foco em criar consciência — não converter leads imediatamente.</p><div><span class="meto-kpi">Awareness</span><span class="meto-kpi">Sem outbound frio</span><span class="meto-kpi">Thought Leadership</span></div>
+            </div>
+            <div class="meto-zone-card">
+              <div class="meto-zbadge" style="color:var(--z2t)"><span style="background:var(--z2t);width:8px;height:8px;border-radius:2px;display:inline-block"></span>Zona 2 <button class="pencil-btn" onclick="openMetoEdit('zone','2',-1)" title="Editar">✏</button></div>
+              <div class="meto-card-title">Especialização Competitiva</div><div class="meto-card-sub">Alta/Média Consciência + Alta/Média Complexidade</div><p>O cliente sabe que precisa, mas tem medo de quem vai operar. A Tripla precisa provar diferenciação.</p><div><span class="meto-kpi">Pipeline qualificado</span><span class="meto-kpi">WinRate</span><span class="meto-kpi">ABM</span></div>
+            </div>
+            <div class="meto-zone-card">
+              <div class="meto-zbadge" style="color:var(--z3t)"><span style="background:var(--z3t);width:8px;height:8px;border-radius:2px;display:inline-block"></span>Zona 3 <button class="pencil-btn" onclick="openMetoEdit('zone','3',-1)" title="Editar">✏</button></div>
+              <div class="meto-card-title">Captura de Demanda</div><div class="meto-card-sub">Alta Consciência + Baixa/Média Complexidade</div><p>A venda é transacional. O mercado entende o problema. Foco em capturar demanda existente com velocidade.</p><div><span class="meto-kpi">Velocidade</span><span class="meto-kpi">CAC baixo</span><span class="meto-kpi">Volume</span></div>
+            </div>
+            <div class="meto-zone-card">
+              <div class="meto-zbadge" style="color:var(--z4t)"><span style="background:var(--z4t);width:8px;height:8px;border-radius:2px;display:inline-block"></span>Zona 4 <button class="pencil-btn" onclick="openMetoEdit('zone','4',-1)" title="Editar">✏</button></div>
+              <div class="meto-card-title">Zona Morta</div><div class="meto-card-sub">Baixa Consciência + Baixa Complexidade</div><p>Custo de conscientização supera o retorno esperado. Sem investimento proativo — cross-sell reativo apenas.</p><div><span class="meto-kpi">Sem SDR ativo</span><span class="meto-kpi">Revisão periódica</span></div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <!-- CANAIS -->
-      <div class="meto-section" id="metoCanaisSection">
-        <div class="meto-sec-hd"><div class="meto-sec-title">Canais Relevantes</div></div>
-        <div class="meto-sec-desc-wrap">
+        <!-- CANAIS -->
+        <div class="meto-section">
+          <div class="meto-sec-title-row">
+            <div class="meto-sec-title">Canais Relevantes</div>
+            <button class="pencil-btn" onclick="editMetoSection('canais')" title="Editar descrição">✏</button>
+          </div>
           <div class="meto-sec-desc" id="metoCanaisDesc">Canais de marketing e prospecção organizados por tipo. As categorias e tags cadastradas aqui aparecem como opções ao preencher uma solução na Matriz.</div>
-          <button class="meto-inline-edit" onclick="editMetoSection('canais')" title="Editar descrição">✏</button>
+          <div id="metoCanaisGrid"></div>
         </div>
-        <div class="meto-types-grid" id="metoCanaisGrid"></div>
-      </div>
 
-      <!-- MATERIAIS -->
-      <div class="meto-section" id="metoMatSection">
-        <div class="meto-sec-hd"><div class="meto-sec-title">Materiais Aderentes</div></div>
-        <div class="meto-sec-desc-wrap">
+        <!-- MATERIAIS -->
+        <div class="meto-section">
+          <div class="meto-sec-title-row">
+            <div class="meto-sec-title">Materiais Aderentes</div>
+            <button class="pencil-btn" onclick="editMetoSection('materiais')" title="Editar descrição">✏</button>
+          </div>
           <div class="meto-sec-desc" id="metoMatDesc">Ativos de conversão e habilitação organizados por categoria. As tags cadastradas aqui aparecem como opções ao preencher uma solução na Matriz.</div>
-          <button class="meto-inline-edit" onclick="editMetoSection('materiais')" title="Editar descrição">✏</button>
+          <div id="metoMatGrid"></div>
         </div>
-        <div class="meto-types-grid" id="metoMatGrid"></div>
+
       </div>
     </div>
   </div>
@@ -539,21 +552,18 @@ const fbApp=initializeApp(firebaseConfig);
 const auth=getAuth(fbApp);
 const db=getFirestore(fbApp);
 
-// ── LOGOS
 const LOGO_L='https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-color-horizontal-png-transparente-02.png';
 const LOGO_D='https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-horizontal-color-white-png-transparente-02.png';
-
-// ── CONSTANTS
 const BU_MAP={'bd-cyber':'Cibersegurança','bd-gov':'Governança & Compliance','bd-infra':'Infraestrutura','bd-smart':'SmartOps'};
 const AXES_CELL={'Alta|Baixa':0,'Alta|Média':1,'Alta|Alta':2,'Média|Baixa':3,'Média|Média':4,'Média|Alta':5,'Baixa|Baixa':6,'Baixa|Média':7,'Baixa|Alta':8};
 const CELL_ZONE=[1,2,2,1,2,3,4,3,3];
-const ZC={1:{col:'var(--z1t)',bg:'var(--z1b)'},2:{col:'var(--z2t)',bg:'var(--z2b)'},3:{col:'var(--z3t)',bg:'var(--z3b)'},4:{col:'var(--z4t)',bg:'var(--z4b)'}};
 const ZONE_LBL={1:'Z1 · Evangelização',2:'Z2 · Especialização',3:'Z3 · Captura',4:'Z4 · Passivo'};
+const ZC={1:{col:'var(--z1t)',bg:'var(--z1b)'},2:{col:'var(--z2t)',bg:'var(--z2b)'},3:{col:'var(--z3t)',bg:'var(--z3b)'},4:{col:'var(--z4t)',bg:'var(--z4b)'}};
 const CANAL_TYPES=[
-  {id:'out',label:'Outbound',color:'var(--cyber)',dotCls:'ct-out'},
-  {id:'dig',label:'Digital',color:'var(--gov)',dotCls:'ct-dig'},
-  {id:'evt',label:'Eventos',color:'var(--smart)',dotCls:'ct-evt'},
-  {id:'pr',label:'PR e Thought Leadership',color:'var(--z2t)',dotCls:'ct-pr'},
+  {id:'out',label:'Outbound',color:'var(--cyber)',cls:'ct-out'},
+  {id:'dig',label:'Digital',color:'var(--gov)',cls:'ct-dig'},
+  {id:'evt',label:'Eventos',color:'var(--smart)',cls:'ct-evt'},
+  {id:'pr',label:'PR e Thought Leadership',color:'var(--z2t)',cls:'ct-pr'},
 ];
 const MAT_TYPES=[
   {id:'e',label:'Enablement Comercial',color:'var(--blue)',cls:'mt-e'},
@@ -567,9 +577,7 @@ const ICP_GROUPS=[
   {k:'regulacao',l:'Regulação / Compliance',tc:'ic'},{k:'tech',l:'Stack Tecnológico',tc:'ic'},
   {k:'no',l:'Critérios Eliminatórios',tc:'ino'},{k:'geo',l:'Geolocalização Prioritária',tc:'ia'},
 ];
-const TXT_MAX=700; const PARAM_MAX=50;
-
-// ── TOOLTIPS
+const TXT_MAX=700,PARAM_MAX=50;
 const TOOLTIPS={
   jcx:'Explique por que esta solução tem esse nível de complexidade de implementação, venda e entrega.',
   jco:'Explique por que o mercado-alvo tem esse nível de consciência sobre o problema que esta solução resolve.',
@@ -582,23 +590,20 @@ const TOOLTIPS={
   icp:'Perfil de cliente ideal. Use os filtros para configurar a prospecção no Cortex.',
 };
 
-// ── STATE
-let S={};            // soluções
-let CCONF={};        // config canais/materiais do Firestore
+let S={},CCONF={};
 let activeSolId=null,isEditing=false,currentTab='est',pendingCell=null;
-let unsubSols=null,unsubConf=null;
-let popCtx=null;     // {field, ri, isNew}
-let icpCtx=null;
-let metoCtx=null;    // {mode, typeId, catIdx, isNew}
+let unsubSols=null;
+let popField=null,popTypeId=null,popRI=null,popIsNew=false;
+let icpField=null,icpRI=null,icpIsNew=false;
+let metoCtx=null;
 
-// ── HELPERS
 function cellToZone(c){return CELL_ZONE[c]??1;}
 function emptyICP(){return{setores:[],subsetores:[],faturamento:[],headcount:[],caracteristicas:[],sinais:[],regulacao:[],tech:[],no:[],geo:[]};}
 function getSol(){return S[activeSolId];}
 function showToast(msg,dur=2800){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
 function autoResize(ta){ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';}
+function tip(text){return`<span class="tip">?<span class="tt">${text}</span></span>`;}
 
-// ── AUTH STATE
 onAuthStateChanged(auth,user=>{
   document.getElementById('loadingScreen').style.display='none';
   if(user){
@@ -608,13 +613,11 @@ onAuthStateChanged(auth,user=>{
     showApp();
   } else {
     if(unsubSols){unsubSols();unsubSols=null;}
-    if(unsubConf){unsubConf();unsubConf=null;}
     document.getElementById('app').style.display='none';
     document.getElementById('authScreen').style.display='flex';
   }
 });
 
-// ── LOGIN
 window.doLogin=async function(){
   const email=document.getElementById('authEmail').value.trim();
   const pass=document.getElementById('authPass').value;
@@ -630,7 +633,6 @@ window.doLogin=async function(){
 };
 window.doLogout=async function(){closePanel();await signOut(auth);};
 
-// ── PASSWORD
 window.openPwModal=function(mode){
   document.getElementById('pwSub').textContent=mode==='force'?'Crie uma senha personalizada para continuar.':'Altere sua senha atual.';
   document.getElementById('cancelPwBtn').style.display=mode==='voluntary'?'block':'none';
@@ -644,10 +646,9 @@ window.saveNewPw=async function(){
   if(p1.length<6){err.textContent='A senha deve ter pelo menos 6 caracteres.';return;}
   if(p1!==p2){err.textContent='As senhas não coincidem.';return;}
   try{await updatePassword(auth.currentUser,p1);closePwModal();showToast('Senha alterada com sucesso!');}
-  catch(e){err.textContent=e.code==='auth/requires-recent-login'?'Faça login novamente antes de alterar a senha.':'Erro ao alterar senha.';}
+  catch(e){err.textContent='Faça login novamente antes de alterar a senha.';}
 };
 
-// ── APP INIT
 async function showApp(){
   document.getElementById('app').style.display='flex';
   buildGrid();
@@ -656,16 +657,14 @@ async function showApp(){
   renderMetodologia();
 }
 
-// ── CONFIG (canais/materiais) from Firestore
 async function loadConfig(){
   const ref=doc(db,'config','metodologia');
   const snap=await getDoc(ref);
   if(snap.exists()){CCONF=snap.data();}
   else{
-    // default structure
     CCONF={
-      canaisDesc:'Canais de marketing e prospecção organizados por tipo. As categorias e tags cadastradas aqui aparecem como opções ao preencher uma solução na Matriz.',
-      materiaisDesc:'Ativos de conversão e habilitação organizados por categoria. As tags cadastradas aqui aparecem como opções ao preencher uma solução na Matriz.',
+      canaisDesc:'Canais de marketing e prospecção organizados por tipo.',
+      materiaisDesc:'Ativos de conversão e habilitação organizados por categoria.',
       canais:{
         out:[{name:'Outbound SDR',desc:'Prospecção ativa via ligação, e-mail e LinkedIn.',tags:['Cadência SDR','Cold call','LinkedIn outreach']}],
         dig:[{name:'SEO / Blog',desc:'Conteúdo orgânico para captura de demanda.',tags:['Conteúdo de blog (SEO)','Landing page']}],
@@ -674,29 +673,25 @@ async function loadConfig(){
       },
       materiais:{
         e:[{name:'Apresentação Comercial',desc:'Deck padrão com proposta de valor.',tags:['Apresentação comercial']},{name:'Battle Card',desc:'Guia de diferenciadores contra concorrentes.',tags:['Battle card']},{name:'Case de Sucesso',desc:'Documentação de casos reais.',tags:['Case de sucesso']},{name:'E-book Interno',desc:'Guia de abordagem por persona.',tags:['E-book']},{name:'Pitch Documentado',desc:'Estrutura de valores para defesa de margem.',tags:['Pitch documentado']}],
-        d:[{name:'One-page',desc:'Resumo objetivo para Zona 3.',tags:['One-page']},{name:'Material Rico / Whitepaper',desc:'Conteúdo denso com análise técnica.',tags:['Whitepaper','Material Rico']},{name:'Assessment e Diagnóstico',desc:'Ferramenta que revela gaps no ambiente do cliente.',tags:['Assessment','Diagnóstico']},{name:'Conteúdo de Blog (SEO)',desc:'Artigos otimizados para captura orgânica.',tags:['Conteúdo de blog (SEO)']},{name:'Vídeos e TriplaCast',desc:'Conteúdo audiovisual para educação de mercado.',tags:['Vídeo','TriplaCast']},{name:'Checklist Diagnóstico',desc:'Material leve para identificar riscos ocultos.',tags:['Checklist']},{name:'Folder e Flyer',desc:'Material tático para eventos.',tags:['Folder','Flyer']}],
+        d:[{name:'One-page',desc:'Resumo objetivo para Zona 3.',tags:['One-page']},{name:'Whitepaper',desc:'Conteúdo denso com análise técnica.',tags:['Whitepaper','Material Rico']},{name:'Assessment',desc:'Ferramenta que revela gaps no ambiente do cliente.',tags:['Assessment','Diagnóstico']},{name:'Blog / SEO',desc:'Artigos otimizados para captura orgânica.',tags:['Conteúdo de blog (SEO)']},{name:'Vídeo / TriplaCast',desc:'Conteúdo audiovisual para educação de mercado.',tags:['Vídeo','TriplaCast']},{name:'Checklist',desc:'Material leve para identificar riscos ocultos.',tags:['Checklist']},{name:'Folder / Flyer',desc:'Material tático para eventos.',tags:['Folder','Flyer']}],
         a:[{name:'Apresentação por Conta',desc:'Deck adaptado para a empresa-alvo.',tags:['Apresentação personalizada por conta']},{name:'Conteúdo por Segmento',desc:'Materiais adaptados para a vertical.',tags:['Conteúdo personalizado por segmento']},{name:'Mapeamento de Conta',desc:'Estrutura do comitê de compras.',tags:['Mapeamento de conta']}],
       }
     };
     await setDoc(ref,CCONF);
   }
-  // sync desc to DOM
   document.getElementById('metoCanaisDesc').textContent=CCONF.canaisDesc||'';
   document.getElementById('metoMatDesc').textContent=CCONF.materiaisDesc||'';
 }
 
-async function saveConfig(){
-  await setDoc(doc(db,'config','metodologia'),CCONF);
-}
+async function saveConfig(){await setDoc(doc(db,'config','metodologia'),CCONF);}
 
-// ── GRID
 function buildGrid(){
   const grid=document.getElementById('grid');grid.innerHTML='';
   for(let c=0;c<9;c++){
     const z=CELL_ZONE[c];
     const div=document.createElement('div');
     div.className=`cell z${z}`;div.id='cell-'+c;
-    div.innerHTML=`<div class="cell-hd"><span class="zone-label">${ZONE_LBL[z]}</span><button class="cell-add" onclick="openAddModal(${c})" title="Nova solução neste quadrante">+</button></div><div class="chips-wrap" id="chips-${c}"></div>`;
+    div.innerHTML=`<div class="cell-hd"><span class="zone-label">${ZONE_LBL[z]}</span><button class="cell-add" onclick="openAddModal(${c})" title="Nova solução">+</button></div><div class="chips-wrap" id="chips-${c}"></div>`;
     grid.appendChild(div);
   }
 }
@@ -721,7 +716,6 @@ function refreshChip(id){
   wrap.appendChild(chip);
 }
 
-// ── ADD MODAL
 window.openAddModal=function(cell){
   pendingCell=cell;
   ['mName','mShort'].forEach(id=>document.getElementById(id).value='');
@@ -750,7 +744,6 @@ window.createSolution=async function(){
   btn.disabled=false;btn.textContent='Criar Solução';
 };
 
-// ── PANEL
 window.openPanel=function(id){
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
   const chip=document.getElementById('chip-'+id);if(chip)chip.classList.add('active');
@@ -767,62 +760,49 @@ window.closePanel=function(){
   activeSolId=null;isEditing=false;
 };
 
-function tip(text){return`<span class="tip">?<span class="tt">${text}</span></span>`;}
-
 function renderPanel(){
   const s=getSol();if(!s)return;
   const z=ZC[s.z];
   const buColor={'bd-cyber':'var(--cyber)','bd-gov':'var(--gov)','bd-infra':'var(--infra)','bd-smart':'var(--smart)'}[s.buc];
   const zName={1:'Zona 1 — Evangelização',2:'Zona 2 — Especialização',3:'Zona 3 — Captura',4:'Zona 4 — Passivo'}[s.z];
-  const lvls=['Alta','Média','Baixa'];
-  const ed=isEditing;
+  const lvls=['Alta','Média','Baixa'];const ed=isEditing;
 
-  // Header
   const head=document.getElementById('panelHead');
   head.style.display='flex';
   head.innerHTML=`<div><div class="p-bu" style="color:${buColor}">${s.bu}</div><div class="p-name">${s.name}</div><div class="p-short">${s.short}</div></div>
     <div class="panel-acts">
-      <button class="pnl-btn${ed?' on':''}" onclick="toggleEdit()" title="${ed?'Sair da edição':'Editar solução'}">✏</button>
-      <button class="pnl-btn" style="color:var(--danger)" onclick="confirmDelete()" title="Excluir solução">🗑</button>
+      <button class="pnl-btn${ed?' on':''}" onclick="toggleEdit()" title="${ed?'Sair da edição':'Editar'}">✏</button>
+      <button class="pnl-btn" style="color:var(--danger)" onclick="confirmDelete()" title="Excluir">🗑</button>
       <button class="pnl-btn" onclick="closePanel()">✕</button>
     </div>`;
 
   const cxEl=ed?`<select onchange="updateAxis('cx',this.value)" style="color:${z.col}">${lvls.map(v=>`<option${v===s.cx?' selected':''}>${v}</option>`).join('')}</select>`:`<span>${s.cx}</span>`;
   const coEl=ed?`<select onchange="updateAxis('co',this.value)" style="color:${z.col}">${lvls.map(v=>`<option${v===s.co?' selected':''}>${v}</option>`).join('')}</select>`:`<span>${s.co}</span>`;
 
-  // Build canais by type
-  const canais=s.canais||[];
-  const mats=s.materiais||[];
+  const canais=s.canais||[];const mats=s.materiais||[];
+  const mCls={e:'mt-e',d:'mt-d',a:'mt-a'};
+  const cCls={out:'ct-out',dig:'ct-dig',evt:'ct-evt',pr:'ct-pr'};
 
   let canaisHTML='<div class="tags-section">';
   CANAL_TYPES.forEach(ct=>{
     const items=canais.filter(c=>c.typeId===ct.id);
     if(!items.length&&!ed)return;
-    canaisHTML+=`<div class="tag-type-group">
-      <div class="tag-type-header"><span class="tag-type-dot" style="background:${ct.color}"></span>${ct.label}</div>
-      <div class="tags-wrap">
-        ${items.map((c,i)=>`<span class="ctag ${ct.dotCls}${ed?' tag-ed':''}" ${ed?`onclick="openTagPopup(event,'canal','${ct.id}',${canais.indexOf(c)})"`:''}><span class="cdot" style="background:${ct.color}"></span>${c.label}</span>`).join('')}
-        ${ed?`<button class="add-tag" onclick="openTagPopup(event,'canal','${ct.id}',-1)">+ ${ct.label}</button>`:''}
-      </div>
-    </div>`;
-  });
-  canaisHTML+='</div>';
+    canaisHTML+=`<div class="tag-type-group"><div class="tag-type-hd"><span class="tag-type-dot" style="background:${ct.color}"></span>${ct.label}</div><div class="tags-wrap">
+      ${items.map(c=>`<span class="ctag ${cCls[ct.id]||''}${ed?' tag-ed':''}" ${ed?`onclick="openTagPopup(event,'canal','${ct.id}',${canais.indexOf(c)})"`:''}><span class="cdot" style="background:${ct.color}"></span>${c.label}</span>`).join('')}
+      ${ed?`<button class="add-tag" onclick="openTagPopup(event,'canal','${ct.id}',-1)">+ ${ct.label}</button>`:''}
+    </div></div>`;
+  });canaisHTML+='</div>';
 
   let matsHTML='<div class="tags-section">';
   MAT_TYPES.forEach(mt=>{
     const items=mats.filter(m=>m.typeId===mt.id);
     if(!items.length&&!ed)return;
-    matsHTML+=`<div class="tag-type-group">
-      <div class="tag-type-header"><span class="tag-type-dot" style="background:${mt.color}"></span>${mt.label}</div>
-      <div class="tags-wrap">
-        ${items.map((m,i)=>`<span class="mtag ${mt.cls}${ed?' tag-ed':''}" ${ed?`onclick="openTagPopup(event,'material','${mt.id}',${mats.indexOf(m)})"`:''}><span class="mdot"></span>${m.label}</span>`).join('')}
-        ${ed?`<button class="add-tag" onclick="openTagPopup(event,'material','${mt.id}',-1)">+ ${mt.label}</button>`:''}
-      </div>
-    </div>`;
-  });
-  matsHTML+='</div>';
+    matsHTML+=`<div class="tag-type-group"><div class="tag-type-hd"><span class="tag-type-dot" style="background:${mt.color}"></span>${mt.label}</div><div class="tags-wrap">
+      ${items.map(m=>`<span class="mtag ${mCls[mt.id]||''}${ed?' tag-ed':''}" ${ed?`onclick="openTagPopup(event,'material','${mt.id}',${mats.indexOf(m)})"`:''}><span class="mdot"></span>${m.label}</span>`).join('')}
+      ${ed?`<button class="add-tag" onclick="openTagPopup(event,'material','${mt.id}',-1)">+ ${mt.label}</button>`:''}
+    </div></div>`;
+  });matsHTML+='</div>';
 
-  // ICP
   const icp=s.icp||emptyICP();
   let icpHTML=`<div class="cortex-note"><strong>Filtros Cortex</strong> — Combine Setores + Faturamento + Características como base. Adicione Sinais/Gatilhos como filtro de inteligência temporal.</div>`;
   ICP_GROUPS.forEach(g=>{
@@ -833,12 +813,8 @@ function renderPanel(){
     icpHTML+=`<div class="icp-grp"><div class="icp-lbl">${g.l}</div><div class="tags-wrap">${th}${ab}</div></div>`;
   });
 
-  const tx=(f,ph,maxLen=TXT_MAX)=>ed?`
-    <textarea onblur="sf('${f}',this.value)" oninput="handleTaInput(this,'${f}',${maxLen})" maxlength="${maxLen}" placeholder="${ph}">${s[f]||''}</textarea>
-    <div class="char-count" id="cc-${f}">${maxLen-(s[f]||'').length} restantes</div>
-  `:`<p>${s[f]||'<span style="opacity:.35;font-style:italic">Não preenchido</span>'}</p>`;
-
-  const inp=(f,ph)=>ed?`<input style="width:100%;font-family:var(--font);font-size:var(--fs-sm);font-weight:600;color:var(--text);background:transparent;border:none;outline:none" value="${s[f]||''}" maxlength="${PARAM_MAX}" onblur="sf('${f}',this.value)" oninput="handleParamInput(this,${PARAM_MAX})" placeholder="${ph}">`:`<div class="param-val">${s[f]||'<span style="opacity:.35;font-style:italic">—</span>'}</div>`;
+  const tx=(f,ph,mx=TXT_MAX)=>ed?`<textarea onblur="sf('${f}',this.value)" oninput="handleTa(this,'${f}',${mx})" maxlength="${mx}" placeholder="${ph}">${s[f]||''}</textarea><div class="char-count" id="cc-${f}">${mx-(s[f]||'').length} restantes</div>`:`<p>${s[f]||'<span style="opacity:.35;font-style:italic">Não preenchido</span>'}</p>`;
+  const inp=(f,ph)=>ed?`<input style="width:100%;font-family:var(--font);font-size:var(--fs-sm);font-weight:600;color:var(--text);background:transparent;border:none;outline:none" value="${s[f]||''}" maxlength="${PARAM_MAX}" onblur="sf('${f}',this.value)" oninput="handleParam(this,${PARAM_MAX})" placeholder="${ph}">`:`<div class="param-val">${s[f]||'<span style="opacity:.35;font-style:italic">—</span>'}</div>`;
 
   document.getElementById('panelBody').innerHTML=`
     <div class="scores">
@@ -852,16 +828,16 @@ function renderPanel(){
     </div>
     <div class="tab-pane${currentTab==='est'?' active':''}" id="tab-est">
       <div class="sec-hd">Por que aqui na Matriz ${tip(TOOLTIPS.jcx)}</div>
-      <div class="just-block"><span class="just-lbl" style="color:${z.col}">Complexidade — ${s.cx}${tip(TOOLTIPS.jcx)}</span>${tx('jcx','Explique por que esta solução tem este nível de complexidade...')}</div>
-      <div class="just-block"><span class="just-lbl" style="color:${z.col}">Conscientização — ${s.co}${tip(TOOLTIPS.jco)}</span>${tx('jco','Explique por que o mercado tem este nível de consciência...')}</div>
+      <div class="just-block"><span class="just-lbl" style="color:${z.col}">Complexidade — ${s.cx} ${tip(TOOLTIPS.jcx)}</span>${tx('jcx','Explique por que esta solução tem este nível de complexidade...')}</div>
+      <div class="just-block"><span class="just-lbl" style="color:${z.col}">Conscientização — ${s.co} ${tip(TOOLTIPS.jco)}</span>${tx('jco','Explique por que o mercado tem este nível de consciência...')}</div>
       <div class="sec-hd">Postura de Prospecção ${tip(TOOLTIPS.postura)}</div>
       <div class="posture-box">${tx('postura','Descreva a abordagem comercial, tom e gatilho de entrada...')}</div>
       <div class="sec-hd">Parâmetros Comerciais</div>
       <div class="param-row">
-        <div class="param-box"><div class="param-lbl">Ticket Médio${tip(TOOLTIPS.ticket)}</div>${inp('ticket','Ex: R$300K–R$500K/ano')}</div>
-        <div class="param-box"><div class="param-lbl">Contrato${tip(TOOLTIPS.contrato)}</div>${inp('contrato','Ex: Anual ou bianual')}</div>
+        <div class="param-box"><div class="param-lbl">Ticket Médio ${tip(TOOLTIPS.ticket)}</div>${inp('ticket','Ex: R$300K–R$500K/ano')}</div>
+        <div class="param-box"><div class="param-lbl">Contrato ${tip(TOOLTIPS.contrato)}</div>${inp('contrato','Ex: Anual ou bianual')}</div>
       </div>
-      <div class="param-row"><div class="param-box"><div class="param-lbl">Ciclo de Venda${tip(TOOLTIPS.ciclo)}</div>${inp('ciclo','Ex: 2–4 meses')}</div></div>
+      <div class="param-row"><div class="param-box"><div class="param-lbl">Ciclo de Venda ${tip(TOOLTIPS.ciclo)}</div>${inp('ciclo','Ex: 2–4 meses')}</div></div>
       <div class="sec-hd">Canais Relevantes ${tip(TOOLTIPS.canais)}</div>
       ${canais.length||ed?canaisHTML:'<p style="font-size:var(--fs-sm);color:var(--muted);opacity:.5;font-style:italic;padding-top:4px">Nenhum canal selecionado.</p>'}
       <div class="sec-hd">Materiais Aderentes ${tip(TOOLTIPS.materiais)}</div>
@@ -872,53 +848,31 @@ function renderPanel(){
       ${icpHTML}
     </div>`;
 
-  // Auto-resize textareas
-  setTimeout(()=>{
-    document.querySelectorAll('.panel-body textarea').forEach(ta=>{autoResize(ta);});
-  },10);
+  setTimeout(()=>{document.querySelectorAll('.panel-body textarea').forEach(ta=>autoResize(ta));},10);
 }
 
-// ── TEXT FIELD HELPERS
 window.sf=function(f,v){const s=getSol();if(!s)return;s[f]=v.trim();setSaveStatus('unsaved');};
-
-window.handleTaInput=function(ta,field,maxLen){
-  autoResize(ta);
-  const rem=maxLen-ta.value.length;
-  const cc=document.getElementById('cc-'+field);
-  if(cc){cc.textContent=rem+' restantes';cc.className='char-count'+(rem<=50?' warn':'');}
-  if(rem===0)showToast('Limite de '+maxLen+' caracteres atingido.',2000);
-};
-
-window.handleParamInput=function(inp,maxLen){
-  if(inp.value.length>=maxLen)showToast('Limite de '+maxLen+' caracteres atingido.',2000);
-};
-
+window.handleTa=function(ta,f,mx){autoResize(ta);const r=mx-ta.value.length;const cc=document.getElementById('cc-'+f);if(cc){cc.textContent=r+' restantes';cc.className='char-count'+(r<=50?' warn':'');}if(r===0)showToast('Limite de '+mx+' caracteres atingido.',2000);};
+window.handleParam=function(inp,mx){if(inp.value.length>=mx)showToast('Limite de '+mx+' caracteres atingido.',2000);};
 window.toggleEdit=function(){isEditing=!isEditing;renderPanel();};
 window.switchTab=function(t){currentTab=t;renderPanel();};
-
 window.updateAxis=function(axis,val){
-  const s=getSol();if(!s)return;
-  s[axis]=val;
-  const newCell=AXES_CELL[s.cx+'|'+s.co]??s.cell;
-  if(newCell!==s.cell){
-    const chip=document.getElementById('chip-'+s._id);if(chip)chip.remove();
-    s.cell=newCell;s.z=cellToZone(newCell);refreshChip(s._id);
-  } else s.z=cellToZone(s.cell);
+  const s=getSol();if(!s)return;s[axis]=val;
+  const nc=AXES_CELL[s.cx+'|'+s.co]??s.cell;
+  if(nc!==s.cell){const chip=document.getElementById('chip-'+s._id);if(chip)chip.remove();s.cell=nc;s.z=cellToZone(nc);refreshChip(s._id);}
+  else s.z=cellToZone(s.cell);
   setSaveStatus('unsaved');renderPanel();
 };
 
-// ── SAVE / DELETE
 function setSaveStatus(state){
   const el=document.getElementById('saveStatus');if(!el)return;
   const map={unsaved:['Alterações não salvas',''],saving:['Salvando...','saving'],saved:['Salvo com sucesso','saved'],err:['Erro ao salvar','err']};
-  const[txt,cls]=map[state]||['',''];
-  el.textContent=txt;el.className='save-status'+(cls?' '+cls:'');
+  const[txt,cls]=map[state]||['',''];el.textContent=txt;el.className='save-status'+(cls?' '+cls:'');
 }
 window.saveSolution=async function(){
-  const s=getSol();if(!s)return;
-  setSaveStatus('saving');
+  const s=getSol();if(!s)return;setSaveStatus('saving');
   try{const{_id,...data}=s;data.updatedAt=serverTimestamp();await setDoc(doc(db,'solutions',_id),data);setSaveStatus('saved');showToast('Salvo com sucesso!');}
-  catch(e){setSaveStatus('err');showToast('Erro ao salvar. Tente novamente.');}
+  catch(e){setSaveStatus('err');showToast('Erro ao salvar.');}
 };
 window.confirmDelete=function(){
   const s=getSol();if(!s)return;
@@ -926,117 +880,63 @@ window.confirmDelete=function(){
   deleteDoc(doc(db,'solutions',s._id));
 };
 
-// ── CANAL / MATERIAL TAG POPUP (dropdown from config)
-let popField=null,popTypeId=null,popRI=null,popIsNew=false;
-
+// TAG POPUP
 window.openTagPopup=function(e,field,typeId,ri){
-  if(!isEditing)return;
-  e.stopPropagation();
+  if(!isEditing)return;e.stopPropagation();
   popField=field;popTypeId=typeId;popRI=ri;popIsNew=(ri===-1);
-
-  // build options from CCONF
+  const s=getSol();
   const sel=document.getElementById('popSel');
   sel.innerHTML='<option value="">Selecione...</option>';
-  if(field==='canal'){
-    const cats=CCONF.canais?.[typeId]||[];
-    cats.forEach((cat,ci)=>{
-      const og=document.createElement('optgroup');og.label=cat.name;
-      cat.tags.forEach(tag=>{const o=document.createElement('option');o.value=tag;o.textContent=tag;sel.appendChild(og);og.appendChild(o);});
-      sel.appendChild(og);
-    });
-  } else {
-    const cats=CCONF.materiais?.[typeId]||[];
-    cats.forEach(cat=>{
-      const og=document.createElement('optgroup');og.label=cat.name;
-      cat.tags.forEach(tag=>{const o=document.createElement('option');o.value=tag;o.textContent=tag;og.appendChild(o);});
-      sel.appendChild(og);
-    });
-  }
-
-  // pre-select if editing
-  const s=getSol();
-  if(!popIsNew){
-    const arr=field==='canal'?(s.canais||[]):(s.materiais||[]);
-    const cur=arr[ri];
-    if(cur)sel.value=cur.label||'';
-  }
-
-  document.getElementById('popLbl').textContent=popIsNew?`Adicionar ${field==='canal'?'Canal':'Material'}`:`Editar ${field==='canal'?'Canal':'Material'}`;
+  const types=field==='canal'?CCONF.canais:CCONF.materiais;
+  const cats=types?.[typeId]||[];
+  cats.forEach(cat=>{const og=document.createElement('optgroup');og.label=cat.name;cat.tags.forEach(tag=>{const o=document.createElement('option');o.value=tag;o.textContent=tag;og.appendChild(o);});sel.appendChild(og);});
+  if(!popIsNew){const arr=field==='canal'?(s.canais||[]):(s.materiais||[]);const cur=arr[ri];if(cur)sel.value=cur.label||'';}
+  document.getElementById('popLbl').textContent=popIsNew?'Adicionar':'Editar';
   document.getElementById('popDel').style.display=popIsNew?'none':'block';
-
-  const popup=document.getElementById('tagPopup');
-  popup.style.display='block';
-  positionPopup(popup,e,260,140);
+  const popup=document.getElementById('tagPopup');popup.style.display='block';
+  positionPopup(popup,e,280,120);
 };
-
 window.saveTag=function(){
-  const val=document.getElementById('popSel').value;
-  if(!val){closePopup();showToast('Selecione uma opção.');return;}
-  const s=getSol();
-  if(popField==='canal'){
-    if(!s.canais)s.canais=[];
-    const obj={typeId:popTypeId,label:val};
-    if(popIsNew)s.canais.push(obj);else s.canais[popRI]=obj;
-  } else {
-    if(!s.materiais)s.materiais=[];
-    const obj={typeId:popTypeId,label:val};
-    if(popIsNew)s.materiais.push(obj);else s.materiais[popRI]=obj;
-  }
+  const val=document.getElementById('popSel').value;if(!val){closePopup();showToast('Selecione uma opção.');return;}
+  const s=getSol();const obj={typeId:popTypeId,label:val};
+  if(popField==='canal'){if(!s.canais)s.canais=[];if(popIsNew)s.canais.push(obj);else s.canais[popRI]=obj;}
+  else{if(!s.materiais)s.materiais=[];if(popIsNew)s.materiais.push(obj);else s.materiais[popRI]=obj;}
   setSaveStatus('unsaved');closePopup();renderPanel();
 };
-
 window.deleteTag=function(){
   const s=getSol();
-  if(popField==='canal'){if(s.canais)s.canais.splice(popRI,1);}
-  else{if(s.materiais)s.materiais.splice(popRI,1);}
+  if(popField==='canal'){if(s.canais)s.canais.splice(popRI,1);}else{if(s.materiais)s.materiais.splice(popRI,1);}
   setSaveStatus('unsaved');closePopup();renderPanel();
 };
 
-// ── ICP POPUP (free text)
-let icpField=null,icpRI=null,icpIsNew=false;
-
+// ICP POPUP
 window.openIcpPopup=function(e,field,ri){
-  if(!isEditing)return;
-  e.stopPropagation();
+  if(!isEditing)return;e.stopPropagation();
   icpField=field;icpRI=ri;icpIsNew=(ri===-1);
-  const s=getSol();
-  const cur=!icpIsNew?(s.icp?.[field]||[])[ri]||'':'';
+  const s=getSol();const cur=!icpIsNew?(s.icp?.[field]||[])[ri]||'':'';
   document.getElementById('icpPopLbl').textContent=icpIsNew?'Nova tag':'Editar tag';
-  const inp=document.getElementById('icpPopInp');
-  inp.value=cur;
-  const rem=80-cur.length;
-  const cc=document.getElementById('icpPopChar');
+  const inp=document.getElementById('icpPopInp');inp.value=cur;
+  const rem=80-cur.length;const cc=document.getElementById('icpPopChar');
   cc.textContent=rem+' restantes';cc.className='pop-char'+(rem<=20?' warn':'');
   document.getElementById('icpPopDel').style.display=icpIsNew?'none':'block';
-  const popup=document.getElementById('icpPopup');
-  popup.style.display='block';
-  positionPopup(popup,e,270,150);
+  const popup=document.getElementById('icpPopup');popup.style.display='block';
+  positionPopup(popup,e,270,140);
   inp.focus();inp.select();
-  inp.oninput=()=>{const r2=80-inp.value.length;cc.textContent=r2+' restantes';cc.className='pop-char'+(r2<=20?' warn':'');if(r2===0)showToast('Limite de 80 caracteres atingido.',2000);};
+  inp.oninput=()=>{const r=80-inp.value.length;cc.textContent=r+' restantes';cc.className='pop-char'+(r<=20?' warn':'');if(r===0)showToast('Limite de 80 caracteres atingido.',2000);};
   inp.onkeydown=ev=>{if(ev.key==='Enter'){ev.preventDefault();saveIcpTag();}if(ev.key==='Escape'){ev.preventDefault();closeIcpPopup();}};
 };
-
 window.saveIcpTag=function(){
-  const val=document.getElementById('icpPopInp').value.trim();
-  if(!val){closeIcpPopup();return;}
-  const s=getSol();
-  if(!s.icp)s.icp=emptyICP();
-  if(!s.icp[icpField])s.icp[icpField]=[];
-  if(icpIsNew)s.icp[icpField].push(val);
-  else s.icp[icpField][icpRI]=val;
+  const val=document.getElementById('icpPopInp').value.trim();if(!val){closeIcpPopup();return;}
+  const s=getSol();if(!s.icp)s.icp=emptyICP();if(!s.icp[icpField])s.icp[icpField]=[];
+  if(icpIsNew)s.icp[icpField].push(val);else s.icp[icpField][icpRI]=val;
   setSaveStatus('unsaved');closeIcpPopup();renderPanel();
 };
-
 window.deleteIcpTag=function(){
-  const s=getSol();
-  if(s.icp?.[icpField])s.icp[icpField].splice(icpRI,1);
+  const s=getSol();if(s.icp?.[icpField])s.icp[icpField].splice(icpRI,1);
   setSaveStatus('unsaved');closeIcpPopup();renderPanel();
 };
-
 window.closeIcpPopup=function(){document.getElementById('icpPopup').style.display='none';};
-
 function closePopup(){document.getElementById('tagPopup').style.display='none';}
-
 function positionPopup(popup,e,pw,ph){
   const rect=e.currentTarget.getBoundingClientRect();
   let top=rect.bottom+6,left=rect.left;
@@ -1046,34 +946,30 @@ function positionPopup(popup,e,pw,ph){
   popup.style.top=top+'px';popup.style.left=left+'px';
 }
 
-// ── METHODOLOGY RENDERING
-function renderMetodologia(){
-  renderCanaisGrid();
-  renderMatGrid();
-}
+// METHODOLOGY
+function renderMetodologia(){renderCanaisGrid();renderMatGrid();}
 
 function renderCanaisGrid(){
-  const grid=document.getElementById('metoCanaisGrid');
-  grid.innerHTML='';
+  const grid=document.getElementById('metoCanaisGrid');grid.innerHTML='';
   CANAL_TYPES.forEach(ct=>{
     const cats=CCONF.canais?.[ct.id]||[];
+    const card=document.createElement('div');card.className='meto-type-card';
     const catItems=cats.map((cat,ci)=>`
       <div class="meto-cat-item">
-        <div class="meto-cat-item-hd">
+        <div class="meto-cat-hd">
           <div class="meto-cat-name">${cat.name}</div>
-          <button class="meto-edit-btn" onclick="openMetoEdit('canal-cat','${ct.id}',${ci})" title="Editar">✏</button>
+          <button class="pencil-btn" onclick="openMetoEdit('canal-cat','${ct.id}',${ci})" title="Editar">✏</button>
         </div>
         <div class="meto-cat-desc">${cat.desc||''}</div>
         <div class="meto-cat-tags">${cat.tags.map(t=>`<span class="meto-tag-pill">${t}</span>`).join('')}</div>
       </div>`).join('');
-    const card=document.createElement('div');
-    card.className='meto-type-card';
     card.innerHTML=`
       <div class="meto-type-hd">
         <span class="meto-type-dot" style="background:${ct.color}"></span>
         <div class="meto-type-name">${ct.label}</div>
+        <button class="pencil-btn" onclick="openMetoEdit('canal-type','${ct.id}',-1)" title="Editar tipo">✏</button>
       </div>
-      <div class="meto-cats-grid">
+      <div class="meto-cats-list">
         ${catItems}
         <button class="meto-add-cat-btn" onclick="openMetoEdit('canal-cat-new','${ct.id}',-1)">+ Nova categoria</button>
       </div>`;
@@ -1082,27 +978,26 @@ function renderCanaisGrid(){
 }
 
 function renderMatGrid(){
-  const grid=document.getElementById('metoMatGrid');
-  grid.innerHTML='';
+  const grid=document.getElementById('metoMatGrid');grid.innerHTML='';
   MAT_TYPES.forEach(mt=>{
     const cats=CCONF.materiais?.[mt.id]||[];
+    const card=document.createElement('div');card.className='meto-type-card';
     const catItems=cats.map((cat,ci)=>`
       <div class="meto-cat-item">
-        <div class="meto-cat-item-hd">
+        <div class="meto-cat-hd">
           <div class="meto-cat-name">${cat.name}</div>
-          <button class="meto-edit-btn" onclick="openMetoEdit('mat-cat','${mt.id}',${ci})" title="Editar">✏</button>
+          <button class="pencil-btn" onclick="openMetoEdit('mat-cat','${mt.id}',${ci})" title="Editar">✏</button>
         </div>
         <div class="meto-cat-desc">${cat.desc||''}</div>
         <div class="meto-cat-tags">${cat.tags.map(t=>`<span class="meto-tag-pill">${t}</span>`).join('')}</div>
       </div>`).join('');
-    const card=document.createElement('div');
-    card.className='meto-type-card';
     card.innerHTML=`
       <div class="meto-type-hd">
         <span class="meto-type-dot" style="background:${mt.color}"></span>
         <div class="meto-type-name">${mt.label}</div>
+        <button class="pencil-btn" onclick="openMetoEdit('mat-type','${mt.id}',-1)" title="Editar tipo">✏</button>
       </div>
-      <div class="meto-cats-grid">
+      <div class="meto-cats-list">
         ${catItems}
         <button class="meto-add-cat-btn" onclick="openMetoEdit('mat-cat-new','${mt.id}',-1)">+ Nova categoria</button>
       </div>`;
@@ -1110,20 +1005,13 @@ function renderMatGrid(){
   });
 }
 
-// ── METHODOLOGY EDIT
+// METO EDIT MODAL
 window.editMetoSection=function(sec){
   metoCtx={mode:'section',sec};
   let title,current;
-  if(sec==='pagina'){
-    title='Editar descrição da página';
-    current=document.querySelector('.meto-page-sub')?.textContent||'';
-  } else if(sec==='canais'){
-    title='Editar descrição — Canais Relevantes';
-    current=CCONF.canaisDesc||'';
-  } else {
-    title='Editar descrição — Materiais Aderentes';
-    current=CCONF.materiaisDesc||'';
-  }
+  if(sec==='pagina'){title='Editar descrição da página';current=document.getElementById('metoPageSub')?.textContent||'';}
+  else if(sec==='canais'){title='Editar descrição — Canais Relevantes';current=CCONF.canaisDesc||'';}
+  else{title='Editar descrição — Materiais Aderentes';current=CCONF.materiaisDesc||'';}
   document.getElementById('metoEditTitle').textContent=title;
   document.getElementById('metoEditSub').textContent='';
   document.getElementById('metoDelBtn').style.display='none';
@@ -1134,19 +1022,27 @@ window.editMetoSection=function(sec){
 
 window.openMetoEdit=function(mode,typeId,ci){
   metoCtx={mode,typeId,ci};
-  const isNew=mode.endsWith('-new');
+  const isNew=mode.endsWith('-new')||mode.endsWith('-type');
+  const isTypeEdit=mode.endsWith('-type');
   const isCanalMode=mode.startsWith('canal');
   const catArr=isCanalMode?(CCONF.canais?.[typeId]||[]):(CCONF.materiais?.[typeId]||[]);
   const cat=(!isNew&&ci>=0)?catArr[ci]:null;
-  document.getElementById('metoEditTitle').textContent=isNew?'Nova categoria':`Editar — ${cat?.name||''}`;
+  if(isTypeEdit){
+    document.getElementById('metoEditTitle').textContent='Editar tipo';
+    document.getElementById('metoEditSub').textContent='';
+    document.getElementById('metoDelBtn').style.display='none';
+    document.getElementById('metoEditErr').textContent='';
+    document.getElementById('metoEditFields').innerHTML=`<div class="f-grp"><label class="f-lbl">Nome do tipo</label><input class="f-inp" id="metoF1" value="${isCanalMode?CANAL_TYPES.find(c=>c.id===typeId)?.label||'':MAT_TYPES.find(m=>m.id===typeId)?.label||''}"></div>`;
+    document.getElementById('metoEditOverlay').style.display='flex';return;
+  }
+  document.getElementById('metoEditTitle').textContent=mode.endsWith('-new')?'Nova categoria':`Editar — ${cat?.name||''}`;
   document.getElementById('metoEditSub').textContent=isCanalMode?`Tipo: ${CANAL_TYPES.find(c=>c.id===typeId)?.label||typeId}`:`Tipo: ${MAT_TYPES.find(m=>m.id===typeId)?.label||typeId}`;
-  document.getElementById('metoDelBtn').style.display=isNew?'none':'block';
+  document.getElementById('metoDelBtn').style.display=mode.endsWith('-new')?'none':'block';
   document.getElementById('metoEditErr').textContent='';
-  const tagsVal=cat?cat.tags.join(', '):'';
   document.getElementById('metoEditFields').innerHTML=`
     <div class="f-grp"><label class="f-lbl">Nome da categoria</label><input class="f-inp" id="metoF1" placeholder="Ex: Eventos Setoriais" value="${cat?.name||''}"></div>
-    <div class="f-grp"><label class="f-lbl">Descrição (exibida na Metodologia)</label><textarea class="f-inp" id="metoF2" style="min-height:60px;resize:vertical" placeholder="Descreva o objetivo desta categoria...">${cat?.desc||''}</textarea></div>
-    <div class="f-grp"><label class="f-lbl">Tags (separadas por vírgula)</label><textarea class="f-inp" id="metoF3" style="min-height:60px;resize:vertical" placeholder="Tag 1, Tag 2, Tag 3...">${tagsVal}</textarea></div>`;
+    <div class="f-grp"><label class="f-lbl">Descrição</label><textarea class="f-inp" id="metoF2" style="min-height:60px;resize:vertical" placeholder="Descreva o objetivo desta categoria...">${cat?.desc||''}</textarea></div>
+    <div class="f-grp"><label class="f-lbl">Tags (separadas por vírgula)</label><textarea class="f-inp" id="metoF3" style="min-height:60px;resize:vertical" placeholder="Tag 1, Tag 2, Tag 3...">${cat?cat.tags.join(', '):''}</textarea></div>`;
   document.getElementById('metoEditOverlay').style.display='flex';
 };
 
@@ -1154,58 +1050,44 @@ window.saveMetoItem=async function(){
   const err=document.getElementById('metoEditErr');err.textContent='';
   if(metoCtx.mode==='section'){
     const desc=document.getElementById('metoF1').value.trim();
-    if(metoCtx.sec==='pagina'){
-      const el=document.querySelector('.meto-page-sub');
-      if(el)el.textContent=desc;
-    } else if(metoCtx.sec==='canais'){
-      CCONF.canaisDesc=desc;document.getElementById('metoCanaisDesc').textContent=desc;
-    } else {
-      CCONF.materiaisDesc=desc;document.getElementById('metoMatDesc').textContent=desc;
-    }
+    if(metoCtx.sec==='pagina'){const el=document.getElementById('metoPageSub');if(el)el.textContent=desc;}
+    else if(metoCtx.sec==='canais'){CCONF.canaisDesc=desc;document.getElementById('metoCanaisDesc').textContent=desc;}
+    else{CCONF.materiaisDesc=desc;document.getElementById('metoMatDesc').textContent=desc;}
     await saveConfig();closeMetoEdit();showToast('Descrição atualizada!');return;
   }
   const name=document.getElementById('metoF1').value.trim();
-  const desc=document.getElementById('metoF2').value.trim();
-  const tagsRaw=document.getElementById('metoF3').value;
-  if(!name){err.textContent='O nome da categoria é obrigatório.';return;}
+  const desc=document.getElementById('metoF2')?.value.trim()||'';
+  const tagsRaw=document.getElementById('metoF3')?.value||'';
+  if(!name){err.textContent='O nome é obrigatório.';return;}
   const tags=tagsRaw.split(',').map(t=>t.trim()).filter(Boolean);
   const isCanalMode=metoCtx.mode.startsWith('canal');
   const isNew=metoCtx.mode.endsWith('-new');
   const tid=metoCtx.typeId;
   if(isCanalMode){
-    if(!CCONF.canais)CCONF.canais={};
-    if(!CCONF.canais[tid])CCONF.canais[tid]=[];
-    if(isNew)CCONF.canais[tid].push({name,desc,tags});
-    else CCONF.canais[tid][metoCtx.ci]={name,desc,tags};
+    if(!CCONF.canais)CCONF.canais={};if(!CCONF.canais[tid])CCONF.canais[tid]=[];
+    if(isNew)CCONF.canais[tid].push({name,desc,tags});else CCONF.canais[tid][metoCtx.ci]={name,desc,tags};
   } else {
-    if(!CCONF.materiais)CCONF.materiais={};
-    if(!CCONF.materiais[tid])CCONF.materiais[tid]=[];
-    if(isNew)CCONF.materiais[tid].push({name,desc,tags});
-    else CCONF.materiais[tid][metoCtx.ci]={name,desc,tags};
+    if(!CCONF.materiais)CCONF.materiais={};if(!CCONF.materiais[tid])CCONF.materiais[tid]=[];
+    if(isNew)CCONF.materiais[tid].push({name,desc,tags});else CCONF.materiais[tid][metoCtx.ci]={name,desc,tags};
   }
   await saveConfig();closeMetoEdit();renderMetodologia();showToast('Salvo!');
 };
 
 window.deleteMetoItem=async function(){
-  if(!confirm('Excluir esta categoria? As soluções que a usam não serão afetadas, mas a opção deixará de aparecer.'))return;
-  const isCanalMode=metoCtx.mode.startsWith('canal');
-  const tid=metoCtx.typeId;
-  if(isCanalMode)CCONF.canais?.[tid]?.splice(metoCtx.ci,1);
-  else CCONF.materiais?.[tid]?.splice(metoCtx.ci,1);
+  if(!confirm('Excluir esta categoria? As soluções que a usam não serão afetadas.'))return;
+  const isCanalMode=metoCtx.mode.startsWith('canal');const tid=metoCtx.typeId;
+  if(isCanalMode)CCONF.canais?.[tid]?.splice(metoCtx.ci,1);else CCONF.materiais?.[tid]?.splice(metoCtx.ci,1);
   await saveConfig();closeMetoEdit();renderMetodologia();showToast('Categoria excluída.');
 };
-
 window.closeMetoEdit=function(){document.getElementById('metoEditOverlay').style.display='none';};
 
-// ── VIEWS / THEME
+// VIEWS / THEME
 window.setView=function(v,btn){
-  document.querySelectorAll('.top-nav-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
+  document.querySelectorAll('.top-nav-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
   document.getElementById('matrixView').style.display=v==='matrix'?'flex':'none';
   document.getElementById('metoView').classList.toggle('v-hidden',v!=='meto');
   if(v==='meto')renderMetodologia();
 };
-
 window.toggleTheme=function(){
   const dark=document.documentElement.getAttribute('data-theme')==='dark';
   document.documentElement.setAttribute('data-theme',dark?'light':'dark');
@@ -1213,7 +1095,6 @@ window.toggleTheme=function(){
   document.getElementById('brandLogo').src=dark?LOGO_D:LOGO_L;
 };
 
-// ── GLOBAL CLICK
 document.addEventListener('click',e=>{
   if(!e.target.closest('.panel')&&!e.target.closest('#tagPopup')&&!e.target.closest('#icpPopup')&&!e.target.closest('#addModal'))closePanel();
   if(!e.target.closest('#tagPopup'))closePopup();
