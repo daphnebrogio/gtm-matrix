@@ -542,11 +542,18 @@ let saveTimeout = null;
 
 // ── HELPERS ──────────────────────────────────────────────────────────────────
 function classifyItem(item){
+  // Prefixo explícito tem prioridade
+  const m = item.match(/^__(e|d|a)__/);
+  if(m) return m[1];
+  // Fallback por palavras-chave (compatibilidade com dados antigos)
   const l = item.toLowerCase();
   if(MAT_E.some(m=>l.includes(m))) return 'e';
   if(MAT_D.some(m=>l.includes(m))) return 'd';
   if(MAT_A.some(m=>l.includes(m))) return 'a';
   return null;
+}
+function stripPrefix(item){
+  return item.replace(/^__(e|d|a)__/,'');
 }
 function cellToZone(c){ return CELL_ZONE[c] ?? 1; }
 function chColor(c){ const l=c.toLowerCase(); for(const k of Object.keys(CH_COLORS)) if(l.includes(k)) return CH_COLORS[k]; return '#6080a8'; }
@@ -821,7 +828,7 @@ function renderPanel(){
 
 function splitItems(canais){
   const mats=[],chs=[];
-  (canais||[]).forEach((item,ri)=>{ const t=classifyItem(item); if(t) mats.push({item,type:t,ri}); else chs.push({item,ri}); });
+  (canais||[]).forEach((item,ri)=>{ const t=classifyItem(item); if(t) mats.push({item:stripPrefix(item),raw:item,type:t,ri}); else chs.push({item,ri}); });
   return{mats,chs};
 }
 
@@ -891,7 +898,7 @@ window.openPopup = function(e,field,ri){
   let val='', mtype='d';
   if(!popIsNew){
     if(field.startsWith('icp:')) val=(s.icp[field.split(':')[1]]||[])[ri]||'';
-    else if(field==='mat'){ val=s.canais[ri]||''; mtype=classifyItem(val)||'d'; }
+    else if(field==='mat'){ const raw=s.canais[ri]||''; mtype=classifyItem(raw)||'d'; val=stripPrefix(raw); }
     else val=s.canais[ri]||'';
   }
   selMatType=mtype;
@@ -933,6 +940,11 @@ window.saveTag = function(){
     if(!s.icp[key]) s.icp[key]=[];
     if(popIsNew) s.icp[key].push(val);
     else s.icp[key][popRI]=val;
+  } else if(popIsMat){
+    // Materiais são armazenados com prefixo __tipo__ para classificação confiável
+    const stored = `__${selMatType}__${val}`;
+    if(popIsNew) s.canais.push(stored);
+    else s.canais[popRI]=stored;
   } else {
     if(popIsNew) s.canais.push(val);
     else s.canais[popRI]=val;
