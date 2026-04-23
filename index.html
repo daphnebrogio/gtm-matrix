@@ -1,1107 +1,1021 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tripla · GTM System</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tripla · Inteligência de Mercado · Matriz GTM</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --font:'Inter',system-ui,sans-serif;
-  --blue:#0057D5;--blue-h:#0046b0;--cyan:#38DBFF;
-  --bg:#f0f4fb;--surface:#fff;--s2:#e8eef8;--s3:#dde6f4;
-  --border:#c8d4ea;--border2:#a8bcda;
-  --text:#0f1a3a;--muted:#4a5a80;--muted2:#7080a8;
-  --z1t:#3535a0;--z1b:rgba(80,80,180,.08);--z1c:rgba(80,80,180,.22);
-  --z2t:#884020;--z2b:rgba(180,100,48,.08);--z2c:rgba(180,100,48,.22);
-  --z3t:#003aaa;--z3b:rgba(0,87,213,.07);--z3c:rgba(0,87,213,.20);
-  --z4t:#4a5a7a;--z4b:rgba(110,128,160,.07);--z4c:rgba(110,128,160,.20);
+  --blue-dark:#152454;--blue-main:#0057D5;--blue-light:#00A0FF;--cyan:#38DBFF;
+  --bg:#f2f5fc;--surface:#fff;--surface2:#edf1f9;--surface3:#e0e8f5;
+  --border:#d0d9ee;--border2:#b8c6e0;
+  --text:#0f1a3a;--muted:#5a6a90;--muted2:#8090b8;
+  --z1t:#3a3a98;--z1b:rgba(90,90,184,.07);--z1bd:rgba(90,90,184,.28);
+  --z2t:#904820;--z2b:rgba(184,104,48,.07);--z2bd:rgba(184,104,48,.28);
+  --z3t:#003aaa;--z3b:rgba(0,87,213,.07);--z3bd:rgba(0,87,213,.25);
+  --z4t:#4a5a7a;--z4b:rgba(112,128,160,.07);--z4bd:rgba(112,128,160,.22);
   --cyber:#0057D5;--gov:#0a8a5c;--infra:#c03030;--smart:#7040c0;
-  --danger:#bf1f1f;--danger-bg:rgba(191,31,31,.06);--danger-bd:rgba(191,31,31,.2);
-  --success:#0a8a5c;
-  --r:10px;--rl:14px;--rxl:18px;
-  --shadow:0 2px 8px rgba(0,0,0,.08),0 8px 24px rgba(0,0,0,.06);
-  --fs-xs:11px;--fs-sm:13px;--fs-base:15px;--fs-md:16px;--fs-lg:18px;--fs-xl:22px;
+  --warn:#f59e0b;--danger:#c03030;
+  --shadow:0 1px 3px rgba(0,0,0,.07),0 4px 16px rgba(0,0,0,.05);
+  --shadow-lg:0 4px 12px rgba(0,0,0,.12),0 16px 48px rgba(0,0,0,.1);
+  --r:8px;--rl:12px;--rxl:16px;--panel-w:420px;--hdr-h:56px;
 }
 [data-theme=dark]{
-  --bg:#07101f;--surface:#0e1929;--s2:#162032;--s3:#1c2a40;
-  --border:#1e3050;--border2:#2a4068;
-  --text:#dce8f8;--muted:#6078a8;--muted2:#8098c0;
-  --z1t:#8888d8;--z2t:#d08040;--z3t:#4898f8;--z4t:#7888a8;
+  --bg:#08101f;--surface:#0d1626;--surface2:#131e30;--surface3:#192438;
+  --border:#1e2d48;--border2:#2a3d60;
+  --text:#dde5f8;--muted:#6878a8;--muted2:#8090b8;
+  --z1t:#9090d8;--z2t:#d88848;--z3t:#4898f8;--z4t:#8090b8;
   --cyber:#60a5fa;--gov:#34d399;--infra:#f87171;--smart:#c084fc;
-  --shadow:0 2px 8px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  --shadow:0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);
+  --shadow-lg:0 4px 12px rgba(0,0,0,.45),0 16px 48px rgba(0,0,0,.38);
 }
-body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:var(--fs-base);min-height:100vh;display:flex;flex-direction:column;overflow:hidden;line-height:1.5;-webkit-font-smoothing:antialiased}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
 
 /* LOADING */
-.loading-screen{position:fixed;inset:0;z-index:3000;background:linear-gradient(135deg,#0a1428,#152454,#0057D5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px}
-.loading-screen img{height:40px;filter:brightness(0) invert(1)}
-.spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,.15);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
-.loading-msg{font-size:var(--fs-sm);color:rgba(255,255,255,.45)}
+#loadingScreen{position:fixed;inset:0;z-index:3000;background:linear-gradient(135deg,#06090f,#152454,#0057D5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+.ld-spin{width:34px;height:34px;border:3px solid rgba(255,255,255,.18);border-top-color:var(--cyan);border-radius:50%;animation:spin .85s linear infinite}
+.ld-msg{font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.04em}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* AUTH */
-.auth-screen{position:fixed;inset:0;z-index:2000;background:#f5f7fb;display:flex;align-items:center;justify-content:center}
-.auth-wrap{display:flex;flex-direction:column;align-items:center;gap:28px;width:100%;max-width:420px;padding:24px}
-.auth-logo img{height:36px}
-.auth-card{background:#fff;border:1px solid #dde4f0;border-radius:var(--rxl);padding:40px;width:100%;box-shadow:0 4px 24px rgba(0,60,160,.08)}
-.auth-title{font-size:var(--fs-xl);font-weight:800;color:#0f1a3a;margin-bottom:6px;letter-spacing:-.025em}
-.auth-sub{font-size:var(--fs-sm);color:#6878a0;margin-bottom:28px}
-.auth-field{margin-bottom:18px}
-.auth-label{display:block;font-size:var(--fs-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7080a8;margin-bottom:7px}
-.auth-input{width:100%;padding:12px 16px;background:#f5f7fb;border:1.5px solid #dde4f0;border-radius:var(--r);font-family:var(--font);font-size:var(--fs-base);color:#0f1a3a;outline:none;transition:border-color .2s,box-shadow .2s}
-.auth-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,87,213,.12)}
-.auth-btn{width:100%;padding:14px;background:var(--blue);border:none;border-radius:var(--r);font-family:var(--font);font-size:var(--fs-base);font-weight:700;color:#fff;cursor:pointer;transition:background .2s;margin-top:6px}
-.auth-btn:hover{background:var(--blue-h)}
-.auth-btn:disabled{opacity:.5;cursor:not-allowed}
-.auth-error{font-size:var(--fs-sm);color:var(--danger);margin-top:12px;text-align:center;min-height:20px;font-weight:500}
-
-/* OVERLAYS */
-.overlay{position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--rxl);padding:32px;width:100%;max-width:460px;box-shadow:var(--shadow)}
-.modal-title{font-size:var(--fs-lg);font-weight:800;margin-bottom:5px;letter-spacing:-.02em}
-.modal-sub{font-size:var(--fs-sm);color:var(--muted);margin-bottom:24px;line-height:1.6}
-.modal-err{font-size:var(--fs-sm);color:var(--danger);min-height:20px;margin-bottom:8px;font-weight:500}
-.f-grp{margin-bottom:16px}
-.f-lbl{display:block;font-size:var(--fs-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.f-inp,.f-sel{width:100%;padding:10px 14px;background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);font-family:var(--font);font-size:var(--fs-base);color:var(--text);outline:none;transition:border-color .2s}
-.f-inp:focus,.f-sel:focus{border-color:var(--blue)}
-.f-sel{cursor:pointer}
-.f-row{display:flex;gap:12px}
-.f-row .f-grp{flex:1}
-.btn-row{display:flex;gap:10px;justify-content:flex-end;margin-top:24px}
-.btn-p{padding:10px 22px;background:var(--blue);border:none;border-radius:var(--r);font-family:var(--font);font-size:var(--fs-sm);font-weight:700;color:#fff;cursor:pointer;transition:background .2s}
-.btn-p:hover{background:var(--blue-h)}
-.btn-p:disabled{opacity:.5;cursor:not-allowed}
-.btn-g{padding:10px 22px;background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);font-family:var(--font);font-size:var(--fs-sm);font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s}
-.btn-g:hover{border-color:var(--border2);color:var(--text)}
-.btn-danger{padding:10px 22px;background:var(--danger-bg);border:1.5px solid var(--danger-bd);border-radius:var(--r);font-family:var(--font);font-size:var(--fs-sm);font-weight:600;color:var(--danger);cursor:pointer}
-
-/* TOPBAR */
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:58px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--surface);gap:20px;z-index:50}
-.brand{display:flex;align-items:center;gap:14px}
-.brand-logo img{height:28px;width:auto}
-.brand-div{width:1px;height:28px;background:var(--border2);flex-shrink:0}
-.brand-text{display:flex;flex-direction:column;gap:1px}
-.brand-sup{font-size:9px;font-weight:700;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
-.brand-name{font-size:var(--fs-md);font-weight:800;letter-spacing:-.02em}
-.top-nav{display:flex;gap:4px}
-.top-nav-btn{padding:8px 18px;border-radius:8px;font-size:var(--fs-sm);font-weight:600;cursor:pointer;color:var(--muted);border:none;background:none;font-family:var(--font);transition:all .15s}
-.top-nav-btn.active{background:var(--blue);color:#fff}
-.top-right{display:flex;align-items:center;gap:10px}
-.icon-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);background:var(--s2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--muted);transition:all .2s}
-.icon-btn:hover{border-color:var(--blue);color:var(--blue)}
-.user-chip{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border:1.5px solid var(--border);border-radius:24px;background:var(--s2);cursor:pointer;font-size:var(--fs-sm);font-weight:600;color:var(--muted);transition:all .2s}
-.user-chip:hover{border-color:var(--border2);color:var(--text)}
-.user-av{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
-
-/* MAIN */
-.main{flex:1;display:flex;overflow:hidden;min-height:0}
 .v-hidden{display:none!important}
 
-/* ── MATRIX ── */
-.matrix-view{display:flex;flex:1;overflow:hidden;min-height:0}
-.matrix-shell{flex:1;display:flex;flex-direction:column;padding:12px 12px 8px 4px;min-height:0;overflow:hidden}
-.matrix-outer{flex:1;display:flex;min-height:0;overflow:hidden}
+/* AUTH */
+#authWrap{position:fixed;inset:0;z-index:2000;background:linear-gradient(135deg,#06090f,#152454,#0057D5);display:none;align-items:center;justify-content:center}
+#authWrap.show{display:flex}
+.auth-box{background:rgba(13,22,38,.95);border:1px solid rgba(56,219,255,.14);border-radius:var(--rxl);padding:36px 40px;width:380px;backdrop-filter:blur(20px);box-shadow:0 24px 72px rgba(0,0,0,.6)}
+.auth-logo{display:block;margin-bottom:22px}
+.auth-title{font-size:20px;font-weight:800;color:#fff;margin-bottom:4px}
+.auth-sub{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:28px}
+.auth-lbl{display:block;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:6px}
+.auth-inp{width:100%;padding:10px 14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:var(--r);color:#fff;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;margin-bottom:12px}
+.auth-inp:focus{border-color:var(--cyan)}
+.auth-btn{width:100%;padding:12px;background:var(--blue-main);border:none;border-radius:var(--r);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:6px}
+.auth-btn:hover{background:#0048b8}
+.auth-err{font-size:12px;color:#f87171;min-height:18px;margin-top:8px}
 
-/* Y axis */
-.y-axis{width:44px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding-bottom:38px}
-.y-axis-label{writing-mode:vertical-rl;transform:rotate(180deg);font-size:8px;font-weight:700;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;white-space:nowrap;margin-bottom:6px}
-.y-ticks{flex:1;display:flex;flex-direction:column;justify-content:space-around;align-items:center}
-.y-ticks span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:8px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+/* HEADER */
+#hdr{height:var(--hdr-h);min-height:var(--hdr-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:12px;z-index:100;flex-shrink:0}
+.hdr-brand{display:flex;align-items:center;gap:10px;text-decoration:none;user-select:none}
+.hdr-div{width:1px;height:26px;background:var(--border)}
+.hdr-titles{line-height:1.1}
+.hdr-sub{font-size:9px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--muted2)}
+.hdr-main{font-size:15px;font-weight:800;color:var(--blue-main)}
+.hdr-sp{flex:1}
+.hdr-tabs{display:flex;gap:2px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:3px}
+.top-tab{padding:5px 16px;font-size:12px;font-weight:600;border:none;border-radius:6px;background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;font-family:inherit}
+.top-tab.active{background:var(--surface);color:var(--text);box-shadow:var(--shadow)}
+.hdr-btns{display:flex;gap:6px;align-items:center}
+.icon-btn{width:32px;height:32px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .15s;flex-shrink:0;font-family:inherit}
+.icon-btn:hover{border-color:var(--blue-main);color:var(--blue-main)}
+.user-chip{display:flex;align-items:center;gap:7px;padding:4px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s;user-select:none}
+.user-chip:hover{border-color:var(--blue-main)}
+.user-dot{width:7px;height:7px;background:#22c55e;border-radius:50%;flex-shrink:0}
 
-.matrix-body{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden}
-.grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:4px;min-height:0}
+/* LAYOUT */
+#appWrap{display:none;flex-direction:column;height:calc(100vh - var(--hdr-h));overflow:hidden}
+#appWrap.show{display:flex}
+#mainContent{flex:1;display:flex;overflow:hidden;position:relative}
 
-/* CELLS */
-.cell{border-radius:var(--r);padding:8px;display:flex;flex-direction:column;gap:4px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:var(--border) transparent;min-height:0;min-width:0}
-.cell::-webkit-scrollbar{width:2px}.cell::-webkit-scrollbar-thumb{background:var(--border)}
-.cell.z1{background:var(--z1b);border:1.5px solid var(--z1c)}
-.cell.z2{background:var(--z2b);border:1.5px solid var(--z2c)}
-.cell.z3{background:var(--z3b);border:1.5px solid var(--z3c)}
-.cell.z4{background:var(--z4b);border:1.5px solid var(--z4c)}
-.cell-hd{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;margin-bottom:2px}
-.zone-label{font-size:8px;font-weight:700;letter-spacing:.10em;opacity:.65;text-transform:uppercase;white-space:nowrap}
-.cell.z1 .zone-label{color:var(--z1t)}.cell.z2 .zone-label{color:var(--z2t)}.cell.z3 .zone-label{color:var(--z3t)}.cell.z4 .zone-label{color:var(--z4t)}
-.cell-add{width:20px;height:20px;border-radius:50%;border:1.5px dashed var(--border2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);line-height:1;transition:all .15s;flex-shrink:0}
-.cell-add:hover{border-color:var(--blue);color:var(--blue);background:var(--s2)}
-.chips-wrap{display:flex;flex-direction:column;gap:3px;flex:1;min-height:0}
-.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;line-height:1.3;border:1.5px solid transparent;text-align:left;font-family:var(--font);width:100%;transition:all .15s;min-width:0}
-.chip:hover{filter:brightness(1.08);transform:translateY(-1px)}
-.chip.active{box-shadow:0 0 0 2.5px var(--cyan)}
-.cell.z1 .chip{background:rgba(80,80,180,.11);color:var(--z1t);border-color:var(--z1c)}
-.cell.z2 .chip{background:rgba(180,100,48,.11);color:var(--z2t);border-color:var(--z2c)}
-.cell.z3 .chip{background:rgba(0,87,213,.09);color:var(--z3t);border-color:var(--z3c)}
-.cell.z4 .chip{background:rgba(110,128,160,.11);color:var(--z4t);border-color:var(--z4c)}
-[data-theme=dark] .cell.z1 .chip{color:#8888d8}
-[data-theme=dark] .cell.z2 .chip{color:#d08040}
-[data-theme=dark] .cell.z3 .chip{color:#4898f8}
-[data-theme=dark] .cell.z4 .chip{color:#7888a8}
-.chip-bu{width:8px;height:8px;border-radius:2px;flex-shrink:0}
-.bd-cyber{background:var(--cyber)}.bd-gov{background:var(--gov)}.bd-infra{background:var(--infra)}.bd-smart{background:var(--smart)}
+/* MATRIX */
+#matrixView{flex:1;overflow:auto;padding:16px 16px 24px}
+.matrix-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;min-height:100%}
+.mzone{border:1.5px solid var(--border);border-radius:var(--rl);padding:14px;display:flex;flex-direction:column;gap:10px;min-height:240px;position:relative;overflow:hidden;transition:border-color .2s}
+.mzone::before{content:'';position:absolute;inset:0;pointer-events:none;border-radius:calc(var(--rl) - 1.5px)}
+.mzone.z1{border-color:var(--z1bd)}.mzone.z1::before{background:var(--z1b)}
+.mzone.z2{border-color:var(--z2bd)}.mzone.z2::before{background:var(--z2b)}
+.mzone.z3{border-color:var(--z3bd)}.mzone.z3::before{background:var(--z3b)}
+.mzone.z4{border-color:var(--z4bd)}.mzone.z4::before{background:var(--z4b)}
+.zone-hdr{display:flex;align-items:center;gap:8px;position:relative;z-index:1}
+.zone-badge{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.z1 .zone-badge{background:var(--z1b);color:var(--z1t);border:1px solid var(--z1bd)}
+.z2 .zone-badge{background:var(--z2b);color:var(--z2t);border:1px solid var(--z2bd)}
+.z3 .zone-badge{background:var(--z3b);color:var(--z3t);border:1px solid var(--z3bd)}
+.z4 .zone-badge{background:var(--z4b);color:var(--z4t);border:1px solid var(--z4bd)}
+.zone-name{font-size:13px;font-weight:700;color:var(--text)}
+.zone-desc{font-size:11px;color:var(--muted);position:relative;z-index:1;line-height:1.4}
+.zone-chips{display:flex;flex-wrap:wrap;gap:6px;position:relative;z-index:1}
+.zone-add{width:28px;height:28px;border:1.5px dashed var(--border2);border-radius:6px;background:transparent;color:var(--muted2);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;line-height:1}
+.zone-add:hover{border-color:var(--blue-main);color:var(--blue-main);background:rgba(0,87,213,.06)}
 
-.x-row{display:flex;padding:4px 0 0 0;gap:4px}
-.x-row span{flex:1;text-align:center;font-size:8px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
-.x-label{text-align:center;font-size:8px;font-weight:700;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;padding-top:3px}
-.bu-legend{display:flex;gap:16px;padding:7px 0 0 44px;flex-wrap:wrap}
-.bu-l{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--muted)}
-.bu-ld{width:10px;height:10px;border-radius:2px}
+/* CHIPS */
+.chip{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:7px;border:1px solid var(--border);background:var(--surface);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;max-width:185px;user-select:none}
+.chip:hover{border-color:var(--blue-main);box-shadow:0 2px 10px rgba(0,87,213,.15)}
+.chip.active{border-color:var(--blue-main);background:rgba(0,87,213,.07);box-shadow:0 2px 10px rgba(0,87,213,.2)}
+.chip-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.chip[data-bu=cyber] .chip-dot{background:var(--cyber)}
+.chip[data-bu=gov] .chip-dot{background:var(--gov)}
+.chip[data-bu=infra] .chip-dot{background:var(--infra)}
+.chip[data-bu=smart] .chip-dot{background:var(--smart)}
+.chip-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.chip-warn{font-size:10px;color:var(--warn);flex-shrink:0}
 
 /* PANEL */
-.panel{width:0;overflow:hidden;transition:width .3s cubic-bezier(.4,0,.2,1);border-left:1px solid transparent;flex-shrink:0;display:flex;flex-direction:column;background:var(--surface)}
-.panel.open{width:450px;border-left-color:var(--border)}
-.panel-scroll{overflow-y:auto;flex:1;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
-.panel-scroll::-webkit-scrollbar{width:3px}.panel-scroll::-webkit-scrollbar-thumb{background:var(--border)}
-.panel-sticky{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--border);padding:14px 18px 12px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-.p-bu{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:2px}
-.p-name{font-size:var(--fs-lg);font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-bottom:2px}
-.p-short{font-size:var(--fs-sm);color:var(--muted2)}
-.panel-acts{display:flex;gap:6px;flex-shrink:0;padding-top:2px}
-.pnl-btn{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--border);background:var(--s2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);transition:all .15s}
-.pnl-btn:hover{border-color:var(--blue);color:var(--blue)}
-.pnl-btn.on{background:var(--blue);color:#fff;border-color:var(--blue)}
-.panel-body{padding:16px 18px 24px}
-.save-bar{position:sticky;bottom:0;background:var(--surface);border-top:1px solid var(--border);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.save-status{font-size:var(--fs-sm);color:var(--muted);font-weight:500}
-.save-status.saving{color:var(--blue)}.save-status.saved{color:var(--success)}.save-status.err{color:var(--danger)}
+#panel{width:0;border-left:0px solid var(--border);background:var(--surface);overflow:hidden;transition:width .25s cubic-bezier(.4,0,.2,1),border-width .25s;display:flex;flex-direction:column;flex-shrink:0}
+#panel.open{width:var(--panel-w);border-left-width:1px}
+.panel-sticky{position:sticky;top:0;background:var(--surface);z-index:10;border-bottom:1px solid var(--border);flex-shrink:0}
+.panel-topbar{display:flex;align-items:flex-start;gap:8px;padding:13px 14px 0}
+.panel-left{flex:1;min-width:0}
+.panel-breadcrumb{font-size:10px;color:var(--muted2);font-weight:500;letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px}
+.panel-title-wrap{display:flex;align-items:center;gap:6px}
+.panel-title{font-size:14px;font-weight:800;color:var(--text);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;padding-bottom:0}
+.panel-title-edit{font-size:14px;font-weight:800;color:var(--text);border:1px solid var(--blue-main);border-radius:6px;background:var(--surface2);padding:3px 7px;font-family:inherit;outline:none;min-width:0;flex:1}
+.panel-actions{display:flex;gap:5px;flex-shrink:0;padding-top:2px}
+.panel-edit-btn,.panel-close-btn{height:27px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;font-family:inherit;transition:all .15s;padding:0 9px}
+.panel-edit-btn:hover{border-color:var(--blue-main);color:var(--blue-main)}
+.panel-edit-btn.on{background:var(--blue-main);border-color:var(--blue-main);color:#fff}
+.panel-close-btn{width:27px;padding:0;font-size:14px}
+.panel-close-btn:hover{background:var(--surface2);color:var(--text)}
+.panel-nav{display:flex;padding:8px 14px 0;gap:0;border-top:1px solid var(--border);margin-top:10px}
+.pnav-btn{flex:1;padding:7px 2px 8px;font-size:11px;font-weight:600;border:none;border-bottom:2px solid transparent;background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;font-family:inherit;text-align:center;white-space:nowrap}
+.pnav-btn.active{color:var(--blue-main);border-bottom-color:var(--blue-main)}
+.pnav-btn:hover:not(.active){color:var(--text)}
+.panel-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:0}
+.panel-save-bar{padding:10px 14px;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0;display:none}
+.panel-save-bar.show{display:flex;gap:8px;justify-content:flex-end}
+.psave-btn{padding:7px 18px;background:var(--blue-main);border:none;border-radius:var(--r);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.psave-btn:hover{background:#0048b8}
+.pcancel-btn{padding:7px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);color:var(--muted);font-size:12px;cursor:pointer;font-family:inherit}
 
-/* SCORES */
-.scores{display:flex;gap:6px;margin-bottom:14px}
-.score-card{flex:1;padding:7px 9px;border-radius:var(--r);border:1.5px solid;text-align:center}
-.score-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.6;display:block;margin-bottom:3px}
-.score-val{font-size:var(--fs-sm);font-weight:700}
-.score-val select{font-family:var(--font);font-size:var(--fs-sm);font-weight:700;background:transparent;border:none;cursor:pointer;width:100%;text-align:center;outline:none;padding:0;color:inherit}
-
-/* TABS */
-.tabs{display:flex;gap:3px;background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);padding:3px;margin-bottom:16px}
-.tab-btn{flex:1;padding:7px;border-radius:8px;font-size:var(--fs-sm);font-weight:600;cursor:pointer;color:var(--muted);border:none;background:none;font-family:var(--font);transition:all .15s}
-.tab-btn.active{background:var(--blue);color:#fff}
-.tab-pane{display:none}.tab-pane.active{display:block}
-
-/* SECTIONS */
-.sec-hd{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px;margin-bottom:8px;margin-top:20px}
-.sec-hd:first-child{margin-top:0}
-.sec-hd::after{content:'';flex:1;height:1px;background:var(--border)}
-
-/* TEXT BLOCKS */
-.just-block{background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);padding:11px 13px;margin-bottom:7px}
-.just-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:5px}
-.just-block p{font-size:var(--fs-base);line-height:1.65;color:var(--muted2);word-break:break-word;overflow-wrap:break-word;white-space:pre-wrap}
-.just-block textarea{width:100%;background:transparent;border:none;resize:none;outline:none;font-family:var(--font);font-size:var(--fs-base);line-height:1.65;color:var(--muted2);overflow:hidden;word-break:break-word;overflow-wrap:break-word;display:block}
-.char-count{font-size:10px;color:var(--muted2);text-align:right;margin-top:4px}
-.char-count.warn{color:var(--danger);font-weight:600}
-.posture-box{background:var(--s2);border-left:3px solid var(--blue);border-top:1.5px solid var(--border);border-right:1.5px solid var(--border);border-bottom:1.5px solid var(--border);border-radius:0 var(--r) var(--r) 0;padding:11px 13px;margin-bottom:10px}
-.posture-box p{font-size:var(--fs-base);line-height:1.65;color:var(--muted2);word-break:break-word;overflow-wrap:break-word;white-space:pre-wrap}
-.posture-box textarea{width:100%;background:transparent;border:none;resize:none;outline:none;font-family:var(--font);font-size:var(--fs-base);line-height:1.65;color:var(--muted2);overflow:hidden;word-break:break-word;overflow-wrap:break-word;display:block}
-.param-row{display:flex;gap:7px;margin-bottom:7px}
-.param-box{flex:1;background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);padding:8px 11px}
-.param-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;display:flex;align-items:center;gap:5px}
-.param-val{font-size:var(--fs-sm);font-weight:600;color:var(--text);word-break:break-word}
-.param-box input{font-family:var(--font);font-size:var(--fs-sm);font-weight:600;color:var(--text);background:transparent;border:none;outline:none;width:100%}
-
-/* TAGS */
-.tags-section{margin-top:4px}
-.tag-type-group{margin-bottom:12px}
-.tag-type-hd{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.tag-type-dot{width:6px;height:6px;border-radius:2px;flex-shrink:0}
-.tags-wrap{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
-.ctag,.mtag{display:inline-flex;align-items:center;gap:4px;border-radius:5px;padding:4px 9px;font-size:var(--fs-sm);font-weight:500;border:1.5px solid;cursor:default;line-height:1.3}
-.ctag{background:var(--s2);border-color:var(--border);color:var(--muted)}
-.ctag .cdot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-.ct-out{background:rgba(0,87,213,.06);border-color:rgba(0,87,213,.2);color:#0044b0}[data-theme=dark] .ct-out{color:#60a5fa}
-.ct-dig{background:rgba(10,138,92,.06);border-color:rgba(10,138,92,.2);color:#0a7048}[data-theme=dark] .ct-dig{color:#34d399}
-.ct-evt{background:rgba(112,64,192,.06);border-color:rgba(112,64,192,.2);color:#6030a0}[data-theme=dark] .ct-evt{color:#c084fc}
-.ct-pr{background:rgba(180,100,48,.07);border-color:rgba(180,100,48,.2);color:#804020}[data-theme=dark] .ct-pr{color:#d08040}
-.mtag{display:inline-flex;align-items:center;gap:4px;border-radius:5px;padding:4px 9px;font-size:var(--fs-sm);font-weight:500;border:1.5px solid;cursor:default}
-.mdot{width:5px;height:5px;border-radius:50%;flex-shrink:0;background:currentColor}
-.mt-e{background:rgba(0,87,213,.06);border-color:rgba(0,87,213,.2);color:#0044b0}[data-theme=dark] .mt-e{color:#60a5fa}
-.mt-d{background:rgba(0,160,255,.06);border-color:rgba(0,160,255,.2);color:#006090}[data-theme=dark] .mt-d{color:var(--cyan)}
-.mt-a{background:rgba(180,100,48,.07);border-color:rgba(180,100,48,.2);color:#804020}[data-theme=dark] .mt-a{color:#d08040}
-.tag-ed{cursor:pointer}.tag-ed:hover{opacity:.7;text-decoration:line-through}
-.add-tag{display:inline-flex;align-items:center;gap:3px;padding:4px 9px;border-radius:5px;font-size:var(--fs-sm);font-weight:600;cursor:pointer;border:1.5px dashed var(--border2);color:var(--muted);background:transparent;font-family:var(--font);transition:all .15s}
-.add-tag:hover{border-color:var(--blue);color:var(--blue)}
-
-/* ICP */
-.icp-grp{margin-bottom:18px}
-.icp-lbl{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.icp-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
-.itag{display:inline-flex;align-items:center;gap:4px;border-radius:5px;padding:4px 9px;font-size:var(--fs-sm);font-weight:500;border:1.5px solid}
-.idot{width:5px;height:5px;border-radius:50%;flex-shrink:0;background:currentColor}
-.ia{background:rgba(0,87,213,.06);border-color:rgba(0,87,213,.2);color:#0044b0}[data-theme=dark] .ia{color:#60a5fa}
-.ib{background:rgba(112,64,192,.06);border-color:rgba(112,64,192,.2);color:#6030a0}[data-theme=dark] .ib{color:#c084fc}
-.ic{background:rgba(10,138,92,.06);border-color:rgba(10,138,92,.2);color:#0a7048}[data-theme=dark] .ic{color:#34d399}
-.ino{background:var(--danger-bg);border-color:var(--danger-bd);color:var(--danger)}
-.cortex-note{background:rgba(0,87,213,.04);border:1.5px solid rgba(0,87,213,.14);border-radius:var(--r);padding:10px 14px;margin-bottom:18px;font-size:var(--fs-sm);color:var(--muted2);line-height:1.6}
-.cortex-note strong{color:var(--blue);font-weight:700}
-[data-theme=dark] .cortex-note strong{color:var(--cyan)}
+/* PANEL SECTIONS */
+.psec{margin-bottom:16px}
+.psec-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.psub{margin-bottom:10px}
+.psub-title{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.pfield{margin-bottom:9px}
+.pfield-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted2);margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.pfield-val{font-size:13px;color:var(--text);line-height:1.5}
+.pfield-empty{font-size:12px;color:var(--muted2);font-style:italic}
+.pfield input,.pfield textarea,.pfield select{width:100%;padding:7px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:border-color .2s;resize:vertical;line-height:1.5}
+.pfield input:focus,.pfield textarea:focus,.pfield select:focus{border-color:var(--blue-main)}
+.pfield textarea{min-height:58px}
+.pfield select option{background:var(--surface)}
+.axis-pills{display:flex;gap:6px;flex-wrap:wrap}
+.axis-pill{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid var(--border);background:var(--surface2);color:var(--text)}
+.axis-pill.alta{background:rgba(192,32,32,.08);color:#c03030;border-color:rgba(192,32,32,.22)}
+.axis-pill.media{background:rgba(184,104,48,.08);color:#904820;border-color:rgba(184,104,48,.22)}
+.axis-pill.baixa{background:rgba(10,138,92,.08);color:#0a8a5c;border-color:rgba(10,138,92,.22)}
+[data-theme=dark] .axis-pill.alta{color:#f87171;background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.25)}
+[data-theme=dark] .axis-pill.media{color:#d88848;background:rgba(216,136,72,.1);border-color:rgba(216,136,72,.25)}
+[data-theme=dark] .axis-pill.baixa{color:#34d399;background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.25)}
 
 /* TOOLTIP */
-.tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;border:1.5px solid currentColor;font-size:9px;font-weight:700;cursor:help;opacity:.4;position:relative;flex-shrink:0;transition:opacity .15s;margin-left:4px;line-height:1;vertical-align:middle}
-.tip:hover{opacity:.85}
-.tip .tt{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#0f1a3a;color:#fff;font-size:11px;line-height:1.55;padding:9px 13px;border-radius:9px;white-space:normal;width:240px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:300;font-weight:400;letter-spacing:0;text-transform:none}
-[data-theme=dark] .tip .tt{background:#1e3050}
-.tip .tt::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#0f1a3a}
-.tip:hover .tt{opacity:1}
+.tip{position:relative;display:inline-flex;align-items:center}
+.tip-icon{width:14px;height:14px;border-radius:50%;background:var(--surface3);color:var(--muted2);font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;cursor:help;border:1px solid var(--border);margin-left:4px;flex-shrink:0}
+.tip-text{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--blue-dark);color:#fff;font-size:11px;padding:6px 10px;border-radius:6px;width:180px;text-align:center;white-space:normal;line-height:1.4;pointer-events:none;opacity:0;transition:opacity .15s;z-index:300;font-weight:400}
+.tip:hover .tip-text{opacity:1}
 
-/* DROPDOWN POPUP */
-.popup{position:fixed;z-index:500;background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--rl);padding:14px;box-shadow:var(--shadow);min-width:260px;max-width:320px}
-.pop-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
-.pop-sel{width:100%;font-family:var(--font);font-size:var(--fs-sm);padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--s2);color:var(--text);outline:none;margin-bottom:10px;cursor:pointer}
-.pop-sel:focus{border-color:var(--blue)}
-.pop-acts{display:flex;gap:8px}
-.pop-save{flex:1;padding:8px 12px;border-radius:var(--r);font-size:var(--fs-sm);font-weight:700;cursor:pointer;border:none;background:var(--blue);color:#fff;font-family:var(--font)}
-.pop-del{padding:8px 12px;border-radius:var(--r);font-size:var(--fs-sm);font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--s2);color:var(--danger);font-family:var(--font)}
-.pop-inp{width:100%;font-family:var(--font);font-size:var(--fs-sm);padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--s2);color:var(--text);outline:none;margin-bottom:5px}
-.pop-inp:focus{border-color:var(--blue)}
-.pop-char{font-size:10px;color:var(--muted2);text-align:right;margin-bottom:8px}
-.pop-char.warn{color:var(--danger);font-weight:600}
+/* TAGS */
+.ptags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px}
+.ptag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;background:var(--surface2);border:1px solid var(--border);color:var(--text)}
+.ptag-x{width:14px;height:14px;border-radius:50%;background:var(--surface3);color:var(--muted2);border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:9px;transition:all .15s;padding:0;flex-shrink:0;font-family:inherit}
+.ptag-x:hover{background:#f87171;color:#fff}
+.ptag-add{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;background:transparent;border:1.5px dashed var(--border2);color:var(--muted2);cursor:pointer;transition:all .15s;font-family:inherit}
+.ptag-add:hover{border-color:var(--blue-main);color:var(--blue-main);background:rgba(0,87,213,.05)}
+
+/* TAG POPUP */
+#tagPopup{position:fixed;z-index:600;background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);box-shadow:var(--shadow-lg);padding:14px;width:290px;display:none}
+.popup-title{font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px}
+.popup-cats{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+.popup-cat{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);cursor:pointer;transition:all .15s;font-family:inherit}
+.popup-cat.on{border-color:var(--blue-main);background:rgba(0,87,213,.09);color:var(--blue-main)}
+.popup-inp{width:100%;padding:7px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:13px;font-family:inherit;outline:none;margin-bottom:10px;transition:border-color .2s}
+.popup-inp:focus{border-color:var(--blue-main)}
+.popup-row{display:flex;gap:6px;justify-content:flex-end}
+.popup-save{padding:6px 14px;background:var(--blue-main);border:none;border-radius:var(--r);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.popup-cancel{padding:6px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);color:var(--muted);font-size:12px;cursor:pointer;font-family:inherit}
+
+/* PERSONA */
+.persona-card{border:1px solid var(--border);border-radius:var(--rl);padding:12px;background:var(--surface2);margin-bottom:8px}
+.persona-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.persona-cargo{font-size:12px;font-weight:700;color:var(--blue-main)}
+.persona-del{padding:3px 8px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:11px;cursor:pointer;font-family:inherit;transition:all .15s}
+.persona-del:hover{background:rgba(248,113,113,.1);border-color:#f87171;color:#f87171}
+.persona-field{margin-bottom:7px}
+.persona-field-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted2);margin-bottom:3px}
+.persona-field-val{font-size:12px;color:var(--text);line-height:1.5}
+.persona-add-btn{width:100%;padding:9px;border:1.5px dashed var(--border2);border-radius:var(--rl);background:transparent;color:var(--muted2);cursor:pointer;font-size:12px;font-family:inherit;transition:all .15s;text-align:center}
+.persona-add-btn:hover{border-color:var(--blue-main);color:var(--blue-main);background:rgba(0,87,213,.04)}
+.persona-form{border:1px solid var(--blue-main);border-radius:var(--rl);padding:12px;background:rgba(0,87,213,.04);margin-bottom:8px}
+.persona-form-actions{display:flex;gap:6px;justify-content:flex-end;margin-top:8px}
+.btn-sm-save{padding:5px 13px;background:var(--blue-main);border:none;border-radius:var(--r);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn-sm-cancel{padding:5px 11px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);color:var(--muted);font-size:11px;cursor:pointer;font-family:inherit}
 
 /* ADD MODAL */
-.add-modal-ov{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px}
+#addModal{position:fixed;inset:0;z-index:700;background:rgba(8,13,26,.72);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center}
+#addModal.show{display:flex}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--rxl);padding:24px;width:520px;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
+.modal-h{font-size:16px;font-weight:800;color:var(--text);margin-bottom:18px}
+.modal-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mf{margin-bottom:12px}
+.mf label{display:block;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted2);margin-bottom:5px}
+.mf input,.mf select,.mf textarea{width:100%;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:border-color .2s;resize:vertical}
+.mf input:focus,.mf select:focus,.mf textarea:focus{border-color:var(--blue-main)}
+.mf select option{background:var(--surface)}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);align-items:center}
+.m-save{padding:8px 20px;background:var(--blue-main);border:none;border-radius:var(--r);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.m-save:hover{background:#0048b8}
+.m-cancel{padding:8px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);color:var(--muted);font-size:13px;cursor:pointer;font-family:inherit}
+.m-delete{padding:8px 16px;background:rgba(192,32,32,.07);border:1px solid rgba(192,32,32,.18);border-radius:var(--r);color:var(--danger);font-size:13px;cursor:pointer;font-family:inherit;margin-right:auto}
 
-/* ── METHODOLOGY ── */
-.meto-wrap{flex:1;overflow-y:auto;padding:32px 24px 56px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
-.meto-wrap::-webkit-scrollbar{width:3px}.meto-wrap::-webkit-scrollbar-thumb{background:var(--border)}
-/* center all content */
-.meto-inner{max-width:820px;margin:0 auto;width:100%}
-.meto-page-hd{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
-.meto-page-title{font-size:var(--fs-xl);font-weight:800;letter-spacing:-.025em}
-.meto-page-sub{font-size:var(--fs-base);color:var(--muted2);margin-bottom:36px;line-height:1.65}
+/* METO VIEW */
+#metoView{flex:1;overflow-y:auto;padding:24px}
+.meto-wrap{max-width:900px;margin:0 auto}
+.meto-section{margin-bottom:40px}
+.meto-h1{font-size:20px;font-weight:800;color:var(--text);margin-bottom:5px}
+.meto-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+.meto-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.meto-zone-card{padding:16px;border-radius:var(--rl);border:1.5px solid}
+.meto-zone-card.z1{border-color:var(--z1bd);background:var(--z1b)}.meto-zone-card.z2{border-color:var(--z2bd);background:var(--z2b)}.meto-zone-card.z3{border-color:var(--z3bd);background:var(--z3b)}.meto-zone-card.z4{border-color:var(--z4bd);background:var(--z4b)}
+.meto-zone-num{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);margin-bottom:3px}
+.meto-zone-name{font-size:14px;font-weight:800;color:var(--text);margin-bottom:3px}
+.meto-zone-pos{font-size:11px;color:var(--muted);margin-bottom:6px}
+.meto-zone-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.meto-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.meto-ccard{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rl);padding:14px}
+.meto-ccard-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
+.meto-ccard-owner{font-size:11px;color:var(--blue-main);margin-bottom:6px;font-weight:600}
+.meto-ccard-role{font-size:11px;color:var(--muted);line-height:1.4}
+.meto-mat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.meto-mat-col{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rl);padding:14px}
+.meto-mat-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted2);margin-bottom:8px}
+.meto-mat-item{font-size:11px;color:var(--text);padding:4px 0;border-bottom:1px solid var(--border);line-height:1.4}
+.meto-mat-item:last-child{border-bottom:none}
 
-/* section block */
-.meto-section{margin-bottom:48px}
-.meto-sec-title-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.meto-sec-title{font-size:var(--fs-lg);font-weight:800;letter-spacing:-.02em}
-.meto-sec-desc{font-size:var(--fs-sm);color:var(--muted2);line-height:1.65;margin-bottom:20px}
+/* SAVE TOAST */
+#toast{position:fixed;bottom:18px;right:18px;z-index:500;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:8px 14px;font-size:12px;font-weight:600;display:none;align-items:center;gap:8px;box-shadow:var(--shadow-lg)}
+#toast.show{display:flex}
 
-/* inline pencil — used everywhere */
-.pencil-btn{background:none;border:none;cursor:pointer;color:var(--muted);opacity:.3;font-size:13px;padding:1px 4px;border-radius:4px;transition:opacity .15s,color .15s;line-height:1;flex-shrink:0}
-.pencil-btn:hover{opacity:1;color:var(--blue)}
-
-/* type card — full width */
-.meto-type-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);margin-bottom:14px;overflow:hidden}
-.meto-type-hd{padding:16px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
-.meto-type-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
-.meto-type-name{font-size:var(--fs-md);font-weight:700;flex:1}
-
-/* category cards inside type */
-.meto-cats-list{padding:14px 20px 16px;display:flex;flex-direction:column;gap:10px}
-.meto-cat-item{background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px}
-.meto-cat-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px}
-.meto-cat-name{font-size:var(--fs-sm);font-weight:700}
-.meto-cat-desc{font-size:12px;color:var(--muted2);line-height:1.55;margin-bottom:8px}
-.meto-cat-tags{display:flex;flex-wrap:wrap;gap:4px}
-.meto-tag-pill{display:inline-flex;background:var(--s3);border:1px solid var(--border);border-radius:5px;padding:3px 9px;font-size:11px;font-weight:500;color:var(--muted)}
-.meto-add-cat-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px;border:1.5px dashed var(--border2);border-radius:var(--r);background:transparent;font-family:var(--font);font-size:var(--fs-sm);font-weight:600;color:var(--muted);cursor:pointer;width:100%;transition:all .15s}
-.meto-add-cat-btn:hover{border-color:var(--blue);color:var(--blue)}
-
-/* zone cards */
-.meto-zones-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:28px}
-.meto-zone-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);padding:20px;position:relative;min-width:0}
-.meto-zone-card:hover{border-color:var(--blue)}
-.meto-zbadge{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.meto-card-title{font-size:var(--fs-md);font-weight:800;margin-bottom:3px}
-.meto-card-sub{font-size:11px;color:var(--muted2);margin-bottom:10px;font-weight:600}
-.meto-card p{font-size:var(--fs-sm);line-height:1.7;color:var(--muted2);margin-bottom:8px}
-.meto-kpi{display:inline-flex;background:var(--s2);border:1.5px solid var(--border);border-radius:5px;padding:3px 9px;font-size:10px;font-weight:700;margin:0 4px 4px 0}
-/* axes */
-.meto-axes{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);padding:20px;margin-bottom:28px}
-.meto-axes-title{font-size:var(--fs-md);font-weight:700;margin-bottom:12px}
-.axes-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.axis-block{background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);padding:14px}
-.axis-name{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px}
-.axis-block p{font-size:var(--fs-sm);line-height:1.6;color:var(--muted2)}
-
-/* TOAST */
-.toast{position:fixed;bottom:28px;right:28px;z-index:9999;background:#0f1a3a;color:#fff;padding:12px 20px;border-radius:var(--r);font-size:var(--fs-sm);font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:var(--shadow)}
-[data-theme=dark] .toast{background:#1e3050}
-.toast.show{opacity:1}
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted2)}
 </style>
 </head>
 <body>
 
-<div class="loading-screen" id="loadingScreen">
-  <img src="https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-horizontal-color-white-png-transparente-02.png" alt="Tripla">
-  <div class="spinner"></div>
-  <div class="loading-msg">Conectando ao sistema...</div>
+<div id="loadingScreen">
+  <img src="https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-horizontal-color-white-png-transparente-02.png" style="height:36px" alt="Tripla">
+  <div class="ld-spin"></div>
+  <div class="ld-msg">Carregando sistema...</div>
 </div>
 
-<div class="auth-screen" id="authScreen" style="display:none">
-  <div class="auth-wrap">
-    <div class="auth-logo"><img src="https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-color-horizontal-png-transparente-02.png" alt="Tripla"></div>
-    <div class="auth-card">
-      <div class="auth-title">Bem-vindo</div>
-      <div class="auth-sub">Acesse com suas credenciais para continuar</div>
-      <div class="auth-field"><label class="auth-label">E-mail</label><input class="auth-input" id="authEmail" type="email" placeholder="seu@email.com" autocomplete="email"></div>
-      <div class="auth-field"><label class="auth-label">Senha</label><input class="auth-input" id="authPass" type="password" placeholder="••••••••" autocomplete="current-password"></div>
-      <div class="auth-error" id="authError"></div>
-      <button class="auth-btn" id="loginBtn" onclick="doLogin()">Entrar</button>
-    </div>
+<div id="authWrap">
+  <div class="auth-box">
+    <img id="authLogo" src="https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-horizontal-color-white-png-transparente-02.png" style="height:28px;display:block;margin-bottom:22px" alt="Tripla">
+    <div class="auth-title">Bem-vindo</div>
+    <div class="auth-sub">Acesse com suas credenciais corporativas</div>
+    <label class="auth-lbl">E-mail</label>
+    <input class="auth-inp" id="authEmail" type="email" placeholder="seu@tripla.com.br" autocomplete="email">
+    <label class="auth-lbl">Senha</label>
+    <input class="auth-inp" id="authPass" type="password" placeholder="••••••••" autocomplete="current-password">
+    <button class="auth-btn" onclick="doLogin()">Entrar</button>
+    <div class="auth-err" id="authErr"></div>
   </div>
 </div>
 
-<div class="overlay" id="changePwOverlay" style="display:none">
-  <div class="modal">
-    <div class="modal-title">Alterar senha</div>
-    <div class="modal-sub" id="pwSub">Crie uma nova senha personalizada.</div>
-    <div class="f-grp"><label class="f-lbl">Nova senha</label><input class="f-inp" id="pw1" type="password" placeholder="Mínimo 6 caracteres"></div>
-    <div class="f-grp"><label class="f-lbl">Confirmar nova senha</label><input class="f-inp" id="pw2" type="password" placeholder="Repita a nova senha"></div>
-    <div class="modal-err" id="pwErr"></div>
-    <div class="btn-row">
-      <button class="btn-g" id="cancelPwBtn" style="display:none" onclick="closePwModal()">Cancelar</button>
-      <button class="btn-p" onclick="saveNewPw()">Salvar senha</button>
+<header id="hdr">
+  <div class="hdr-brand">
+    <img id="brandLogo" src="https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-horizontal-color-white-png-transparente-02.png" style="height:28px" alt="Tripla">
+  </div>
+  <div class="hdr-sp"></div>
+  <div class="hdr-tabs">
+    <button class="top-tab active" onclick="setView('matrix',this)">Matriz</button>
+    <button class="top-tab" onclick="setView('meto',this)">Metodologia</button>
+  </div>
+  <div class="hdr-btns">
+    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Alternar tema">☾</button>
+    <button class="icon-btn" onclick="openAddModal(null)" title="Nova solução" style="font-size:18px;font-weight:300">+</button>
+    <div class="user-chip" id="userChip" onclick="doLogout()">
+      <div class="user-dot"></div>
+      <span id="userEmail">—</span>
     </div>
+  </div>
+</header>
+
+<div id="appWrap">
+  <div id="mainContent">
+    <div id="matrixView">
+      <div class="matrix-grid" id="matrixGrid"></div>
+    </div>
+    <div id="metoView" class="v-hidden"></div>
+    <aside id="panel">
+      <div class="panel-sticky">
+        <div class="panel-topbar">
+          <div class="panel-left">
+            <div class="panel-breadcrumb" id="panelBU"></div>
+            <div class="panel-title-wrap">
+              <div class="panel-title" id="panelTitle"></div>
+              <input class="panel-title-edit v-hidden" id="panelTitleEdit" type="text">
+            </div>
+          </div>
+          <div class="panel-actions">
+            <button class="panel-edit-btn" id="panelEditBtn" onclick="toggleEditMode()">Editar</button>
+            <button class="panel-close-btn" onclick="closePanel()">✕</button>
+          </div>
+        </div>
+        <div class="panel-nav">
+          <button class="pnav-btn active" data-tab="estrategia" onclick="switchPanelTab('estrategia',this)">Estratégia</button>
+          <button class="pnav-btn" data-tab="canais" onclick="switchPanelTab('canais',this)">Canais</button>
+          <button class="pnav-btn" data-tab="mercado" onclick="switchPanelTab('mercado',this)">Mercado</button>
+          <button class="pnav-btn" data-tab="persona" onclick="switchPanelTab('persona',this)">Persona</button>
+        </div>
+      </div>
+      <div class="panel-body" id="panelBody"></div>
+      <div class="panel-save-bar" id="panelSaveBar">
+        <button class="pcancel-btn" onclick="cancelEdit()">Cancelar</button>
+        <button class="psave-btn" onclick="savePanel()">Salvar alterações</button>
+      </div>
+    </aside>
   </div>
 </div>
 
-<div class="add-modal-ov" id="addModal" style="display:none" onclick="if(event.target===this)closeAddModal()">
-  <div class="modal">
-    <div class="modal-title">Nova Solução</div>
-    <div class="modal-sub">Preencha as informações básicas. O conteúdo detalhado pode ser editado depois.</div>
-    <div class="f-grp"><label class="f-lbl">Nome da Solução</label><input class="f-inp" id="mName" placeholder="Ex: EDR / XDR"></div>
-    <div class="f-grp"><label class="f-lbl">Nome Estendido / Tecnologia</label><input class="f-inp" id="mShort" placeholder="Ex: Trend Micro — Endpoint Security"></div>
-    <div class="f-row">
-      <div class="f-grp"><label class="f-lbl">BU</label>
-        <select class="f-sel" id="mBU">
-          <option value="bd-cyber">Cibersegurança</option>
-          <option value="bd-gov">Governança & Compliance</option>
-          <option value="bd-infra">Infraestrutura</option>
-          <option value="bd-smart">SmartOps</option>
+<div id="tagPopup">
+  <div class="popup-title" id="popupTitle"></div>
+  <div class="popup-cats" id="popupCats"></div>
+  <input class="popup-inp" id="popupInp" placeholder="Digite a tag e pressione Enter...">
+  <div class="popup-row">
+    <button class="popup-cancel" onclick="closePopup()">Cancelar</button>
+    <button class="popup-save" onclick="savePopupTag()">Adicionar</button>
+  </div>
+</div>
+
+<div id="addModal">
+  <div class="modal-box">
+    <div class="modal-h" id="modalH">Nova Solução</div>
+    <div class="mf">
+      <label>Nome Completo</label>
+      <input id="mName" type="text" placeholder="Ex: WAF — Firewall de Aplicações · Cloudflare">
+    </div>
+    <div class="modal-row">
+      <div class="mf">
+        <label>Nome Curto</label>
+        <input id="mShort" type="text" placeholder="Ex: WAF">
+      </div>
+      <div class="mf">
+        <label>Business Unit</label>
+        <select id="mBU">
+          <option>Cibersegurança</option>
+          <option>Governança &amp; Compliance</option>
+          <option>Infraestrutura</option>
+          <option>SmartOps</option>
         </select>
       </div>
-      <div class="f-grp"><label class="f-lbl">Complexidade</label><select class="f-sel" id="mCx"><option>Alta</option><option>Média</option><option>Baixa</option></select></div>
-      <div class="f-grp"><label class="f-lbl">Conscientização</label><select class="f-sel" id="mCo"><option>Alta</option><option>Média</option><option>Baixa</option></select></div>
     </div>
-    <div class="modal-err" id="mErr"></div>
-    <div class="btn-row">
-      <button class="btn-g" onclick="closeAddModal()">Cancelar</button>
-      <button class="btn-p" id="createBtn" onclick="createSolution()">Criar Solução</button>
+    <div class="modal-row">
+      <div class="mf">
+        <label>Complexidade</label>
+        <select id="mCx"><option>Alta</option><option>Média</option><option>Baixa</option></select>
+      </div>
+      <div class="mf">
+        <label>Conscientização</label>
+        <select id="mCo"><option>Alta</option><option>Média</option><option>Baixa</option></select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="m-delete v-hidden" id="mDelete" onclick="deleteCurrentSolution()">Excluir solução</button>
+      <button class="m-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="m-save" onclick="saveModal()">Salvar</button>
     </div>
   </div>
 </div>
 
-<div class="popup" id="tagPopup" style="display:none" onclick="event.stopPropagation()">
-  <span class="pop-lbl" id="popLbl">Selecionar</span>
-  <select class="pop-sel" id="popSel"></select>
-  <div class="pop-acts">
-    <button class="pop-del" id="popDel" onclick="deleteTag()" style="display:none">Remover</button>
-    <button class="pop-save" onclick="saveTag()">Adicionar</button>
-  </div>
-</div>
+<div id="toast"></div>
 
-<div class="popup" id="icpPopup" style="display:none" onclick="event.stopPropagation()">
-  <span class="pop-lbl" id="icpPopLbl">Tag</span>
-  <input class="pop-inp" id="icpPopInp" maxlength="80" placeholder="Texto (até 80 caracteres)">
-  <div class="pop-char" id="icpPopChar">80 restantes</div>
-  <div class="pop-acts">
-    <button class="pop-del" id="icpPopDel" onclick="deleteIcpTag()">Excluir</button>
-    <button class="pop-save" onclick="saveIcpTag()">Salvar</button>
-  </div>
-</div>
+<script>
+// ─── FIREBASE ───────────────────────────────────────────────────────────────
+const FB = firebase.initializeApp({
+  apiKey:"AIzaSyBUhkJQPT2mN8bXaa6pMBhCzN3Q7nq4c8E",
+  authDomain:"matriz-gtm.firebaseapp.com",
+  projectId:"matriz-gtm",
+  storageBucket:"matriz-gtm.firebasestorage.app",
+  messagingSenderId:"538878064173",
+  appId:"1:538878064173:web:dd47e64ccb0c6f024feaa4"
+});
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-<div class="overlay" id="metoEditOverlay" style="display:none" onclick="if(event.target===this)closeMetoEdit()">
-  <div class="modal" style="max-width:520px">
-    <div class="modal-title" id="metoEditTitle">Editar</div>
-    <div class="modal-sub" id="metoEditSub"></div>
-    <div id="metoEditFields"></div>
-    <div class="modal-err" id="metoEditErr"></div>
-    <div class="btn-row">
-      <button class="btn-danger" id="metoDelBtn" style="display:none" onclick="deleteMetoItem()">Excluir</button>
-      <button class="btn-g" onclick="closeMetoEdit()">Cancelar</button>
-      <button class="btn-p" onclick="saveMetoItem()">Salvar</button>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<div id="app" style="display:none;flex-direction:column;height:100vh">
-  <div class="topbar">
-    <div class="brand">
-      <div class="brand-logo"><img id="brandLogo" src="https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-color-horizontal-png-transparente-02.png" alt="Tripla"></div>
-      <div class="brand-div"></div>
-      <div class="brand-text">
-        <span class="brand-sup">Inteligência de Mercado</span>
-        <span class="brand-name">Matriz GTM 2026</span>
-      </div>
-    </div>
-    <div class="top-nav">
-      <button class="top-nav-btn active" onclick="setView('matrix',this)">Matriz</button>
-      <button class="top-nav-btn" onclick="setView('meto',this)">Metodologia</button>
-    </div>
-    <div class="top-right">
-      <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">☀</button>
-      <div class="user-chip" onclick="openPwModal('voluntary')">
-        <div class="user-av" id="userAv">?</div>
-        <span id="userLbl">–</span>
-      </div>
-      <button class="icon-btn" onclick="doLogout()" title="Sair">⏻</button>
-    </div>
-  </div>
-
-  <div class="main">
-    <div class="matrix-view" id="matrixView">
-      <div class="matrix-shell">
-        <div class="matrix-outer">
-          <div class="y-axis">
-            <div class="y-axis-label">Complexidade ↑</div>
-            <div class="y-ticks"><span>Alta</span><span>Média</span><span>Baixa</span></div>
-          </div>
-          <div class="matrix-body">
-            <div class="grid" id="grid"></div>
-            <div class="x-row"><span>Baixa</span><span>Média</span><span>Alta</span></div>
-            <div class="x-label">Conscientização →</div>
-          </div>
-        </div>
-        <div class="bu-legend">
-          <div class="bu-l"><div class="bu-ld" style="background:var(--cyber)"></div>Cibersegurança</div>
-          <div class="bu-l"><div class="bu-ld" style="background:var(--gov)"></div>Governança & Compliance</div>
-          <div class="bu-l"><div class="bu-ld" style="background:var(--infra)"></div>Infraestrutura</div>
-          <div class="bu-l"><div class="bu-ld" style="background:var(--smart)"></div>SmartOps</div>
-        </div>
-      </div>
-      <div class="panel" id="panel" onclick="event.stopPropagation()">
-        <div class="panel-scroll">
-          <div class="panel-sticky" id="panelHead" style="display:none"></div>
-          <div class="panel-body" id="panelBody"></div>
-        </div>
-        <div class="save-bar" id="saveBar" style="display:none">
-          <span class="save-status" id="saveStatus">Aguardando alterações...</span>
-          <button class="btn-p" onclick="saveSolution()">Salvar</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="meto-wrap v-hidden" id="metoView">
-      <div class="meto-inner">
-
-        <div class="meto-page-hd">
-          <div class="meto-page-title">Metodologia GTM</div>
-          <button class="pencil-btn" onclick="editMetoSection('pagina')" title="Editar descrição">✏</button>
-        </div>
-        <div class="meto-page-sub" id="metoPageSub">Documentação das zonas estratégicas, canais e ativos de conversão da Tripla. Use esta seção para gerenciar as opções disponíveis ao preencher soluções na Matriz.</div>
-
-        <!-- EIXOS -->
-        <div class="meto-section">
-          <div class="meto-axes">
-            <div class="meto-axes-title">Os dois eixos</div>
-            <div class="axes-grid">
-              <div class="axis-block"><div class="axis-name" style="color:var(--blue)">Conscientização — Eixo X</div><p>Quanto o prospect reconhece e valoriza a dor que a solução resolve. Não mede conhecimento sobre a Tripla — mede consciência do problema em si.</p></div>
-              <div class="axis-block"><div class="axis-name" style="color:var(--z2t)">Complexidade — Eixo Y</div><p>Nível de dificuldade de implementação, venda e entrega. Alta complexidade significa ciclo longo, múltiplos decisores e prova técnica obrigatória.</p></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ZONAS -->
-        <div class="meto-section">
-          <div class="meto-zones-grid">
-            <div class="meto-zone-card">
-              <div class="meto-zbadge" style="color:var(--z1t)"><span style="background:var(--z1t);width:8px;height:8px;border-radius:2px;display:inline-block"></span>Zona 1 <button class="pencil-btn" onclick="openMetoEdit('zone','1',-1)" title="Editar">✏</button></div>
-              <div class="meto-card-title">Evangelização</div><div class="meto-card-sub">Baixa Consciência + Média/Alta Complexidade</div><p>O cliente não tem consciência do risco. Foco em criar consciência — não converter leads imediatamente.</p><div><span class="meto-kpi">Awareness</span><span class="meto-kpi">Sem outbound frio</span><span class="meto-kpi">Thought Leadership</span></div>
-            </div>
-            <div class="meto-zone-card">
-              <div class="meto-zbadge" style="color:var(--z2t)"><span style="background:var(--z2t);width:8px;height:8px;border-radius:2px;display:inline-block"></span>Zona 2 <button class="pencil-btn" onclick="openMetoEdit('zone','2',-1)" title="Editar">✏</button></div>
-              <div class="meto-card-title">Especialização Competitiva</div><div class="meto-card-sub">Alta/Média Consciência + Alta/Média Complexidade</div><p>O cliente sabe que precisa, mas tem medo de quem vai operar. A Tripla precisa provar diferenciação.</p><div><span class="meto-kpi">Pipeline qualificado</span><span class="meto-kpi">WinRate</span><span class="meto-kpi">ABM</span></div>
-            </div>
-            <div class="meto-zone-card">
-              <div class="meto-zbadge" style="color:var(--z3t)"><span style="background:var(--z3t);width:8px;height:8px;border-radius:2px;display:inline-block"></span>Zona 3 <button class="pencil-btn" onclick="openMetoEdit('zone','3',-1)" title="Editar">✏</button></div>
-              <div class="meto-card-title">Captura de Demanda</div><div class="meto-card-sub">Alta Consciência + Baixa/Média Complexidade</div><p>A venda é transacional. O mercado entende o problema. Foco em capturar demanda existente com velocidade.</p><div><span class="meto-kpi">Velocidade</span><span class="meto-kpi">CAC baixo</span><span class="meto-kpi">Volume</span></div>
-            </div>
-            <div class="meto-zone-card">
-              <div class="meto-zbadge" style="color:var(--z4t)"><span style="background:var(--z4t);width:8px;height:8px;border-radius:2px;display:inline-block"></span>Zona 4 <button class="pencil-btn" onclick="openMetoEdit('zone','4',-1)" title="Editar">✏</button></div>
-              <div class="meto-card-title">Zona Morta</div><div class="meto-card-sub">Baixa Consciência + Baixa Complexidade</div><p>Custo de conscientização supera o retorno esperado. Sem investimento proativo — cross-sell reativo apenas.</p><div><span class="meto-kpi">Sem SDR ativo</span><span class="meto-kpi">Revisão periódica</span></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- CANAIS -->
-        <div class="meto-section">
-          <div class="meto-sec-title-row">
-            <div class="meto-sec-title">Canais Relevantes</div>
-            <button class="pencil-btn" onclick="editMetoSection('canais')" title="Editar descrição">✏</button>
-          </div>
-          <div class="meto-sec-desc" id="metoCanaisDesc">Canais de marketing e prospecção organizados por tipo. As categorias e tags cadastradas aqui aparecem como opções ao preencher uma solução na Matriz.</div>
-          <div id="metoCanaisGrid"></div>
-        </div>
-
-        <!-- MATERIAIS -->
-        <div class="meto-section">
-          <div class="meto-sec-title-row">
-            <div class="meto-sec-title">Materiais Aderentes</div>
-            <button class="pencil-btn" onclick="editMetoSection('materiais')" title="Editar descrição">✏</button>
-          </div>
-          <div class="meto-sec-desc" id="metoMatDesc">Ativos de conversão e habilitação organizados por categoria. As tags cadastradas aqui aparecem como opções ao preencher uma solução na Matriz.</div>
-          <div id="metoMatGrid"></div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-<script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getAuth, signInWithEmailAndPassword, signOut, updatePassword, onAuthStateChanged }
-  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-import { getFirestore, collection, doc, setDoc, deleteDoc, getDoc, onSnapshot, serverTimestamp }
-  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-
-const firebaseConfig={apiKey:"AIzaSyBUhkJQPT2mN8bXaa6pMBhCzN3Q7nq4c8E",authDomain:"matriz-gtm.firebaseapp.com",projectId:"matriz-gtm",storageBucket:"matriz-gtm.firebasestorage.app",messagingSenderId:"538878064173",appId:"1:538878064173:web:dd47e64ccb0c6f024feaa4"};
-const fbApp=initializeApp(firebaseConfig);
-const auth=getAuth(fbApp);
-const db=getFirestore(fbApp);
-
-const LOGO_L='https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-color-horizontal-png-transparente-02.png';
-const LOGO_D='https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-horizontal-color-white-png-transparente-02.png';
-const BU_MAP={'bd-cyber':'Cibersegurança','bd-gov':'Governança & Compliance','bd-infra':'Infraestrutura','bd-smart':'SmartOps'};
-const AXES_CELL={'Alta|Baixa':0,'Alta|Média':1,'Alta|Alta':2,'Média|Baixa':3,'Média|Média':4,'Média|Alta':5,'Baixa|Baixa':6,'Baixa|Média':7,'Baixa|Alta':8};
-const CELL_ZONE=[1,2,2,1,2,3,4,3,3];
-const ZONE_LBL={1:'Z1 · Evangelização',2:'Z2 · Especialização',3:'Z3 · Captura',4:'Z4 · Passivo'};
-const ZC={1:{col:'var(--z1t)',bg:'var(--z1b)'},2:{col:'var(--z2t)',bg:'var(--z2b)'},3:{col:'var(--z3t)',bg:'var(--z3b)'},4:{col:'var(--z4t)',bg:'var(--z4b)'}};
-const CANAL_TYPES=[
-  {id:'out',label:'Outbound',color:'var(--cyber)',cls:'ct-out'},
-  {id:'dig',label:'Digital',color:'var(--gov)',cls:'ct-dig'},
-  {id:'evt',label:'Eventos',color:'var(--smart)',cls:'ct-evt'},
-  {id:'pr',label:'PR e Thought Leadership',color:'var(--z2t)',cls:'ct-pr'},
+// ─── CONSTANTS ──────────────────────────────────────────────────────────────
+const ZONES = [
+  {z:1,name:'Evangelização',pos:'Baixa Consciência + Alta/Média Complexidade',kw:'Awareness · Sem outbound frio · Thought Leadership'},
+  {z:2,name:'Especialização Competitiva',pos:'Alta/Média Consciência + Alta/Média Complexidade',kw:'Pipeline qualificado · WinRate · ABM'},
+  {z:3,name:'Captura de Demanda',pos:'Alta Consciência + Baixa/Média Complexidade',kw:'Velocidade · CAC baixo · Volume'},
+  {z:4,name:'Zona Morta',pos:'Baixa Consciência + Baixa Complexidade',kw:'Sem SDR ativo · Revisão periódica'}
 ];
-const MAT_TYPES=[
-  {id:'e',label:'Enablement Comercial',color:'var(--blue)',cls:'mt-e'},
-  {id:'d',label:'Geração de Demanda',color:'var(--cyan)',cls:'mt-d'},
-  {id:'a',label:'ABM',color:'var(--z2t)',cls:'mt-a'},
+const BU_COLOR = {'Cibersegurança':'cyber','Governança & Compliance':'gov','Infraestrutura':'infra','SmartOps':'smart'};
+const CANAL_CATS = [
+  {key:'outbound',label:'Outbound'},
+  {key:'digital',label:'Digital'},
+  {key:'eventos',label:'Eventos'},
+  {key:'pr',label:'PR e Thought Leadership'}
 ];
-const ICP_GROUPS=[
-  {k:'setores',l:'Setores',tc:'ia'},{k:'subsetores',l:'Sub-setores / Verticais',tc:'ia'},
-  {k:'faturamento',l:'Faturamento / Porte',tc:'ia'},{k:'headcount',l:'Funcionários / Headcount',tc:'ia'},
-  {k:'caracteristicas',l:'Características da Empresa',tc:'ib'},{k:'sinais',l:'Sinais de Compra / Gatilhos',tc:'ib'},
-  {k:'regulacao',l:'Regulação / Compliance',tc:'ic'},{k:'tech',l:'Stack Tecnológico',tc:'ic'},
-  {k:'no',l:'Critérios Eliminatórios',tc:'ino'},{k:'geo',l:'Geolocalização Prioritária',tc:'ia'},
+const MAT_CATS = [
+  {key:'enablement',label:'Enablement Comercial'},
+  {key:'demanda',label:'Geração de Demanda'},
+  {key:'abm',label:'ABM'}
 ];
-const TXT_MAX=700,PARAM_MAX=50;
-const TOOLTIPS={
-  jcx:'Explique por que esta solução tem esse nível de complexidade de implementação, venda e entrega.',
-  jco:'Explique por que o mercado-alvo tem esse nível de consciência sobre o problema que esta solução resolve.',
-  postura:'Descreva como o time comercial deve abordar este produto: o tom, a estratégia e o gatilho de entrada.',
-  ticket:'Valor médio do contrato. Exemplo: R$300K–R$500K/ano.',
-  contrato:'Modelo e duração típica do contrato. Exemplo: Anual ou bianual.',
-  ciclo:'Tempo médio do ciclo de vendas. Exemplo: 2–4 meses.',
-  canais:'Selecione os canais de marketing e prospecção mais adequados para gerar demanda para esta solução.',
-  materiais:'Selecione os materiais de suporte comercial e marketing mais relevantes para esta solução.',
-  icp:'Perfil de cliente ideal. Use os filtros para configurar a prospecção no Cortex.',
-};
+const ICP_DADOS = [
+  {key:'setores',label:'Setores'},
+  {key:'subsetores',label:'Sub-setores / Verticais'},
+  {key:'faturamento',label:'Faturamento / Porte'},
+  {key:'headcount',label:'Funcionários / Headcount'},
+  {key:'regulacao',label:'Regulação / Compliance'},
+  {key:'tech',label:'Stack Tecnológico'},
+  {key:'geo',label:'Geolocalização Prioritária'}
+];
+const ICP_QUAL = [
+  {key:'caracteristicas',label:'Características da Empresa'},
+  {key:'sinais',label:'Sinais de Compra / Gatilhos'},
+  {key:'no',label:'Critérios Eliminatórios'}
+];
 
-let S={},CCONF={};
-let activeSolId=null,isEditing=false,currentTab='est',pendingCell=null;
-let unsubSols=null;
-let popField=null,popTypeId=null,popRI=null,popIsNew=false;
-let icpField=null,icpRI=null,icpIsNew=false;
-let metoCtx=null;
+// ─── STATE ──────────────────────────────────────────────────────────────────
+let S = []; // solutions array
+let currentSol = null;
+let editMode = false;
+let currentTab = 'estrategia';
+let popupType = null; // 'canal' | 'material' | icp key
+let popupCatKey = null;
+let activeChip = null;
+let unsubSolutions = null;
+let pendingChanges = {}; // holds edits before save
+let addingPersonaForm = false;
 
-function cellToZone(c){return CELL_ZONE[c]??1;}
-function emptyICP(){return{setores:[],subsetores:[],faturamento:[],headcount:[],caracteristicas:[],sinais:[],regulacao:[],tech:[],no:[],geo:[]};}
-function getSol(){return S[activeSolId];}
-function showToast(msg,dur=2800){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
-function autoResize(ta){ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';}
-function tip(text){return`<span class="tip">?<span class="tt">${text}</span></span>`;}
-
-onAuthStateChanged(auth,user=>{
-  document.getElementById('loadingScreen').style.display='none';
-  if(user){
-    document.getElementById('authScreen').style.display='none';
-    document.getElementById('userAv').textContent=user.email[0].toUpperCase();
-    document.getElementById('userLbl').textContent=user.email.split('@')[0];
-    showApp();
+// ─── AUTH ────────────────────────────────────────────────────────────────────
+auth.onAuthStateChanged(user => {
+  document.getElementById('loadingScreen').classList.add('v-hidden');
+  if (user) {
+    document.getElementById('authWrap').classList.remove('show');
+    document.getElementById('appWrap').classList.add('show');
+    document.getElementById('userEmail').textContent = user.email.split('@')[0];
+    startSync();
   } else {
-    if(unsubSols){unsubSols();unsubSols=null;}
-    document.getElementById('app').style.display='none';
-    document.getElementById('authScreen').style.display='flex';
+    document.getElementById('authWrap').classList.add('show');
+    document.getElementById('appWrap').classList.remove('show');
+    if (unsubSolutions) { unsubSolutions(); unsubSolutions = null; }
   }
 });
 
-window.doLogin=async function(){
-  const email=document.getElementById('authEmail').value.trim();
-  const pass=document.getElementById('authPass').value;
-  const btn=document.getElementById('loginBtn');
-  const err=document.getElementById('authError');
-  err.textContent='';btn.disabled=true;btn.textContent='Entrando...';
-  try{await signInWithEmailAndPassword(auth,email,pass);}
-  catch(e){
-    const msgs={'auth/invalid-email':'E-mail inválido.','auth/user-not-found':'Usuário não encontrado.','auth/wrong-password':'Senha incorreta.','auth/invalid-credential':'E-mail ou senha incorretos.'};
-    err.textContent=msgs[e.code]||'Erro ao entrar. Tente novamente.';
-    btn.disabled=false;btn.textContent='Entrar';
-  }
-};
-window.doLogout=async function(){closePanel();await signOut(auth);};
-
-window.openPwModal=function(mode){
-  document.getElementById('pwSub').textContent=mode==='force'?'Crie uma senha personalizada para continuar.':'Altere sua senha atual.';
-  document.getElementById('cancelPwBtn').style.display=mode==='voluntary'?'block':'none';
-  document.getElementById('pw1').value='';document.getElementById('pw2').value='';document.getElementById('pwErr').textContent='';
-  document.getElementById('changePwOverlay').style.display='flex';
-};
-window.closePwModal=function(){document.getElementById('changePwOverlay').style.display='none';};
-window.saveNewPw=async function(){
-  const p1=document.getElementById('pw1').value,p2=document.getElementById('pw2').value;
-  const err=document.getElementById('pwErr');
-  if(p1.length<6){err.textContent='A senha deve ter pelo menos 6 caracteres.';return;}
-  if(p1!==p2){err.textContent='As senhas não coincidem.';return;}
-  try{await updatePassword(auth.currentUser,p1);closePwModal();showToast('Senha alterada com sucesso!');}
-  catch(e){err.textContent='Faça login novamente antes de alterar a senha.';}
-};
-
-async function showApp(){
-  document.getElementById('app').style.display='flex';
-  buildGrid();
-  await loadConfig();
-  subscribeToSolutions();
-  renderMetodologia();
+function doLogin() {
+  const e = document.getElementById('authEmail').value.trim();
+  const p = document.getElementById('authPass').value;
+  document.getElementById('authErr').textContent = '';
+  auth.signInWithEmailAndPassword(e, p).catch(err => {
+    document.getElementById('authErr').textContent = 'E-mail ou senha inválidos.';
+  });
 }
+function doLogout() { if (confirm('Sair do sistema?')) auth.signOut(); }
+document.getElementById('authEmail').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('authPass').focus(); });
+document.getElementById('authPass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 
-async function loadConfig(){
-  const ref=doc(db,'config','metodologia');
-  const snap=await getDoc(ref);
-  if(snap.exists()){CCONF=snap.data();}
-  else{
-    CCONF={
-      canaisDesc:'Canais de marketing e prospecção organizados por tipo.',
-      materiaisDesc:'Ativos de conversão e habilitação organizados por categoria.',
-      canais:{
-        out:[{name:'Outbound SDR',desc:'Prospecção ativa via ligação, e-mail e LinkedIn.',tags:['Cadência SDR','Cold call','LinkedIn outreach']}],
-        dig:[{name:'SEO / Blog',desc:'Conteúdo orgânico para captura de demanda.',tags:['Conteúdo de blog (SEO)','Landing page']}],
-        evt:[{name:'Eventos Setoriais',desc:'Participação em eventos do setor.',tags:['Petit Comité','Webinar','Evento presencial']}],
-        pr:[{name:'PR e Imprensa',desc:'Artigos assinados e cobertura de imprensa.',tags:['Artigo assinado','Thought Leadership','TriplaCast']}],
-      },
-      materiais:{
-        e:[{name:'Apresentação Comercial',desc:'Deck padrão com proposta de valor.',tags:['Apresentação comercial']},{name:'Battle Card',desc:'Guia de diferenciadores contra concorrentes.',tags:['Battle card']},{name:'Case de Sucesso',desc:'Documentação de casos reais.',tags:['Case de sucesso']},{name:'E-book Interno',desc:'Guia de abordagem por persona.',tags:['E-book']},{name:'Pitch Documentado',desc:'Estrutura de valores para defesa de margem.',tags:['Pitch documentado']}],
-        d:[{name:'One-page',desc:'Resumo objetivo para Zona 3.',tags:['One-page']},{name:'Whitepaper',desc:'Conteúdo denso com análise técnica.',tags:['Whitepaper','Material Rico']},{name:'Assessment',desc:'Ferramenta que revela gaps no ambiente do cliente.',tags:['Assessment','Diagnóstico']},{name:'Blog / SEO',desc:'Artigos otimizados para captura orgânica.',tags:['Conteúdo de blog (SEO)']},{name:'Vídeo / TriplaCast',desc:'Conteúdo audiovisual para educação de mercado.',tags:['Vídeo','TriplaCast']},{name:'Checklist',desc:'Material leve para identificar riscos ocultos.',tags:['Checklist']},{name:'Folder / Flyer',desc:'Material tático para eventos.',tags:['Folder','Flyer']}],
-        a:[{name:'Apresentação por Conta',desc:'Deck adaptado para a empresa-alvo.',tags:['Apresentação personalizada por conta']},{name:'Conteúdo por Segmento',desc:'Materiais adaptados para a vertical.',tags:['Conteúdo personalizado por segmento']},{name:'Mapeamento de Conta',desc:'Estrutura do comitê de compras.',tags:['Mapeamento de conta']}],
-      }
-    };
-    await setDoc(ref,CCONF);
-  }
-  document.getElementById('metoCanaisDesc').textContent=CCONF.canaisDesc||'';
-  document.getElementById('metoMatDesc').textContent=CCONF.materiaisDesc||'';
-}
-
-async function saveConfig(){await setDoc(doc(db,'config','metodologia'),CCONF);}
-
-function buildGrid(){
-  const grid=document.getElementById('grid');grid.innerHTML='';
-  for(let c=0;c<9;c++){
-    const z=CELL_ZONE[c];
-    const div=document.createElement('div');
-    div.className=`cell z${z}`;div.id='cell-'+c;
-    div.innerHTML=`<div class="cell-hd"><span class="zone-label">${ZONE_LBL[z]}</span><button class="cell-add" onclick="openAddModal(${c})" title="Nova solução">+</button></div><div class="chips-wrap" id="chips-${c}"></div>`;
-    grid.appendChild(div);
-  }
-}
-
-function subscribeToSolutions(){
-  if(unsubSols)unsubSols();
-  unsubSols=onSnapshot(collection(db,'solutions'),snapshot=>{
-    snapshot.docChanges().forEach(ch=>{
-      if(ch.type==='added'||ch.type==='modified'){S[ch.doc.id]={...ch.doc.data(),_id:ch.doc.id};refreshChip(ch.doc.id);}
-      if(ch.type==='removed'){delete S[ch.doc.id];const c=document.getElementById('chip-'+ch.doc.id);if(c)c.remove();if(activeSolId===ch.doc.id)closePanel();}
-    });
+// ─── FIRESTORE SYNC ──────────────────────────────────────────────────────────
+function startSync() {
+  unsubSolutions = db.collection('solutions').onSnapshot(snap => {
+    S = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    renderMatrix();
+    if (currentSol) {
+      const fresh = S.find(s => s.id === currentSol.id);
+      if (fresh) { currentSol = fresh; if (!editMode) renderPanelBody(); }
+    }
   });
 }
 
-function refreshChip(id){
-  const s=S[id];if(!s)return;
-  let chip=document.getElementById('chip-'+id);if(chip)chip.remove();
-  const wrap=document.getElementById('chips-'+s.cell);if(!wrap)return;
-  chip=document.createElement('button');chip.className='chip';chip.id='chip-'+id;
-  chip.innerHTML=`<span class="chip-bu ${s.buc}"></span>${s.name}`;
-  chip.onclick=e=>{e.stopPropagation();openPanel(id);};
-  wrap.appendChild(chip);
+function saveSolution(sol) {
+  const {id, ...data} = sol;
+  showToast('saving');
+  const ref = id ? db.collection('solutions').doc(id) : db.collection('solutions').doc();
+  return ref.set(data).then(() => showToast('saved')).catch(() => showToast('error'));
 }
 
-window.openAddModal=function(cell){
-  pendingCell=cell;
-  ['mName','mShort'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('mBU').value='bd-cyber';
-  document.getElementById('mErr').textContent='';
-  const ax=['Alta|Baixa','Alta|Média','Alta|Alta','Média|Baixa','Média|Média','Média|Alta','Baixa|Baixa','Baixa|Média','Baixa|Alta'];
-  const[cx,co]=ax[cell].split('|');
-  document.getElementById('mCx').value=cx;document.getElementById('mCo').value=co;
-  document.getElementById('addModal').style.display='flex';
-  setTimeout(()=>document.getElementById('mName').focus(),50);
-};
-window.closeAddModal=function(){document.getElementById('addModal').style.display='none';};
-window.createSolution=async function(){
-  const name=document.getElementById('mName').value.trim();
-  const short=document.getElementById('mShort').value.trim();
-  const buc=document.getElementById('mBU').value;
-  const cx=document.getElementById('mCx').value;
-  const co=document.getElementById('mCo').value;
-  if(!name){document.getElementById('mErr').textContent='O nome da solução é obrigatório.';return;}
-  const btn=document.getElementById('createBtn');btn.disabled=true;btn.textContent='Criando...';
-  const cell=pendingCell??AXES_CELL[cx+'|'+co]??4;
-  const z=cellToZone(cell);
-  const data={name,short:short||name,buc,bu:BU_MAP[buc],cx,co,cell,z,jcx:'',jco:'',postura:'',canais:[],materiais:[],ticket:'',contrato:'',ciclo:'',icp:emptyICP(),createdAt:serverTimestamp(),updatedAt:serverTimestamp()};
-  try{const ref=doc(collection(db,'solutions'));await setDoc(ref,data);closeAddModal();openPanel(ref.id);}
-  catch(e){document.getElementById('mErr').textContent='Erro ao criar. Tente novamente.';}
-  btn.disabled=false;btn.textContent='Criar Solução';
-};
+function deleteSolution(id) {
+  return db.collection('solutions').doc(id).delete();
+}
 
-window.openPanel=function(id){
-  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
-  const chip=document.getElementById('chip-'+id);if(chip)chip.classList.add('active');
-  activeSolId=id;isEditing=false;currentTab='est';
-  renderPanel();
+// ─── MATRIX RENDER ───────────────────────────────────────────────────────────
+function renderMatrix() {
+  const grid = document.getElementById('matrixGrid');
+  grid.innerHTML = ZONES.map(zone => {
+    const sols = S.filter(s => s.z == zone.z);
+    const chips = sols.map(s => {
+      const buc = BU_COLOR[s.bu] || 'cyber';
+      const isActive = currentSol && currentSol.id === s.id;
+      const warn = (!s.jcx || !s.jco) ? '<span class="chip-warn">!</span>' : '';
+      return `<div class="chip${isActive?' active':''}" data-bu="${buc}" data-id="${s.id}" onclick="openPanel('${s.id}',this)">
+        <div class="chip-dot"></div>
+        <span class="chip-name">${s.short||s.name}</span>
+        ${warn}
+      </div>`;
+    }).join('');
+    return `<div class="mzone z${zone.z}">
+      <div class="zone-hdr">
+        <span class="zone-badge">Z${zone.z}</span>
+        <span class="zone-name">${zone.name}</span>
+      </div>
+      <div class="zone-desc">${zone.kw}</div>
+      <div class="zone-chips" id="zchips${zone.z}">${chips}<button class="zone-add" onclick="openAddModal(${zone.z})" title="Adicionar solução">+</button></div>
+    </div>`;
+  }).join('');
+}
+
+// ─── PANEL ───────────────────────────────────────────────────────────────────
+function openPanel(id, chipEl) {
+  const sol = S.find(s => s.id === id);
+  if (!sol) return;
+  if (editMode) cancelEdit();
+  currentSol = sol;
+  pendingChanges = JSON.parse(JSON.stringify(sol));
+  if (activeChip) activeChip.classList.remove('active');
+  activeChip = chipEl;
+  if (chipEl) chipEl.classList.add('active');
   document.getElementById('panel').classList.add('open');
-  document.getElementById('saveBar').style.display='flex';
-};
-window.closePanel=function(){
+  renderPanelHeader();
+  // reset to first tab
+  currentTab = 'estrategia';
+  document.querySelectorAll('.pnav-btn').forEach(b => b.classList.toggle('active', b.dataset.tab==='estrategia'));
+  renderPanelBody();
+}
+
+function closePanel() {
+  if (editMode) cancelEdit();
   document.getElementById('panel').classList.remove('open');
-  document.getElementById('panelHead').style.display='none';
-  document.getElementById('saveBar').style.display='none';
-  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
-  activeSolId=null;isEditing=false;
-};
-
-function renderPanel(){
-  const s=getSol();if(!s)return;
-  const z=ZC[s.z];
-  const buColor={'bd-cyber':'var(--cyber)','bd-gov':'var(--gov)','bd-infra':'var(--infra)','bd-smart':'var(--smart)'}[s.buc];
-  const zName={1:'Zona 1 — Evangelização',2:'Zona 2 — Especialização',3:'Zona 3 — Captura',4:'Zona 4 — Passivo'}[s.z];
-  const lvls=['Alta','Média','Baixa'];const ed=isEditing;
-
-  const head=document.getElementById('panelHead');
-  head.style.display='flex';
-  head.innerHTML=`<div><div class="p-bu" style="color:${buColor}">${s.bu}</div><div class="p-name">${s.name}</div><div class="p-short">${s.short}</div></div>
-    <div class="panel-acts">
-      <button class="pnl-btn${ed?' on':''}" onclick="toggleEdit()" title="${ed?'Sair da edição':'Editar'}">✏</button>
-      <button class="pnl-btn" style="color:var(--danger)" onclick="confirmDelete()" title="Excluir">🗑</button>
-      <button class="pnl-btn" onclick="closePanel()">✕</button>
-    </div>`;
-
-  const cxEl=ed?`<select onchange="updateAxis('cx',this.value)" style="color:${z.col}">${lvls.map(v=>`<option${v===s.cx?' selected':''}>${v}</option>`).join('')}</select>`:`<span>${s.cx}</span>`;
-  const coEl=ed?`<select onchange="updateAxis('co',this.value)" style="color:${z.col}">${lvls.map(v=>`<option${v===s.co?' selected':''}>${v}</option>`).join('')}</select>`:`<span>${s.co}</span>`;
-
-  const canais=s.canais||[];const mats=s.materiais||[];
-  const mCls={e:'mt-e',d:'mt-d',a:'mt-a'};
-  const cCls={out:'ct-out',dig:'ct-dig',evt:'ct-evt',pr:'ct-pr'};
-
-  let canaisHTML='<div class="tags-section">';
-  CANAL_TYPES.forEach(ct=>{
-    const items=canais.filter(c=>c.typeId===ct.id);
-    if(!items.length&&!ed)return;
-    canaisHTML+=`<div class="tag-type-group"><div class="tag-type-hd"><span class="tag-type-dot" style="background:${ct.color}"></span>${ct.label}</div><div class="tags-wrap">
-      ${items.map(c=>`<span class="ctag ${cCls[ct.id]||''}${ed?' tag-ed':''}" ${ed?`onclick="openTagPopup(event,'canal','${ct.id}',${canais.indexOf(c)})"`:''}><span class="cdot" style="background:${ct.color}"></span>${c.label}</span>`).join('')}
-      ${ed?`<button class="add-tag" onclick="openTagPopup(event,'canal','${ct.id}',-1)">+ ${ct.label}</button>`:''}
-    </div></div>`;
-  });canaisHTML+='</div>';
-
-  let matsHTML='<div class="tags-section">';
-  MAT_TYPES.forEach(mt=>{
-    const items=mats.filter(m=>m.typeId===mt.id);
-    if(!items.length&&!ed)return;
-    matsHTML+=`<div class="tag-type-group"><div class="tag-type-hd"><span class="tag-type-dot" style="background:${mt.color}"></span>${mt.label}</div><div class="tags-wrap">
-      ${items.map(m=>`<span class="mtag ${mCls[mt.id]||''}${ed?' tag-ed':''}" ${ed?`onclick="openTagPopup(event,'material','${mt.id}',${mats.indexOf(m)})"`:''}><span class="mdot"></span>${m.label}</span>`).join('')}
-      ${ed?`<button class="add-tag" onclick="openTagPopup(event,'material','${mt.id}',-1)">+ ${mt.label}</button>`:''}
-    </div></div>`;
-  });matsHTML+='</div>';
-
-  const icp=s.icp||emptyICP();
-  let icpHTML=`<div class="cortex-note"><strong>Filtros Cortex</strong> — Combine Setores + Faturamento + Características como base. Adicione Sinais/Gatilhos como filtro de inteligência temporal.</div>`;
-  ICP_GROUPS.forEach(g=>{
-    const items=icp[g.k]||[];
-    if(!items.length&&!ed)return;
-    const th=items.map((t,i)=>`<span class="itag ${g.tc}${ed?' tag-ed':''}" ${ed?`onclick="openIcpPopup(event,'${g.k}',${i})"`:''}><span class="idot"></span>${t}</span>`).join('');
-    const ab=ed?`<button class="add-tag" onclick="openIcpPopup(event,'${g.k}',-1)">+</button>`:'';
-    icpHTML+=`<div class="icp-grp"><div class="icp-lbl">${g.l}</div><div class="tags-wrap">${th}${ab}</div></div>`;
-  });
-
-  const tx=(f,ph,mx=TXT_MAX)=>ed?`<textarea onblur="sf('${f}',this.value)" oninput="handleTa(this,'${f}',${mx})" maxlength="${mx}" placeholder="${ph}">${s[f]||''}</textarea><div class="char-count" id="cc-${f}">${mx-(s[f]||'').length} restantes</div>`:`<p>${s[f]||'<span style="opacity:.35;font-style:italic">Não preenchido</span>'}</p>`;
-  const inp=(f,ph)=>ed?`<input style="width:100%;font-family:var(--font);font-size:var(--fs-sm);font-weight:600;color:var(--text);background:transparent;border:none;outline:none" value="${s[f]||''}" maxlength="${PARAM_MAX}" onblur="sf('${f}',this.value)" oninput="handleParam(this,${PARAM_MAX})" placeholder="${ph}">`:`<div class="param-val">${s[f]||'<span style="opacity:.35;font-style:italic">—</span>'}</div>`;
-
-  document.getElementById('panelBody').innerHTML=`
-    <div class="scores">
-      <div class="score-card" style="border-color:${z.col}28;background:${z.bg}"><span class="score-lbl">Complexidade</span><div class="score-val" style="color:${z.col}">${cxEl}</div></div>
-      <div class="score-card" style="border-color:${z.col}28;background:${z.bg}"><span class="score-lbl">Conscientização</span><div class="score-val" style="color:${z.col}">${coEl}</div></div>
-      <div class="score-card" style="border-color:${z.col}28;background:${z.bg}"><span class="score-lbl">Zona GTM</span><div class="score-val" style="color:${z.col};font-size:11px">${zName}</div></div>
-    </div>
-    <div class="tabs" onclick="event.stopPropagation()">
-      <button class="tab-btn${currentTab==='est'?' active':''}" onclick="switchTab('est')">Estratégia</button>
-      <button class="tab-btn${currentTab==='icp'?' active':''}" onclick="switchTab('icp')">ICP</button>
-    </div>
-    <div class="tab-pane${currentTab==='est'?' active':''}" id="tab-est">
-      <div class="sec-hd">Por que aqui na Matriz ${tip(TOOLTIPS.jcx)}</div>
-      <div class="just-block"><span class="just-lbl" style="color:${z.col}">Complexidade — ${s.cx} ${tip(TOOLTIPS.jcx)}</span>${tx('jcx','Explique por que esta solução tem este nível de complexidade...')}</div>
-      <div class="just-block"><span class="just-lbl" style="color:${z.col}">Conscientização — ${s.co} ${tip(TOOLTIPS.jco)}</span>${tx('jco','Explique por que o mercado tem este nível de consciência...')}</div>
-      <div class="sec-hd">Postura de Prospecção ${tip(TOOLTIPS.postura)}</div>
-      <div class="posture-box">${tx('postura','Descreva a abordagem comercial, tom e gatilho de entrada...')}</div>
-      <div class="sec-hd">Parâmetros Comerciais</div>
-      <div class="param-row">
-        <div class="param-box"><div class="param-lbl">Ticket Médio ${tip(TOOLTIPS.ticket)}</div>${inp('ticket','Ex: R$300K–R$500K/ano')}</div>
-        <div class="param-box"><div class="param-lbl">Contrato ${tip(TOOLTIPS.contrato)}</div>${inp('contrato','Ex: Anual ou bianual')}</div>
-      </div>
-      <div class="param-row"><div class="param-box"><div class="param-lbl">Ciclo de Venda ${tip(TOOLTIPS.ciclo)}</div>${inp('ciclo','Ex: 2–4 meses')}</div></div>
-      <div class="sec-hd">Canais Relevantes ${tip(TOOLTIPS.canais)}</div>
-      ${canais.length||ed?canaisHTML:'<p style="font-size:var(--fs-sm);color:var(--muted);opacity:.5;font-style:italic;padding-top:4px">Nenhum canal selecionado.</p>'}
-      <div class="sec-hd">Materiais Aderentes ${tip(TOOLTIPS.materiais)}</div>
-      ${mats.length||ed?matsHTML:'<p style="font-size:var(--fs-sm);color:var(--muted);opacity:.5;font-style:italic;padding-top:4px">Nenhum material selecionado.</p>'}
-    </div>
-    <div class="tab-pane${currentTab==='icp'?' active':''}" id="tab-icp">
-      <div class="sec-hd">ICP ${tip(TOOLTIPS.icp)}</div>
-      ${icpHTML}
-    </div>`;
-
-  setTimeout(()=>{document.querySelectorAll('.panel-body textarea').forEach(ta=>autoResize(ta));},10);
+  if (activeChip) { activeChip.classList.remove('active'); activeChip = null; }
+  currentSol = null;
 }
 
-window.sf=function(f,v){const s=getSol();if(!s)return;s[f]=v.trim();setSaveStatus('unsaved');};
-window.handleTa=function(ta,f,mx){autoResize(ta);const r=mx-ta.value.length;const cc=document.getElementById('cc-'+f);if(cc){cc.textContent=r+' restantes';cc.className='char-count'+(r<=50?' warn':'');}if(r===0)showToast('Limite de '+mx+' caracteres atingido.',2000);};
-window.handleParam=function(inp,mx){if(inp.value.length>=mx)showToast('Limite de '+mx+' caracteres atingido.',2000);};
-window.toggleEdit=function(){isEditing=!isEditing;renderPanel();};
-window.switchTab=function(t){currentTab=t;renderPanel();};
-window.updateAxis=function(axis,val){
-  const s=getSol();if(!s)return;s[axis]=val;
-  const nc=AXES_CELL[s.cx+'|'+s.co]??s.cell;
-  if(nc!==s.cell){const chip=document.getElementById('chip-'+s._id);if(chip)chip.remove();s.cell=nc;s.z=cellToZone(nc);refreshChip(s._id);}
-  else s.z=cellToZone(s.cell);
-  setSaveStatus('unsaved');renderPanel();
-};
-
-function setSaveStatus(state){
-  const el=document.getElementById('saveStatus');if(!el)return;
-  const map={unsaved:['Alterações não salvas',''],saving:['Salvando...','saving'],saved:['Salvo com sucesso','saved'],err:['Erro ao salvar','err']};
-  const[txt,cls]=map[state]||['',''];el.textContent=txt;el.className='save-status'+(cls?' '+cls:'');
-}
-window.saveSolution=async function(){
-  const s=getSol();if(!s)return;setSaveStatus('saving');
-  try{const{_id,...data}=s;data.updatedAt=serverTimestamp();await setDoc(doc(db,'solutions',_id),data);setSaveStatus('saved');showToast('Salvo com sucesso!');}
-  catch(e){setSaveStatus('err');showToast('Erro ao salvar.');}
-};
-window.confirmDelete=function(){
-  const s=getSol();if(!s)return;
-  if(!confirm(`Excluir "${s.name}"? Esta ação não pode ser desfeita.`))return;
-  deleteDoc(doc(db,'solutions',s._id));
-};
-
-// TAG POPUP
-window.openTagPopup=function(e,field,typeId,ri){
-  if(!isEditing)return;e.stopPropagation();
-  popField=field;popTypeId=typeId;popRI=ri;popIsNew=(ri===-1);
-  const s=getSol();
-  const sel=document.getElementById('popSel');
-  sel.innerHTML='<option value="">Selecione...</option>';
-  const types=field==='canal'?CCONF.canais:CCONF.materiais;
-  const cats=types?.[typeId]||[];
-  cats.forEach(cat=>{const og=document.createElement('optgroup');og.label=cat.name;cat.tags.forEach(tag=>{const o=document.createElement('option');o.value=tag;o.textContent=tag;og.appendChild(o);});sel.appendChild(og);});
-  if(!popIsNew){const arr=field==='canal'?(s.canais||[]):(s.materiais||[]);const cur=arr[ri];if(cur)sel.value=cur.label||'';}
-  document.getElementById('popLbl').textContent=popIsNew?'Adicionar':'Editar';
-  document.getElementById('popDel').style.display=popIsNew?'none':'block';
-  const popup=document.getElementById('tagPopup');popup.style.display='block';
-  positionPopup(popup,e,280,120);
-};
-window.saveTag=function(){
-  const val=document.getElementById('popSel').value;if(!val){closePopup();showToast('Selecione uma opção.');return;}
-  const s=getSol();const obj={typeId:popTypeId,label:val};
-  if(popField==='canal'){if(!s.canais)s.canais=[];if(popIsNew)s.canais.push(obj);else s.canais[popRI]=obj;}
-  else{if(!s.materiais)s.materiais=[];if(popIsNew)s.materiais.push(obj);else s.materiais[popRI]=obj;}
-  setSaveStatus('unsaved');closePopup();renderPanel();
-};
-window.deleteTag=function(){
-  const s=getSol();
-  if(popField==='canal'){if(s.canais)s.canais.splice(popRI,1);}else{if(s.materiais)s.materiais.splice(popRI,1);}
-  setSaveStatus('unsaved');closePopup();renderPanel();
-};
-
-// ICP POPUP
-window.openIcpPopup=function(e,field,ri){
-  if(!isEditing)return;e.stopPropagation();
-  icpField=field;icpRI=ri;icpIsNew=(ri===-1);
-  const s=getSol();const cur=!icpIsNew?(s.icp?.[field]||[])[ri]||'':'';
-  document.getElementById('icpPopLbl').textContent=icpIsNew?'Nova tag':'Editar tag';
-  const inp=document.getElementById('icpPopInp');inp.value=cur;
-  const rem=80-cur.length;const cc=document.getElementById('icpPopChar');
-  cc.textContent=rem+' restantes';cc.className='pop-char'+(rem<=20?' warn':'');
-  document.getElementById('icpPopDel').style.display=icpIsNew?'none':'block';
-  const popup=document.getElementById('icpPopup');popup.style.display='block';
-  positionPopup(popup,e,270,140);
-  inp.focus();inp.select();
-  inp.oninput=()=>{const r=80-inp.value.length;cc.textContent=r+' restantes';cc.className='pop-char'+(r<=20?' warn':'');if(r===0)showToast('Limite de 80 caracteres atingido.',2000);};
-  inp.onkeydown=ev=>{if(ev.key==='Enter'){ev.preventDefault();saveIcpTag();}if(ev.key==='Escape'){ev.preventDefault();closeIcpPopup();}};
-};
-window.saveIcpTag=function(){
-  const val=document.getElementById('icpPopInp').value.trim();if(!val){closeIcpPopup();return;}
-  const s=getSol();if(!s.icp)s.icp=emptyICP();if(!s.icp[icpField])s.icp[icpField]=[];
-  if(icpIsNew)s.icp[icpField].push(val);else s.icp[icpField][icpRI]=val;
-  setSaveStatus('unsaved');closeIcpPopup();renderPanel();
-};
-window.deleteIcpTag=function(){
-  const s=getSol();if(s.icp?.[icpField])s.icp[icpField].splice(icpRI,1);
-  setSaveStatus('unsaved');closeIcpPopup();renderPanel();
-};
-window.closeIcpPopup=function(){document.getElementById('icpPopup').style.display='none';};
-function closePopup(){document.getElementById('tagPopup').style.display='none';}
-function positionPopup(popup,e,pw,ph){
-  const rect=e.currentTarget.getBoundingClientRect();
-  let top=rect.bottom+6,left=rect.left;
-  if(top+ph>window.innerHeight-10)top=Math.max(rect.top-ph-6,8);
-  if(left+pw>window.innerWidth-10)left=window.innerWidth-pw-10;
-  if(left<8)left=8;
-  popup.style.top=top+'px';popup.style.left=left+'px';
+function renderPanelHeader() {
+  const s = editMode ? pendingChanges : currentSol;
+  if (!s) return;
+  document.getElementById('panelBU').textContent = s.bu || '';
+  const titleEl = document.getElementById('panelTitle');
+  const titleEditEl = document.getElementById('panelTitleEdit');
+  titleEl.textContent = s.name || s.short || '—';
+  titleEditEl.value = s.name || '';
+  titleEl.classList.toggle('v-hidden', editMode);
+  titleEditEl.classList.toggle('v-hidden', !editMode);
+  document.getElementById('panelEditBtn').classList.toggle('on', editMode);
+  document.getElementById('panelEditBtn').textContent = editMode ? 'Editando' : 'Editar';
+  document.getElementById('panelSaveBar').classList.toggle('show', editMode);
 }
 
-// METHODOLOGY
-function renderMetodologia(){renderCanaisGrid();renderMatGrid();}
-
-function renderCanaisGrid(){
-  const grid=document.getElementById('metoCanaisGrid');grid.innerHTML='';
-  CANAL_TYPES.forEach(ct=>{
-    const cats=CCONF.canais?.[ct.id]||[];
-    const card=document.createElement('div');card.className='meto-type-card';
-    const catItems=cats.map((cat,ci)=>`
-      <div class="meto-cat-item">
-        <div class="meto-cat-hd">
-          <div class="meto-cat-name">${cat.name}</div>
-          <button class="pencil-btn" onclick="openMetoEdit('canal-cat','${ct.id}',${ci})" title="Editar">✏</button>
-        </div>
-        <div class="meto-cat-desc">${cat.desc||''}</div>
-        <div class="meto-cat-tags">${cat.tags.map(t=>`<span class="meto-tag-pill">${t}</span>`).join('')}</div>
-      </div>`).join('');
-    card.innerHTML=`
-      <div class="meto-type-hd">
-        <span class="meto-type-dot" style="background:${ct.color}"></span>
-        <div class="meto-type-name">${ct.label}</div>
-        <button class="pencil-btn" onclick="openMetoEdit('canal-type','${ct.id}',-1)" title="Editar tipo">✏</button>
-      </div>
-      <div class="meto-cats-list">
-        ${catItems}
-        <button class="meto-add-cat-btn" onclick="openMetoEdit('canal-cat-new','${ct.id}',-1)">+ Nova categoria</button>
-      </div>`;
-    grid.appendChild(card);
-  });
-}
-
-function renderMatGrid(){
-  const grid=document.getElementById('metoMatGrid');grid.innerHTML='';
-  MAT_TYPES.forEach(mt=>{
-    const cats=CCONF.materiais?.[mt.id]||[];
-    const card=document.createElement('div');card.className='meto-type-card';
-    const catItems=cats.map((cat,ci)=>`
-      <div class="meto-cat-item">
-        <div class="meto-cat-hd">
-          <div class="meto-cat-name">${cat.name}</div>
-          <button class="pencil-btn" onclick="openMetoEdit('mat-cat','${mt.id}',${ci})" title="Editar">✏</button>
-        </div>
-        <div class="meto-cat-desc">${cat.desc||''}</div>
-        <div class="meto-cat-tags">${cat.tags.map(t=>`<span class="meto-tag-pill">${t}</span>`).join('')}</div>
-      </div>`).join('');
-    card.innerHTML=`
-      <div class="meto-type-hd">
-        <span class="meto-type-dot" style="background:${mt.color}"></span>
-        <div class="meto-type-name">${mt.label}</div>
-        <button class="pencil-btn" onclick="openMetoEdit('mat-type','${mt.id}',-1)" title="Editar tipo">✏</button>
-      </div>
-      <div class="meto-cats-list">
-        ${catItems}
-        <button class="meto-add-cat-btn" onclick="openMetoEdit('mat-cat-new','${mt.id}',-1)">+ Nova categoria</button>
-      </div>`;
-    grid.appendChild(card);
-  });
-}
-
-// METO EDIT MODAL
-window.editMetoSection=function(sec){
-  metoCtx={mode:'section',sec};
-  let title,current;
-  if(sec==='pagina'){title='Editar descrição da página';current=document.getElementById('metoPageSub')?.textContent||'';}
-  else if(sec==='canais'){title='Editar descrição — Canais Relevantes';current=CCONF.canaisDesc||'';}
-  else{title='Editar descrição — Materiais Aderentes';current=CCONF.materiaisDesc||'';}
-  document.getElementById('metoEditTitle').textContent=title;
-  document.getElementById('metoEditSub').textContent='';
-  document.getElementById('metoDelBtn').style.display='none';
-  document.getElementById('metoEditErr').textContent='';
-  document.getElementById('metoEditFields').innerHTML=`<div class="f-grp"><label class="f-lbl">Descrição</label><textarea class="f-inp" id="metoF1" style="min-height:80px;resize:vertical">${current}</textarea></div>`;
-  document.getElementById('metoEditOverlay').style.display='flex';
-};
-
-window.openMetoEdit=function(mode,typeId,ci){
-  metoCtx={mode,typeId,ci};
-  const isNew=mode.endsWith('-new')||mode.endsWith('-type');
-  const isTypeEdit=mode.endsWith('-type');
-  const isCanalMode=mode.startsWith('canal');
-  const catArr=isCanalMode?(CCONF.canais?.[typeId]||[]):(CCONF.materiais?.[typeId]||[]);
-  const cat=(!isNew&&ci>=0)?catArr[ci]:null;
-  if(isTypeEdit){
-    document.getElementById('metoEditTitle').textContent='Editar tipo';
-    document.getElementById('metoEditSub').textContent='';
-    document.getElementById('metoDelBtn').style.display='none';
-    document.getElementById('metoEditErr').textContent='';
-    document.getElementById('metoEditFields').innerHTML=`<div class="f-grp"><label class="f-lbl">Nome do tipo</label><input class="f-inp" id="metoF1" value="${isCanalMode?CANAL_TYPES.find(c=>c.id===typeId)?.label||'':MAT_TYPES.find(m=>m.id===typeId)?.label||''}"></div>`;
-    document.getElementById('metoEditOverlay').style.display='flex';return;
+function toggleEditMode() {
+  editMode = !editMode;
+  if (editMode) {
+    pendingChanges = JSON.parse(JSON.stringify(currentSol));
   }
-  document.getElementById('metoEditTitle').textContent=mode.endsWith('-new')?'Nova categoria':`Editar — ${cat?.name||''}`;
-  document.getElementById('metoEditSub').textContent=isCanalMode?`Tipo: ${CANAL_TYPES.find(c=>c.id===typeId)?.label||typeId}`:`Tipo: ${MAT_TYPES.find(m=>m.id===typeId)?.label||typeId}`;
-  document.getElementById('metoDelBtn').style.display=mode.endsWith('-new')?'none':'block';
-  document.getElementById('metoEditErr').textContent='';
-  document.getElementById('metoEditFields').innerHTML=`
-    <div class="f-grp"><label class="f-lbl">Nome da categoria</label><input class="f-inp" id="metoF1" placeholder="Ex: Eventos Setoriais" value="${cat?.name||''}"></div>
-    <div class="f-grp"><label class="f-lbl">Descrição</label><textarea class="f-inp" id="metoF2" style="min-height:60px;resize:vertical" placeholder="Descreva o objetivo desta categoria...">${cat?.desc||''}</textarea></div>
-    <div class="f-grp"><label class="f-lbl">Tags (separadas por vírgula)</label><textarea class="f-inp" id="metoF3" style="min-height:60px;resize:vertical" placeholder="Tag 1, Tag 2, Tag 3...">${cat?cat.tags.join(', '):''}</textarea></div>`;
-  document.getElementById('metoEditOverlay').style.display='flex';
-};
+  renderPanelHeader();
+  renderPanelBody();
+}
 
-window.saveMetoItem=async function(){
-  const err=document.getElementById('metoEditErr');err.textContent='';
-  if(metoCtx.mode==='section'){
-    const desc=document.getElementById('metoF1').value.trim();
-    if(metoCtx.sec==='pagina'){const el=document.getElementById('metoPageSub');if(el)el.textContent=desc;}
-    else if(metoCtx.sec==='canais'){CCONF.canaisDesc=desc;document.getElementById('metoCanaisDesc').textContent=desc;}
-    else{CCONF.materiaisDesc=desc;document.getElementById('metoMatDesc').textContent=desc;}
-    await saveConfig();closeMetoEdit();showToast('Descrição atualizada!');return;
+function cancelEdit() {
+  editMode = false;
+  pendingChanges = currentSol ? JSON.parse(JSON.stringify(currentSol)) : {};
+  renderPanelHeader();
+  renderPanelBody();
+}
+
+function savePanel() {
+  // Collect title from edit input
+  const titleVal = document.getElementById('panelTitleEdit').value.trim();
+  if (titleVal) pendingChanges.name = titleVal;
+  // Recalculate zone from cx/co if changed
+  pendingChanges.z = calcZone(pendingChanges.cx, pendingChanges.co);
+  Object.assign(currentSol, pendingChanges);
+  saveSolution(currentSol);
+  editMode = false;
+  renderPanelHeader();
+  renderPanelBody();
+}
+
+function switchPanelTab(tab, btn) {
+  currentTab = tab;
+  document.querySelectorAll('.pnav-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPanelBody();
+}
+
+function renderPanelBody() {
+  const body = document.getElementById('panelBody');
+  if (!currentSol) { body.innerHTML = ''; return; }
+  const s = editMode ? pendingChanges : currentSol;
+  if (currentTab === 'estrategia') body.innerHTML = renderEstrategia(s);
+  else if (currentTab === 'canais') body.innerHTML = renderCanais(s);
+  else if (currentTab === 'mercado') body.innerHTML = renderMercado(s);
+  else if (currentTab === 'persona') body.innerHTML = renderPersona(s);
+}
+
+// ─── TAB: ESTRATÉGIA ─────────────────────────────────────────────────────────
+function renderEstrategia(s) {
+  const em = editMode;
+  function field(lbl, key, type='input', tooltip='') {
+    const val = s[key] || '';
+    const tipHtml = tooltip ? `<span class="tip"><span class="tip-icon">?</span><span class="tip-text">${tooltip}</span></span>` : '';
+    if (!em) {
+      return `<div class="pfield"><div class="pfield-lbl">${lbl}${tipHtml}</div><div class="${val?'pfield-val':'pfield-empty'}">${val||'—'}</div></div>`;
+    }
+    if (type==='textarea') return `<div class="pfield"><div class="pfield-lbl">${lbl}${tipHtml}</div><textarea oninput="pendingChanges['${key}']=this.value" rows="3">${val}</textarea></div>`;
+    return `<div class="pfield"><div class="pfield-lbl">${lbl}${tipHtml}</div><input type="text" value="${escHtml(val)}" oninput="pendingChanges['${key}']=this.value"></div>`;
   }
-  const name=document.getElementById('metoF1').value.trim();
-  const desc=document.getElementById('metoF2')?.value.trim()||'';
-  const tagsRaw=document.getElementById('metoF3')?.value||'';
-  if(!name){err.textContent='O nome é obrigatório.';return;}
-  const tags=tagsRaw.split(',').map(t=>t.trim()).filter(Boolean);
-  const isCanalMode=metoCtx.mode.startsWith('canal');
-  const isNew=metoCtx.mode.endsWith('-new');
-  const tid=metoCtx.typeId;
-  if(isCanalMode){
-    if(!CCONF.canais)CCONF.canais={};if(!CCONF.canais[tid])CCONF.canais[tid]=[];
-    if(isNew)CCONF.canais[tid].push({name,desc,tags});else CCONF.canais[tid][metoCtx.ci]={name,desc,tags};
+  function selectField(lbl, key, opts) {
+    const val = s[key] || opts[0];
+    if (!em) return `<div class="pfield"><div class="pfield-lbl">${lbl}</div><div class="axis-pills"><span class="axis-pill ${val.toLowerCase()}">${val}</span></div></div>`;
+    return `<div class="pfield"><div class="pfield-lbl">${lbl}</div><select onchange="pendingChanges['${key}']=this.value">${opts.map(o=>`<option${o===val?' selected':''}>${o}</option>`).join('')}</select></div>`;
+  }
+  return `
+  <div class="psec">
+    <div class="psec-title">Por que aqui na Matriz</div>
+    ${selectField('Complexidade','cx',['Alta','Média','Baixa'])}
+    ${selectField('Conscientização','co',['Alta','Média','Baixa'])}
+    ${field('Justificativa — Complexidade','jcx','textarea')}
+    ${field('Justificativa — Conscientização','jco','textarea')}
+  </div>
+  <div class="psec">
+    <div class="psec-title">Postura de Prospecção</div>
+    ${field('Postura','postura','textarea')}
+    ${field('Argumento Principal','argumento','textarea')}
+    ${field('Diferencial Competitivo','diferencial','textarea')}
+  </div>
+  <div class="psec">
+    <div class="psec-title">Parâmetros Comerciais</div>
+    ${field('Ticket Médio','ticket')}
+    ${field('Contrato','contrato')}
+    ${field('Ciclo de Venda','ciclo')}
+    ${field('Margem Alvo','margem','input','% de margem esperada para a solução')}
+  </div>`;
+}
+
+// ─── TAB: CANAIS ─────────────────────────────────────────────────────────────
+function renderCanais(s) {
+  const canais = (s.canais||[]).filter(t=>t.type==='canal');
+  const mats = (s.canais||[]).filter(t=>t.type==='material');
+
+  function renderGroup(title, cats, tags, tagType) {
+    let html = `<div class="psec"><div class="psec-title">${title}</div>`;
+    let hasAny = false;
+    cats.forEach(cat => {
+      const ctags = tags.filter(t=>t.cat===cat.key);
+      if (!editMode && ctags.length===0) return;
+      hasAny = true;
+      html += `<div class="psub"><div class="psub-title">${cat.label}</div><div class="ptags">`;
+      ctags.forEach((t,i) => {
+        const globalIdx = (s.canais||[]).findIndex(c => c === t);
+        html += `<span class="ptag">${escHtml(t.label)}${editMode?`<button class="ptag-x" onclick="removeTag(${globalIdx})">✕</button>`:''}</span>`;
+      });
+      if (editMode) html += `<button class="ptag-add" onclick="openTagPopup('${tagType}','${cat.key}',this)">+ Tag</button>`;
+      html += `</div></div>`;
+    });
+    if (!hasAny && !editMode) html += `<div style="font-size:12px;color:var(--muted2);font-style:italic;padding:4px 0">Nenhum canal cadastrado</div>`;
+    html += `</div>`;
+    return html;
+  }
+
+  return renderGroup('Canais Relevantes', CANAL_CATS, canais, 'canal') +
+         renderGroup('Ações Aderentes', MAT_CATS, mats, 'material');
+}
+
+// ─── TAB: MERCADO ─────────────────────────────────────────────────────────────
+function renderMercado(s) {
+  const icp = s.icp || {};
+
+  function renderIcpGroup(title, fields) {
+    let html = `<div class="psec"><div class="psec-title">${title}</div>`;
+    fields.forEach(f => {
+      const tags = icp[f.key] || [];
+      if (!editMode && tags.length===0) return;
+      html += `<div class="psub"><div class="psub-title">${f.label}</div><div class="ptags">`;
+      tags.forEach((t,i) => {
+        html += `<span class="ptag">${t}${editMode?`<button class="ptag-x" onclick="removeIcpTag('${f.key}',${i})">✕</button>`:''}</span>`;
+      });
+      if (editMode) html += `<button class="ptag-add" onclick="openTagPopup('icp','${f.key}',this)">+ Tag</button>`;
+      html += `</div></div>`;
+    });
+    html += `</div>`;
+    return html;
+  }
+
+  return renderIcpGroup('Dados de ICP', ICP_DADOS) +
+         renderIcpGroup('Qualificação', ICP_QUAL);
+}
+
+// ─── TAB: PERSONA ─────────────────────────────────────────────────────────────
+function renderPersona(s) {
+  const personas = s.personas || [];
+  let html = `<div class="psec"><div class="psec-title">Decisor</div>`;
+
+  if (personas.length===0 && !editMode) {
+    html += `<div style="font-size:12px;color:var(--muted2);font-style:italic">Nenhum decisor cadastrado</div>`;
+  }
+
+  personas.forEach((p,i) => {
+    html += `<div class="persona-card">
+      <div class="persona-hdr">
+        <div class="persona-cargo">${p.cargo||'Cargo não informado'}</div>
+        ${editMode?`<button class="persona-del" onclick="removePersona(${i})">Remover</button>`:''}
+      </div>
+      <div class="persona-field"><div class="persona-field-lbl">Perfil</div><div class="persona-field-val">${p.perfil||'—'}</div></div>
+      <div class="persona-field"><div class="persona-field-lbl">Comportamento</div><div class="persona-field-val">${p.comportamento||'—'}</div></div>
+    </div>`;
+  });
+
+  if (editMode) {
+    html += `<div id="personaFormWrap"></div>`;
+    html += `<button class="persona-add-btn" onclick="showPersonaForm()">+ Adicionar Decisor</button>`;
+  }
+
+  html += `</div>`;
+  return html;
+}
+
+function showPersonaForm() {
+  const wrap = document.getElementById('personaFormWrap');
+  if (!wrap) return;
+  wrap.innerHTML = `<div class="persona-form">
+    <div class="pfield"><div class="pfield-lbl">Cargo</div><input id="pfCargo" type="text" placeholder="Ex: CISO, Diretor de TI..."></div>
+    <div class="pfield"><div class="pfield-lbl">Perfil</div><textarea id="pfPerfil" rows="3" placeholder="Descreva o perfil deste decisor..."></textarea></div>
+    <div class="pfield"><div class="pfield-lbl">Comportamento</div><textarea id="pfComport" rows="3" placeholder="Como este decisor se comporta no processo de compra..."></textarea></div>
+    <div class="persona-form-actions">
+      <button class="btn-sm-cancel" onclick="hidePersonaForm()">Cancelar</button>
+      <button class="btn-sm-save" onclick="addPersona()">Adicionar</button>
+    </div>
+  </div>`;
+}
+
+function hidePersonaForm() {
+  const wrap = document.getElementById('personaFormWrap');
+  if (wrap) wrap.innerHTML = '';
+}
+
+function addPersona() {
+  const cargo = document.getElementById('pfCargo')?.value.trim() || '';
+  const perfil = document.getElementById('pfPerfil')?.value.trim() || '';
+  const comportamento = document.getElementById('pfComport')?.value.trim() || '';
+  if (!pendingChanges.personas) pendingChanges.personas = [];
+  pendingChanges.personas.push({cargo, perfil, comportamento});
+  renderPanelBody();
+}
+
+function removePersona(i) {
+  if (!pendingChanges.personas) return;
+  pendingChanges.personas.splice(i, 1);
+  renderPanelBody();
+}
+
+// ─── TAG MANAGEMENT ──────────────────────────────────────────────────────────
+let _popupMode = null; // 'canal'|'material'|'icp'
+let _popupIcpKey = null;
+let _addBtn = null;
+
+function openTagPopup(mode, catOrKey, btn) {
+  _popupMode = mode;
+  _addBtn = btn;
+  const popup = document.getElementById('tagPopup');
+  const inp = document.getElementById('popupInp');
+  inp.value = '';
+
+  let cats = [];
+  let title = '';
+
+  if (mode === 'canal') {
+    title = 'Novo Canal';
+    cats = CANAL_CATS;
+    popupCatKey = catOrKey;
+    _popupIcpKey = null;
+  } else if (mode === 'material') {
+    title = 'Novo Material';
+    cats = MAT_CATS;
+    popupCatKey = catOrKey;
+    _popupIcpKey = null;
+  } else if (mode === 'icp') {
+    title = 'Nova Tag de ICP';
+    cats = [];
+    popupCatKey = null;
+    _popupIcpKey = catOrKey;
+  }
+
+  document.getElementById('popupTitle').textContent = title;
+  const catsEl = document.getElementById('popupCats');
+  if (cats.length > 0) {
+    catsEl.innerHTML = cats.map(c =>
+      `<button class="popup-cat${c.key===catOrKey?' on':''}" onclick="selectPopupCat('${c.key}',this)">${c.label}</button>`
+    ).join('');
+    catsEl.style.display = 'flex';
   } else {
-    if(!CCONF.materiais)CCONF.materiais={};if(!CCONF.materiais[tid])CCONF.materiais[tid]=[];
-    if(isNew)CCONF.materiais[tid].push({name,desc,tags});else CCONF.materiais[tid][metoCtx.ci]={name,desc,tags};
+    catsEl.innerHTML = '';
+    catsEl.style.display = 'none';
   }
-  await saveConfig();closeMetoEdit();renderMetodologia();showToast('Salvo!');
-};
 
-window.deleteMetoItem=async function(){
-  if(!confirm('Excluir esta categoria? As soluções que a usam não serão afetadas.'))return;
-  const isCanalMode=metoCtx.mode.startsWith('canal');const tid=metoCtx.typeId;
-  if(isCanalMode)CCONF.canais?.[tid]?.splice(metoCtx.ci,1);else CCONF.materiais?.[tid]?.splice(metoCtx.ci,1);
-  await saveConfig();closeMetoEdit();renderMetodologia();showToast('Categoria excluída.');
-};
-window.closeMetoEdit=function(){document.getElementById('metoEditOverlay').style.display='none';};
+  // Position near button, clamped to viewport
+  const rect = btn.getBoundingClientRect();
+  const pw = 290, ph = 200;
+  let top = rect.bottom + 6;
+  let left = rect.left;
+  if (left + pw > window.innerWidth - 12) left = window.innerWidth - pw - 12;
+  if (top + ph > window.innerHeight - 12) top = Math.max(12, rect.top - ph - 6);
+  popup.style.top = top + 'px';
+  popup.style.left = left + 'px';
+  popup.style.display = 'block';
+  setTimeout(() => inp.focus(), 50);
+}
 
-// VIEWS / THEME
-window.setView=function(v,btn){
-  document.querySelectorAll('.top-nav-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
-  document.getElementById('matrixView').style.display=v==='matrix'?'flex':'none';
-  document.getElementById('metoView').classList.toggle('v-hidden',v!=='meto');
-  if(v==='meto')renderMetodologia();
-};
-window.toggleTheme=function(){
-  const dark=document.documentElement.getAttribute('data-theme')==='dark';
-  document.documentElement.setAttribute('data-theme',dark?'light':'dark');
-  document.getElementById('themeBtn').textContent=dark?'☀':'☾';
-  document.getElementById('brandLogo').src=dark?LOGO_D:LOGO_L;
-};
+function selectPopupCat(key, btn) {
+  popupCatKey = key;
+  document.querySelectorAll('.popup-cat').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
 
-document.addEventListener('click',e=>{
-  if(!e.target.closest('.panel')&&!e.target.closest('#tagPopup')&&!e.target.closest('#icpPopup')&&!e.target.closest('#addModal'))closePanel();
-  if(!e.target.closest('#tagPopup'))closePopup();
-  if(!e.target.closest('#icpPopup'))closeIcpPopup();
+function savePopupTag() {
+  const label = document.getElementById('popupInp').value.trim();
+  if (!label) return;
+
+  if (_popupMode === 'canal' || _popupMode === 'material') {
+    if (!pendingChanges.canais) pendingChanges.canais = [];
+    pendingChanges.canais.push({type: _popupMode === 'canal' ? 'canal' : 'material', cat: popupCatKey, label});
+  } else if (_popupMode === 'icp') {
+    if (!pendingChanges.icp) pendingChanges.icp = {};
+    if (!pendingChanges.icp[_popupIcpKey]) pendingChanges.icp[_popupIcpKey] = [];
+    pendingChanges.icp[_popupIcpKey].push(label);
+  }
+
+  closePopup();
+  renderPanelBody();
+}
+
+function closePopup() {
+  document.getElementById('tagPopup').style.display = 'none';
+  _popupMode = null;
+  _addBtn = null;
+}
+
+function removeTag(idx) {
+  if (!pendingChanges.canais) return;
+  pendingChanges.canais.splice(idx, 1);
+  renderPanelBody();
+}
+
+function removeIcpTag(key, idx) {
+  if (!pendingChanges.icp || !pendingChanges.icp[key]) return;
+  pendingChanges.icp[key].splice(idx, 1);
+  renderPanelBody();
+}
+
+// ─── ADD/EDIT MODAL ───────────────────────────────────────────────────────────
+let modalEditId = null;
+
+function openAddModal(zone) {
+  modalEditId = null;
+  document.getElementById('modalH').textContent = 'Nova Solução';
+  document.getElementById('mName').value = '';
+  document.getElementById('mShort').value = '';
+  document.getElementById('mBU').value = 'Cibersegurança';
+  document.getElementById('mCx').value = 'Alta';
+  document.getElementById('mCo').value = 'Média';
+  document.getElementById('mDelete').classList.add('v-hidden');
+  if (zone) document.getElementById('mBU').focus();
+  document.getElementById('addModal').classList.add('show');
+  setTimeout(() => document.getElementById('mName').focus(), 100);
+}
+
+function openEditModal(sol) {
+  modalEditId = sol.id;
+  document.getElementById('modalH').textContent = 'Editar Solução';
+  document.getElementById('mName').value = sol.name || '';
+  document.getElementById('mShort').value = sol.short || '';
+  document.getElementById('mBU').value = sol.bu || 'Cibersegurança';
+  document.getElementById('mCx').value = sol.cx || 'Alta';
+  document.getElementById('mCo').value = sol.co || 'Média';
+  document.getElementById('mDelete').classList.remove('v-hidden');
+  document.getElementById('addModal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('addModal').classList.remove('show');
+  modalEditId = null;
+}
+
+function saveModal() {
+  const name = document.getElementById('mName').value.trim();
+  const short = document.getElementById('mShort').value.trim();
+  const bu = document.getElementById('mBU').value;
+  const cx = document.getElementById('mCx').value;
+  const co = document.getElementById('mCo').value;
+  if (!name) { alert('Informe o nome da solução.'); return; }
+  const z = calcZone(cx, co);
+  if (modalEditId) {
+    const sol = S.find(s => s.id === modalEditId);
+    if (sol) { Object.assign(sol, {name, short, bu, cx, co, z}); saveSolution(sol); }
+  } else {
+    saveSolution({name, short, bu, cx, co, z, canais:[], icp:{}, personas:[]});
+  }
+  closeModal();
+}
+
+function deleteCurrentSolution() {
+  if (!modalEditId) return;
+  if (!confirm('Excluir esta solução permanentemente?')) return;
+  deleteSolution(modalEditId).then(() => { closeModal(); closePanel(); showToast('deleted'); });
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function calcZone(cx, co) {
+  const cxV = cx==='Alta'?3:cx==='Média'?2:1;
+  const coV = co==='Alta'?3:co==='Média'?2:1;
+  if (coV<=1 && cxV<=1) return 4;
+  if (coV<=1) return 1;
+  if (cxV>=2) return 2;
+  return 3;
+}
+
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function showToast(state) {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  if (state==='saving') { t.style.color='var(--blue-main)'; t.textContent='Salvando...'; }
+  else if (state==='saved') { t.style.color='#22c55e'; t.textContent='✓ Salvo'; }
+  else if (state==='deleted') { t.style.color='var(--muted2)'; t.textContent='Solução excluída'; }
+  else { t.style.color='#f87171'; t.textContent='Erro ao salvar'; }
+  clearTimeout(t._tm);
+  t._tm = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ─── THEME ────────────────────────────────────────────────────────────────────
+const LOGO_DARK = 'https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-horizontal-color-white-png-transparente-02.png';
+const LOGO_LIGHT = 'https://blog.tripla.com.br/wp-content/uploads/2026/03/logo-color-horizontal-png-transparente-02.png';
+
+function toggleTheme() {
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+  document.getElementById('themeBtn').textContent = dark ? '☾' : '☀';
+  document.getElementById('brandLogo').src = dark ? LOGO_LIGHT : LOGO_DARK;
+}
+
+// ─── VIEW TOGGLE ──────────────────────────────────────────────────────────────
+function setView(v, btn) {
+  document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('matrixView').classList.toggle('v-hidden', v!=='matrix');
+  document.getElementById('metoView').classList.toggle('v-hidden', v!=='meto');
+  if (v==='meto') renderMeto();
+}
+
+// ─── METHODOLOGY ─────────────────────────────────────────────────────────────
+function renderMeto() {
+  const el = document.getElementById('metoView');
+  el.innerHTML = `<div class="meto-wrap">
+  <div class="meto-section">
+    <div class="meto-h1">Lógica da Matriz GTM</div>
+    <div class="meto-sub">Dois eixos posicionam cada solução em uma zona estratégica que define a postura de prospecção ideal.</div>
+    <div class="meto-grid-2">
+      <div class="meto-zone-card z1"><div class="meto-zone-num">Z1</div><div class="meto-zone-name">Evangelização</div><div class="meto-zone-pos">Baixa Consciência + Alta/Média Complexidade</div><div class="meto-zone-desc">O cliente não tem consciência do risco. Foco em criar consciência — não converter leads imediatamente.</div></div>
+      <div class="meto-zone-card z2"><div class="meto-zone-num">Z2</div><div class="meto-zone-name">Especialização Competitiva</div><div class="meto-zone-pos">Alta/Média Consciência + Alta/Média Complexidade</div><div class="meto-zone-desc">O cliente sabe que precisa, mas tem medo de quem vai operar. A Tripla precisa provar diferenciação. ABM é o motor central.</div></div>
+      <div class="meto-zone-card z3"><div class="meto-zone-num">Z3</div><div class="meto-zone-name">Captura de Demanda</div><div class="meto-zone-pos">Alta Consciência + Baixa/Média Complexidade</div><div class="meto-zone-desc">A venda é transacional. O mercado entende o problema. Capturar demanda com velocidade — não criar percepção.</div></div>
+      <div class="meto-zone-card z4"><div class="meto-zone-num">Z4</div><div class="meto-zone-name">Zona Morta</div><div class="meto-zone-pos">Baixa Consciência + Baixa Complexidade</div><div class="meto-zone-desc">Custo de conscientização supera o retorno esperado. Sem investimento proativo — cross-sell reativo apenas.</div></div>
+    </div>
+  </div>
+  <div class="meto-section">
+    <div class="meto-h1">Canais de Marketing</div>
+    <div class="meto-sub">Canais organizados por dono operacional e papel no funil.</div>
+    <div class="meto-cards-grid">
+      <div class="meto-ccard"><div class="meto-ccard-title">Outbound e Prospecção Ativa</div><div class="meto-ccard-owner">Líder de Prospecção + 6 SDRs</div><div class="meto-ccard-role">Geração de demanda ativa e motor de abertura de portas.</div></div>
+      <div class="meto-ccard"><div class="meto-ccard-title">Eventos</div><div class="meto-ccard-owner">Gerente de Marketing (interino)</div><div class="meto-ccard-role">Geração de demanda, relacionamento, posicionamento e diferenciação.</div></div>
+      <div class="meto-ccard"><div class="meto-ccard-title">Digital e Inbound</div><div class="meto-ccard-owner">SEO</div><div class="meto-ccard-role">Captura de demanda com alta conscientização, educação sobre a dor e motor de escala orgânica.</div></div>
+      <div class="meto-ccard"><div class="meto-ccard-title">PR e Thought Leadership</div><div class="meto-ccard-owner">Assessoria + Gerente de Marketing + IM</div><div class="meto-ccard-role">Posicionamento de marca e expansão de superfície de contato.</div></div>
+    </div>
+  </div>
+  <div class="meto-section">
+    <div class="meto-h1">Ativos de Conversão e Habilitação</div>
+    <div class="meto-sub">Materiais organizados por categoria e função no processo comercial.</div>
+    <div class="meto-mat-grid">
+      <div class="meto-mat-col"><div class="meto-mat-lbl">Enablement Comercial</div>
+        ${['Apresentação comercial','Battle card','Case de sucesso','E-book / Guia comercial','Pitch documentado'].map(i=>`<div class="meto-mat-item">${i}</div>`).join('')}
+      </div>
+      <div class="meto-mat-col"><div class="meto-mat-lbl">Geração de Demanda</div>
+        ${['One-page','Folder / Flyer','Assessment / Diagnóstico','Material Rico / Whitepaper','Relatório comparativo / Diagnóstico','Checklist diagnóstico','Artigo assinado / Conteúdo de imprensa','Conteúdo de blog (SEO)','Vídeo técnico / institucional','Episódio TriplaCast'].map(i=>`<div class="meto-mat-item">${i}</div>`).join('')}
+      </div>
+      <div class="meto-mat-col"><div class="meto-mat-lbl">ABM</div>
+        ${['Apresentação personalizada por conta','Conteúdo personalizado por segmento','Mapeamento de conta'].map(i=>`<div class="meto-mat-item">${i}</div>`).join('')}
+      </div>
+    </div>
+  </div>
+  </div>`;
+}
+
+// ─── GLOBAL CLICK (close popup on outside click) ─────────────────────────────
+document.addEventListener('mousedown', function(e) {
+  // Close tag popup when clicking outside (cancels without saving)
+  const popup = document.getElementById('tagPopup');
+  if (_popupMode !== null && !popup.contains(e.target)) {
+    closePopup();
+  }
 });
-document.getElementById('authEmail').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('authPass').focus();});
-document.getElementById('authPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+document.getElementById('popupInp').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { e.preventDefault(); savePopupTag(); }
+  if (e.key === 'Escape') { e.preventDefault(); closePopup(); }
+});
 </script>
 </body>
 </html>
