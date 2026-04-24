@@ -25,12 +25,14 @@
   --fs-xs:11px;--fs-sm:13px;--fs-base:15px;--fs-md:16px;--fs-lg:18px;--fs-xl:22px;
 }
 [data-theme=dark]{
-  --bg:#07101f;--surface:#0e1929;--s2:#162032;--s3:#1c2a40;
-  --border:#1e3050;--border2:#2a4068;
-  --text:#dce8f8;--muted:#6078a8;--muted2:#8098c0;
-  --z1t:#8888d8;--z2t:#d08040;--z3t:#4898f8;--z4t:#7888a8;
+  --bg:#111827;--surface:#1a2436;--s2:#202e42;--s3:#263450;
+  --border:#2d3f5c;--border2:#3d5278;
+  --text:#eaf2ff;--muted:#8098c0;--muted2:#9db0d0;
+  --z1t:#a0a0e8;--z2t:#e09050;--z3t:#60a8ff;--z4t:#90a0b8;
   --cyber:#60a5fa;--gov:#34d399;--infra:#f87171;--smart:#c084fc;
-  --shadow:0 2px 8px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  --danger:#f87171;--danger-bg:rgba(248,113,113,.1);--danger-bd:rgba(248,113,113,.3);
+  --success:#34d399;
+  --shadow:0 2px 8px rgba(0,0,0,.25),0 8px 24px rgba(0,0,0,.2);
 }
 body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:var(--fs-base);min-height:100vh;display:flex;flex-direction:column;overflow:hidden;line-height:1.5;-webkit-font-smoothing:antialiased}
 
@@ -218,14 +220,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
 .mt-e{background:rgba(0,87,213,.06);border-color:rgba(0,87,213,.2);color:#0044b0}[data-theme=dark] .mt-e{color:#60a5fa}
 .mt-d{background:rgba(0,160,255,.06);border-color:rgba(0,160,255,.2);color:#006090}[data-theme=dark] .mt-d{color:var(--cyan)}
 .mt-a{background:rgba(180,100,48,.07);border-color:rgba(180,100,48,.2);color:#804020}[data-theme=dark] .mt-a{color:#d08040}
+.mt-p{background:rgba(112,64,192,.07);border-color:rgba(112,64,192,.2);color:#6030a0}[data-theme=dark] .mt-p{color:#c084fc}
 .tag-ed{cursor:pointer}.tag-ed:hover{opacity:.7;text-decoration:line-through}
 .add-tag{display:inline-flex;align-items:center;gap:3px;padding:4px 9px;border-radius:5px;font-size:var(--fs-sm);font-weight:600;cursor:pointer;border:1.5px dashed var(--border2);color:var(--muted);background:transparent;font-family:var(--font);transition:all .15s}
 .add-tag:hover{border-color:var(--blue);color:var(--blue)}
 
 /* ICP */
 .icp-grp{margin-bottom:18px}
-.icp-lbl{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.icp-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.icp-lbl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted2);margin-bottom:6px;padding:4px 8px;background:var(--s2);border-radius:5px;display:inline-block}
 .itag{display:inline-flex;align-items:center;gap:4px;border-radius:5px;padding:4px 9px;font-size:var(--fs-sm);font-weight:500;border:1.5px solid}
 .idot{width:5px;height:5px;border-radius:50%;flex-shrink:0;background:currentColor}
 .ia{background:rgba(0,87,213,.06);border-color:rgba(0,87,213,.2);color:#0044b0}[data-theme=dark] .ia{color:#60a5fa}
@@ -332,6 +334,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
 .btn-sm-cancel{padding:6px 12px;background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r);color:var(--muted);font-size:11px;cursor:pointer;font-family:var(--font)}
 /* panel title edit */
 .p-name-edit{font-size:var(--fs-lg);font-weight:800;letter-spacing:-.02em;line-height:1.2;background:transparent;border:none;border-bottom:2px solid var(--blue);outline:none;font-family:var(--font);color:var(--text);width:100%;margin-bottom:2px}
+.p-short-edit{font-size:var(--fs-sm);color:var(--muted2);background:transparent;border:none;border-bottom:1px dashed var(--border2);outline:none;font-family:var(--font);width:100%;padding:1px 0}
 
 /* TOAST */
 .toast{position:fixed;bottom:28px;right:28px;z-index:9999;background:#0f1a3a;color:#fff;padding:12px 20px;border-radius:var(--r);font-size:var(--fs-sm);font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:var(--shadow)}
@@ -589,6 +592,7 @@ const MAT_TYPES=[
   {id:'e',label:'Enablement Comercial',color:'var(--blue)',cls:'mt-e'},
   {id:'d',label:'Geração de Demanda',color:'var(--cyan)',cls:'mt-d'},
   {id:'a',label:'ABM',color:'var(--z2t)',cls:'mt-a'},
+  {id:'p',label:'Posicionamento',color:'var(--smart)',cls:'mt-p'},
 ];
 const ICP_GROUPS=[
   {k:'setores',l:'Setores',tc:'ia'},{k:'subsetores',l:'Sub-setores / Verticais',tc:'ia'},
@@ -603,7 +607,7 @@ const TOOLTIPS={
   jco:'Explique por que o mercado-alvo tem esse nível de consciência sobre o problema que esta solução resolve.',
   postura:'Descreva como o time comercial deve abordar este produto: o tom, a estratégia e o gatilho de entrada.',
   ticket:'Valor médio do contrato. Exemplo: R$300K–R$500K/ano.',
-  margem:'Percentual de margem esperada para esta solução. Exemplo: 60%.',
+  margem:'Percentual de margem esperada para esta solução. Exemplo: 20%.',
   contrato:'Modelo e duração típica do contrato. Exemplo: Anual ou bianual.',
   ciclo:'Tempo médio do ciclo de vendas. Exemplo: 2–4 meses.',
   canais:'Selecione os canais de marketing e prospecção mais adequados para gerar demanda para esta solução.',
@@ -676,7 +680,8 @@ async function showApp(){
   const initDark=document.documentElement.getAttribute('data-theme')==='dark';
   const brandLogo=document.getElementById('brandLogo');
   if(brandLogo)brandLogo.src=initDark?LOGO_D:LOGO_L;
-  document.getElementById('themeBtn').textContent=initDark?'☀':'☾';
+  document.getElementById('themeBtn').textContent=initDark?'☀':'☾';  // ☀ means "switch to light"
+
   buildGrid();
   await loadConfig();
   subscribeToSolutions();
@@ -701,6 +706,8 @@ async function loadConfig(){
         e:[{name:'Apresentação Comercial',desc:'Deck padrão com proposta de valor.',tags:['Apresentação comercial']},{name:'Battle Card',desc:'Guia de diferenciadores contra concorrentes.',tags:['Battle card']},{name:'Case de Sucesso',desc:'Documentação de casos reais.',tags:['Case de sucesso']},{name:'E-book Interno',desc:'Guia de abordagem por persona.',tags:['E-book']},{name:'Pitch Documentado',desc:'Estrutura de valores para defesa de margem.',tags:['Pitch documentado']}],
         d:[{name:'One-page',desc:'Resumo objetivo para Zona 3.',tags:['One-page']},{name:'Whitepaper',desc:'Conteúdo denso com análise técnica.',tags:['Whitepaper','Material Rico']},{name:'Assessment',desc:'Ferramenta que revela gaps no ambiente do cliente.',tags:['Assessment','Diagnóstico']},{name:'Blog / SEO',desc:'Artigos otimizados para captura orgânica.',tags:['Conteúdo de blog (SEO)']},{name:'Vídeo / TriplaCast',desc:'Conteúdo audiovisual para educação de mercado.',tags:['Vídeo','TriplaCast']},{name:'Checklist',desc:'Material leve para identificar riscos ocultos.',tags:['Checklist']},{name:'Folder / Flyer',desc:'Material tático para eventos.',tags:['Folder','Flyer']}],
         a:[{name:'Apresentação por Conta',desc:'Deck adaptado para a empresa-alvo.',tags:['Apresentação personalizada por conta']},{name:'Conteúdo por Segmento',desc:'Materiais adaptados para a vertical.',tags:['Conteúdo personalizado por segmento']},{name:'Mapeamento de Conta',desc:'Estrutura do comitê de compras.',tags:['Mapeamento de conta']}],
+        p:[],
+        p:[],
       }
     };
     await setDoc(ref,CCONF);
@@ -798,7 +805,7 @@ function renderPanel(){
   head.innerHTML=`<div style="flex:1;min-width:0"><div class="p-bu" style="color:${buColor}">${s.bu}</div>${
     ed?`<input class="p-name-edit" id="pNameEdit" value="${s.name.replace(/"/g,'&quot;')}" placeholder="Nome da solução..." onblur="sf('name',this.value)" oninput="setSaveStatus('unsaved')">`
       :`<div class="p-name">${s.name}</div>`
-  }<div class="p-short">${s.short||''}</div></div>
+  }${ed?`<input class="p-short-edit" id="pShortEdit" value="${(s.short||'').replace(/"/g,'&quot;')}" placeholder="Nome curto / tecnologia..." onblur="sf('short',this.value)" oninput="setSaveStatus('unsaved')">`:`<div class="p-short">${s.short||''}</div>`}</div>
     <div class="panel-acts">
       <button class="pnl-btn${ed?' on':''}" onclick="toggleEdit()" title="${ed?'Sair da edição':'Editar'}">✏</button>
       <button class="pnl-btn" style="color:var(--danger)" onclick="confirmDelete()" title="Excluir">🗑</button>
@@ -809,7 +816,7 @@ function renderPanel(){
   const coEl=ed?`<select onchange="updateAxis('co',this.value)" style="color:${z.col}">${lvls.map(v=>`<option${v===s.co?' selected':''}>${v}</option>`).join('')}</select>`:`<span>${s.co}</span>`;
 
   const canais=s.canais||[];const mats=s.materiais||[];
-  const mCls={e:'mt-e',d:'mt-d',a:'mt-a'};
+  const mCls={e:'mt-e',d:'mt-d',a:'mt-a',p:'mt-p'};
   const cCls={out:'ct-out',dig:'ct-dig',evt:'ct-evt',pr:'ct-pr'};
 
   let canaisHTML='<div class="tags-section">';
@@ -878,8 +885,21 @@ function renderPanel(){
   });
   if(ed){personaHTML+=`<div id="personaFormWrap"></div><button class="persona-add-btn" onclick="showPersonaForm()">+ Adicionar Decisor</button>`;}
 
-  const tx=(f,ph,mx=TXT_MAX)=>ed?`<textarea onblur="sf('${f}',this.value)" oninput="handleTa(this,'${f}',${mx})" maxlength="${mx}" placeholder="${ph}">${s[f]||''}</textarea><div class="char-count" id="cc-${f}">${mx-(s[f]||'').length} restantes</div>`:`<p>${s[f]||'<span style="opacity:.35;font-style:italic">Não preenchido</span>'}</p>`;
-  const inp=(f,ph)=>ed?`<input style="width:100%;font-family:var(--font);font-size:var(--fs-sm);font-weight:600;color:var(--text);background:transparent;border:none;outline:none" value="${s[f]||''}" maxlength="${PARAM_MAX}" onblur="sf('${f}',this.value)" oninput="handleParam(this,${PARAM_MAX})" placeholder="${ph}">`:`<div class="param-val">${s[f]||'<span style="opacity:.35;font-style:italic">—</span>'}</div>`;
+  const tx=(f,ph,mx=TXT_MAX)=>{
+    if(!ed&&!(s[f]||'').trim())return '';
+    return ed?`<textarea onblur="sf('${f}',this.value)" oninput="handleTa(this,'${f}',${mx})" maxlength="${mx}" placeholder="${ph}">${s[f]||''}</textarea><div class="char-count" id="cc-${f}">${mx-(s[f]||'').length} restantes</div>`:`<p>${s[f]}</p>`;
+  };
+  const inp=(f,ph)=>{
+    if(!ed&&!(s[f]||'').trim())return '';
+    return ed?`<input style="width:100%;font-family:var(--font);font-size:var(--fs-sm);font-weight:600;color:var(--text);background:transparent;border:none;outline:none" value="${s[f]||''}" maxlength="${PARAM_MAX}" onblur="sf('${f}',this.value)" oninput="handleParam(this,${PARAM_MAX})" placeholder="${ph}">`:`<div class="param-val">${s[f]}</div>`;
+  };
+  // wrap param-box: hide if empty in view mode
+  const paramBox=(lbl,f,ph,tipText='')=>{
+    const content=inp(f,ph);
+    if(!content&&!ed)return '';
+    const tipHtml=tipText?`<span class="tip">?<span class="tt">${tipText}</span></span>`:'';
+    return `<div class="param-box"><div class="param-lbl">${lbl}${tipHtml}</div>${content||''}</div>`;
+  };
 
   document.getElementById('panelBody').innerHTML=`
     <div class="scores">
@@ -895,12 +915,11 @@ function renderPanel(){
     </div>
     <div class="tab-pane${currentTab==='est'?' active':''}" id="tab-est">
       <div class="sec-hd">Por que aqui na Matriz ${tip(TOOLTIPS.jcx)}</div>
-      <div class="just-block"><span class="just-lbl" style="color:${z.col}">Complexidade — ${s.cx} ${tip(TOOLTIPS.jcx)}</span>${tx('jcx','Explique por que esta solução tem este nível de complexidade...')}</div>
-      <div class="just-block"><span class="just-lbl" style="color:${z.col}">Conscientização — ${s.co} ${tip(TOOLTIPS.jco)}</span>${tx('jco','Explique por que o mercado tem este nível de consciência...')}</div>
-      <div class="sec-hd">Postura de Prospecção ${tip(TOOLTIPS.postura)}</div>
-      <div class="posture-box">${tx('postura','Descreva a abordagem comercial, tom e gatilho de entrada...')}</div>
-      <div class="just-block" style="margin-bottom:7px"><span class="just-lbl">Argumento Principal</span>${tx('argumento','Qual é o argumento central de venda desta solução...',700)}</div>
-      <div class="just-block"><span class="just-lbl">Diferencial Competitivo</span>${tx('diferencial','Por que a Tripla / esta solução supera a concorrência...',700)}</div>
+      ${(ed||s.jcx)?`<div class="just-block"><span class="just-lbl" style="color:${z.col}">Complexidade — ${s.cx} ${tip(TOOLTIPS.jcx)}</span>${tx('jcx','Explique por que esta solução tem este nível de complexidade...')}</div>`:''}
+      ${(ed||s.jco)?`<div class="just-block"><span class="just-lbl" style="color:${z.col}">Conscientização — ${s.co} ${tip(TOOLTIPS.jco)}</span>${tx('jco','Explique por que o mercado tem este nível de consciência...')}</div>`:''}
+      ${(ed||s.postura)?`<div class="sec-hd">Postura de Prospecção ${tip(TOOLTIPS.postura)}</div><div class="posture-box">${tx('postura','Descreva a abordagem comercial, tom e gatilho de entrada...')}</div>`:''}
+      ${(ed||s.argumento)?`<div class="just-block" style="margin-bottom:7px"><span class="just-lbl">Argumento Principal</span>${tx('argumento','Qual é o argumento central de venda desta solução...',700)}</div>`:''}
+      ${(ed||s.diferencial)?`<div class="just-block"><span class="just-lbl">Diferencial Competitivo</span>${tx('diferencial','Por que a Tripla / esta solução supera a concorrência...',700)}</div>`:''}
       <div class="sec-hd">Parâmetros Comerciais</div>
       <div class="param-row">
         <div class="param-box"><div class="param-lbl">Ticket Médio ${tip(TOOLTIPS.ticket)}</div>${inp('ticket','Ex: R$300K–R$500K/ano')}</div>
@@ -908,7 +927,7 @@ function renderPanel(){
       </div>
       <div class="param-row">
         <div class="param-box"><div class="param-lbl">Ciclo de Venda ${tip(TOOLTIPS.ciclo)}</div>${inp('ciclo','Ex: 2–4 meses')}</div>
-        <div class="param-box"><div class="param-lbl">Margem Alvo ${tip('% de margem esperada para esta solução. Ex: 60%')}</div>${inp('margem','Ex: 60%')}</div>
+        <div class="param-box"><div class="param-lbl">Margem Alvo ${tip('% de margem esperada para esta solução. Ex: 20%')}</div>${inp('margem','Ex: 20%')}</div>
       </div>
     </div>
     <div class="tab-pane${currentTab==='can'?' active':''}" id="tab-can">
@@ -1202,9 +1221,11 @@ window.setView=function(v,btn){
 };
 window.toggleTheme=function(){
   const dark=document.documentElement.getAttribute('data-theme')==='dark';
-  document.documentElement.setAttribute('data-theme',dark?'light':'dark');
-  document.getElementById('themeBtn').textContent=dark?'☀':'☾';
-  document.getElementById('brandLogo').src=dark?LOGO_D:LOGO_L;
+  // switching away from dark → go light
+  const goingLight=dark;
+  document.documentElement.setAttribute('data-theme',goingLight?'light':'dark');
+  document.getElementById('themeBtn').textContent=goingLight?'☾':'☀';
+  document.getElementById('brandLogo').src=goingLight?LOGO_L:LOGO_D;
 };
 
 document.addEventListener('click',e=>{
