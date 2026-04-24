@@ -25,14 +25,14 @@
   --fs-xs:11px;--fs-sm:13px;--fs-base:15px;--fs-md:16px;--fs-lg:18px;--fs-xl:22px;
 }
 [data-theme=dark]{
-  --bg:#111827;--surface:#1a2436;--s2:#202e42;--s3:#263450;
-  --border:#2d3f5c;--border2:#3d5278;
-  --text:#eaf2ff;--muted:#8098c0;--muted2:#9db0d0;
-  --z1t:#a0a0e8;--z2t:#e09050;--z3t:#60a8ff;--z4t:#90a0b8;
+  --bg:#1c2a42;--surface:#243350;--s2:#2c3e5e;--s3:#344870;
+  --border:#3a5080;--border2:#4e6898;
+  --text:#eaf2ff;--muted:#90a8cc;--muted2:#a8bcd8;
+  --z1t:#a8a8e8;--z2t:#e8a060;--z3t:#60b0ff;--z4t:#90a8c0;
   --cyber:#60a5fa;--gov:#34d399;--infra:#f87171;--smart:#c084fc;
   --danger:#f87171;--danger-bg:rgba(248,113,113,.1);--danger-bd:rgba(248,113,113,.3);
   --success:#34d399;
-  --shadow:0 2px 8px rgba(0,0,0,.25),0 8px 24px rgba(0,0,0,.2);
+  --shadow:0 2px 8px rgba(0,0,0,.2),0 8px 24px rgba(0,0,0,.15);
 }
 body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:var(--fs-base);min-height:100vh;display:flex;flex-direction:column;overflow:hidden;line-height:1.5;-webkit-font-smoothing:antialiased}
 
@@ -227,7 +227,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
 
 /* ICP */
 .icp-grp{margin-bottom:18px}
-.icp-lbl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted2);margin-bottom:6px;padding:4px 8px;background:var(--s2);border-radius:5px;display:inline-block}
+.icp-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted2);margin-bottom:6px;margin-top:14px;padding:3px 8px;background:var(--s2);border-radius:5px;display:inline-block;border:1.5px solid var(--border)}
+.icp-grp:first-child .icp-lbl{margin-top:4px}
 .itag{display:inline-flex;align-items:center;gap:4px;border-radius:5px;padding:4px 9px;font-size:var(--fs-sm);font-weight:500;border:1.5px solid}
 .idot{width:5px;height:5px;border-radius:50%;flex-shrink:0;background:currentColor}
 .ia{background:rgba(0,87,213,.06);border-color:rgba(0,87,213,.2);color:#0044b0}[data-theme=dark] .ia{color:#60a5fa}
@@ -551,7 +552,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
         <!-- MATERIAIS -->
         <div class="meto-section">
           <div class="meto-sec-title-row">
-            <div class="meto-sec-title">Materiais Aderentes</div>
+            <div class="meto-sec-title">Ações Aderentes</div>
             <button class="pencil-btn" onclick="editMetoSection('materiais')" title="Editar descrição">✏</button>
           </div>
           <div class="meto-sec-desc" id="metoMatDesc">Ativos de conversão e habilitação organizados por categoria. As tags cadastradas aqui aparecem como opções ao preencher uma solução na Matriz.</div>
@@ -819,25 +820,27 @@ function renderPanel(){
   const mCls={e:'mt-e',d:'mt-d',a:'mt-a',p:'mt-p'};
   const cCls={out:'ct-out',dig:'ct-dig',evt:'ct-evt',pr:'ct-pr'};
 
-  let canaisHTML='<div class="tags-section">';
+  let canaisHTML='';
   CANAL_TYPES.forEach(ct=>{
     const items=canais.filter(c=>c.typeId===ct.id);
     if(!items.length&&!ed)return;
-    canaisHTML+=`<div class="tag-type-group"><div class="tag-type-hd"><span class="tag-type-dot" style="background:${ct.color}"></span>${ct.label}</div><div class="tags-wrap">
-      ${items.map(c=>`<span class="ctag ${cCls[ct.id]||''}${ed?' tag-ed':''}" ${ed?`onclick="openTagPopup(event,'canal','${ct.id}',${canais.indexOf(c)})"`:''}><span class="cdot" style="background:${ct.color}"></span>${c.label}</span>`).join('')}
+    canaisHTML+=`<div class="icp-grp"><div class="icp-lbl" style="color:${ct.color}">${ct.label}</div><div class="tags-wrap">
+      ${items.map(c=>`<span class="ctag ${cCls[ct.id]||''}${ed?' tag-ed':''}" ${ed?`onclick="openTagPopup(event,'canal','${ct.id}',${canais.indexOf(c)})"`:''}>` +
+        `<span class="cdot" style="background:${ct.color}"></span>${c.label}</span>`).join('')}
       ${ed?`<button class="add-tag" onclick="openTagPopup(event,'canal','${ct.id}',-1)">+ ${ct.label}</button>`:''}
     </div></div>`;
-  });canaisHTML+='</div>';
+  });
 
-  let matsHTML='<div class="tags-section">';
+  let matsHTML='';
   MAT_TYPES.forEach(mt=>{
     const items=mats.filter(m=>m.typeId===mt.id);
     if(!items.length&&!ed)return;
-    matsHTML+=`<div class="tag-type-group"><div class="tag-type-hd"><span class="tag-type-dot" style="background:${mt.color}"></span>${mt.label}</div><div class="tags-wrap">
-      ${items.map(m=>`<span class="mtag ${mCls[mt.id]||''}${ed?' tag-ed':''}" ${ed?`onclick="openTagPopup(event,'material','${mt.id}',${mats.indexOf(m)})"`:''}><span class="mdot"></span>${m.label}</span>`).join('')}
+    matsHTML+=`<div class="icp-grp"><div class="icp-lbl" style="color:${mt.color}">${mt.label}</div><div class="tags-wrap">
+      ${items.map(m=>`<span class="mtag ${mCls[mt.id]||''}${ed?' tag-ed':''}" ${ed?`onclick="openTagPopup(event,'material','${mt.id}',${mats.indexOf(m)})"`:''}>` +
+        `<span class="mdot"></span>${m.label}</span>`).join('')}
       ${ed?`<button class="add-tag" onclick="openTagPopup(event,'material','${mt.id}',-1)">+ ${mt.label}</button>`:''}
     </div></div>`;
-  });matsHTML+='</div>';
+  });
 
   const icp=s.icp||emptyICP();
   const ICP_DADOS=[{k:'setores',l:'Setores',tc:'ia'},{k:'subsetores',l:'Sub-setores / Verticais',tc:'ia'},{k:'faturamento',l:'Faturamento / Porte',tc:'ia'},{k:'headcount',l:'Funcionários / Headcount',tc:'ia'},{k:'regulacao',l:'Regulação / Compliance',tc:'ic'},{k:'tech',l:'Stack Tecnológico',tc:'ic'},{k:'geo',l:'Geolocalização Prioritária',tc:'ia'}];
@@ -871,13 +874,21 @@ function renderPanel(){
     if(ed){
       personaHTML+=`<div class="persona-card">
         <button class="persona-del-btn" onclick="removePersona(${i})">Remover</button>
-        <div class="persona-field"><div class="persona-field-lbl">Cargo</div><input value="${p.cargo||''}" placeholder="Ex: CISO, Diretor de TI..." onblur="updatePersona(${i},'cargo',this.value)" oninput="setSaveStatus('unsaved')"></div>
+        <div class="persona-field" style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <select style="font-family:var(--font);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:5px;background:var(--s2);border:1.5px solid var(--border);color:var(--blue);outline:none;cursor:pointer;flex-shrink:0" onchange="updatePersona(${i},'tipo',this.value)">
+            ${['Decisor','Influenciador','Usuário','Patrocinador'].map(t=>`<option${t===(p.tipo||'Decisor')?' selected':''}>${t}</option>`).join('')}
+          </select>
+          <input style="flex:1" value="${p.cargo||''}" placeholder="Ex: CISO, Diretor de TI..." onblur="updatePersona(${i},'cargo',this.value)" oninput="setSaveStatus('unsaved')">
+        </div>
         <div class="persona-field"><div class="persona-field-lbl">Perfil</div><textarea placeholder="Descreva o perfil deste decisor..." onblur="updatePersona(${i},'perfil',this.value)" oninput="handleTa(this,'p-perfil-${i}',700)">${p.perfil||''}</textarea></div>
         <div class="persona-field"><div class="persona-field-lbl">Comportamento</div><textarea placeholder="Como se comporta no processo de compra..." onblur="updatePersona(${i},'comportamento',this.value)" oninput="handleTa(this,'p-comp-${i}',700)">${p.comportamento||''}</textarea></div>
       </div>`;
     } else {
       personaHTML+=`<div class="persona-card">
-        <div class="persona-cargo">${p.cargo||'Cargo não informado'}</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          ${p.tipo?`<span style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:rgba(0,87,213,.08);border:1.5px solid rgba(0,87,213,.2);color:var(--blue)">${p.tipo}</span>`:''}
+          <div class="persona-cargo" style="margin-bottom:0">${p.cargo||'Cargo não informado'}</div>
+        </div>
         ${p.perfil?`<div class="persona-field"><div class="persona-field-lbl">Perfil</div><div class="persona-field-val">${p.perfil}</div></div>`:''}
         ${p.comportamento?`<div class="persona-field"><div class="persona-field-lbl">Comportamento</div><div class="persona-field-val">${p.comportamento}</div></div>`:''}
       </div>`;
@@ -1040,7 +1051,10 @@ function closePopup(){document.getElementById('tagPopup').style.display='none';}
 window.showPersonaForm=function(){
   const wrap=document.getElementById('personaFormWrap');if(!wrap)return;
   wrap.innerHTML=`<div class="persona-form">
-    <div class="f-grp"><label class="f-lbl">Cargo</label><input class="f-inp" id="pfCargo" placeholder="Ex: CISO, Diretor de TI..."></div>
+    <div class="f-grp" style="display:flex;gap:8px;align-items:flex-end">
+      <div style="flex-shrink:0"><label class="f-lbl">Tipo</label><select class="f-sel" id="pfTipo"><option>Decisor</option><option>Influenciador</option><option>Usuário</option><option>Patrocinador</option></select></div>
+      <div style="flex:1"><label class="f-lbl">Cargo</label><input class="f-inp" id="pfCargo" placeholder="Ex: CISO, Diretor de TI..."></div>
+    </div>
     <div class="f-grp"><label class="f-lbl">Perfil</label><textarea class="f-inp" id="pfPerfil" style="min-height:60px;resize:vertical" placeholder="Descreva o perfil deste decisor..."></textarea></div>
     <div class="f-grp"><label class="f-lbl">Comportamento</label><textarea class="f-inp" id="pfComport" style="min-height:60px;resize:vertical" placeholder="Como se comporta no processo de compra..."></textarea></div>
     <div class="persona-form-row">
@@ -1053,11 +1067,12 @@ window.showPersonaForm=function(){
 window.hidePersonaForm=function(){const w=document.getElementById('personaFormWrap');if(w)w.innerHTML='';};
 window.addPersona=function(){
   const s=getSol();if(!s)return;
+  const tipo=document.getElementById('pfTipo')?.value||'Decisor';
   const cargo=document.getElementById('pfCargo')?.value.trim()||'';
   const perfil=document.getElementById('pfPerfil')?.value.trim()||'';
   const comportamento=document.getElementById('pfComport')?.value.trim()||'';
   if(!s.personas)s.personas=[];
-  s.personas.push({cargo,perfil,comportamento});
+  s.personas.push({tipo,cargo,perfil,comportamento});
   setSaveStatus('unsaved');renderPanel();
 };
 window.removePersona=function(i){
@@ -1142,7 +1157,7 @@ window.editMetoSection=function(sec){
   let title,current;
   if(sec==='pagina'){title='Editar descrição da página';current=document.getElementById('metoPageSub')?.textContent||'';}
   else if(sec==='canais'){title='Editar descrição — Canais Relevantes';current=CCONF.canaisDesc||'';}
-  else{title='Editar descrição — Materiais Aderentes';current=CCONF.materiaisDesc||'';}
+  else{title='Editar descrição — Ações Aderentes';current=CCONF.materiaisDesc||'';}
   document.getElementById('metoEditTitle').textContent=title;
   document.getElementById('metoEditSub').textContent='';
   document.getElementById('metoDelBtn').style.display='none';
