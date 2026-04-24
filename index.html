@@ -721,19 +721,8 @@ async function loadConfig(){
     CCONF={
       canaisDesc:'Canais de marketing e prospecção organizados por tipo.',
       materiaisDesc:'Ativos de conversão e habilitação organizados por categoria.',
-      canais:{
-        out:[{name:'Outbound SDR',desc:'Prospecção ativa via ligação, e-mail e LinkedIn.',tags:['Cadência SDR','Cold call','LinkedIn outreach']}],
-        dig:[{name:'SEO / Blog',desc:'Conteúdo orgânico para captura de demanda.',tags:['Conteúdo de blog (SEO)','Landing page']}],
-        evt:[{name:'Eventos Setoriais',desc:'Participação em eventos do setor.',tags:['Petit Comité','Webinar','Evento presencial']}],
-        pr:[{name:'PR e Imprensa',desc:'Artigos assinados e cobertura de imprensa.',tags:['Artigo assinado','Thought Leadership','TriplaCast']}],
-      },
-      materiais:{
-        e:[{name:'Apresentação Comercial',desc:'Deck padrão com proposta de valor.',tags:['Apresentação comercial']},{name:'Battle Card',desc:'Guia de diferenciadores contra concorrentes.',tags:['Battle card']},{name:'Case de Sucesso',desc:'Documentação de casos reais.',tags:['Case de sucesso']},{name:'E-book Interno',desc:'Guia de abordagem por persona.',tags:['E-book']},{name:'Pitch Documentado',desc:'Estrutura de valores para defesa de margem.',tags:['Pitch documentado']}],
-        d:[{name:'One-page',desc:'Resumo objetivo para Zona 3.',tags:['One-page']},{name:'Whitepaper',desc:'Conteúdo denso com análise técnica.',tags:['Whitepaper','Material Rico']},{name:'Assessment',desc:'Ferramenta que revela gaps no ambiente do cliente.',tags:['Assessment','Diagnóstico']},{name:'Blog / SEO',desc:'Artigos otimizados para captura orgânica.',tags:['Conteúdo de blog (SEO)']},{name:'Vídeo / TriplaCast',desc:'Conteúdo audiovisual para educação de mercado.',tags:['Vídeo','TriplaCast']},{name:'Checklist',desc:'Material leve para identificar riscos ocultos.',tags:['Checklist']},{name:'Folder / Flyer',desc:'Material tático para eventos.',tags:['Folder','Flyer']}],
-        a:[{name:'Apresentação por Conta',desc:'Deck adaptado para a empresa-alvo.',tags:['Apresentação personalizada por conta']},{name:'Conteúdo por Segmento',desc:'Materiais adaptados para a vertical.',tags:['Conteúdo personalizado por segmento']},{name:'Mapeamento de Conta',desc:'Estrutura do comitê de compras.',tags:['Mapeamento de conta']}],
-        p:[],
-        p:[],
-      }
+      canais:{out:[],dig:[],evt:[],pr:[]},
+      materiais:{e:[],d:[],a:[],p:[]}
     };
     await setDoc(ref,CCONF);
   }
