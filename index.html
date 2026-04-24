@@ -748,7 +748,7 @@ function subscribeToSolutions(){
   if(unsubSols)unsubSols();
   unsubSols=onSnapshot(collection(db,'solutions'),snapshot=>{
     snapshot.docChanges().forEach(ch=>{
-      if(ch.type==='added'||ch.type==='modified'){S[ch.doc.id]={...ch.doc.data(),_id:ch.doc.id};refreshChip(ch.doc.id);}
+      if(ch.type==='added'||ch.type==='modified'){if(ch.doc.id===activeSolId&&isEditing){refreshChip(ch.doc.id);}else{S[ch.doc.id]={...ch.doc.data(),_id:ch.doc.id};refreshChip(ch.doc.id);}}
       if(ch.type==='removed'){delete S[ch.doc.id];const c=document.getElementById('chip-'+ch.doc.id);if(c)c.remove();if(activeSolId===ch.doc.id)closePanel();}
     });
   });
@@ -798,7 +798,7 @@ window.openPanel=function(id){
   activeSolId=id;isEditing=false;currentTab='est';
   renderPanel();
   document.getElementById('panel').classList.add('open');
-  document.getElementById('saveBar').style.display='flex';
+  document.getElementById('saveBar').style.display='none';
 };
 window.closePanel=function(){
   document.getElementById('panel').classList.remove('open');
@@ -810,6 +810,7 @@ window.closePanel=function(){
 
 function renderPanel(){
   const s=getSol();if(!s)return;
+  document.getElementById('saveBar').style.display=isEditing?'flex':'none';
   const z=ZC[s.z];
   const buColor={'bd-cyber':'var(--cyber)','bd-gov':'var(--gov)','bd-infra':'var(--infra)','bd-smart':'var(--smart)'}[s.buc];
   const zName={1:'Zona 1 — Evangelização',2:'Zona 2 — Especialização',3:'Zona 3 — Captura',4:'Zona 4 — Passivo'}[s.z];
@@ -823,7 +824,7 @@ function renderPanel(){
   }${ed?`<input class="p-short-edit" id="pShortEdit" value="${(s.short||'').replace(/"/g,'&quot;')}" placeholder="Nome curto / tecnologia..." onblur="sf('short',this.value)" oninput="setSaveStatus('unsaved')">`:`<div class="p-short">${s.short||''}</div>`}</div>
     <div class="panel-acts">
       <button class="pnl-btn${ed?' on':''}" onclick="toggleEdit()" title="${ed?'Sair da edição':'Editar'}">✏</button>
-      <button class="pnl-btn" style="color:var(--danger)" onclick="confirmDelete()" title="Excluir">🗑</button>
+      ${ed?`<button class="pnl-btn" style="color:var(--danger)" onclick="confirmDelete()" title="Excluir solução">🗑</button>`:''}
       <button class="pnl-btn" onclick="closePanel()">✕</button>
     </div>`;
 
@@ -888,11 +889,11 @@ function renderPanel(){
     if(ed){
       personaHTML+=`<div class="persona-card">
         <button class="persona-del-btn" onclick="removePersona(${i})">Remover</button>
-        <div class="persona-field" style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-          <select style="font-family:var(--font);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:5px;background:var(--s2);border:1.5px solid var(--border);color:var(--blue);outline:none;cursor:pointer;flex-shrink:0" onchange="updatePersona(${i},'tipo',this.value)">
+        <div class="persona-field" style="margin-bottom:10px">
+          <select style="font-family:var(--font);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:5px;background:var(--s2);border:1.5px solid var(--border);color:var(--blue);outline:none;cursor:pointer;margin-bottom:8px;display:block" onchange="updatePersona(${i},'tipo',this.value)">
             ${['Decisor','Influenciador','Usuário','Patrocinador'].map(t=>`<option${t===(p.tipo||'Decisor')?' selected':''}>${t}</option>`).join('')}
           </select>
-          <input style="flex:1" value="${p.cargo||''}" placeholder="Ex: CISO, Diretor de TI..." onblur="updatePersona(${i},'cargo',this.value)" oninput="setSaveStatus('unsaved')">
+          <input style="width:100%" value="${p.cargo||''}" placeholder="Ex: CISO, Diretor de TI..." onblur="updatePersona(${i},'cargo',this.value)" oninput="setSaveStatus('unsaved')">
         </div>
         <div class="persona-field"><div class="persona-field-lbl">Perfil</div><textarea placeholder="Descreva o perfil deste decisor..." onblur="updatePersona(${i},'perfil',this.value)" oninput="handleTa(this,'p-perfil-${i}',700)">${p.perfil||''}</textarea></div>
         <div class="persona-field"><div class="persona-field-lbl">Comportamento</div><textarea placeholder="Como se comporta no processo de compra..." onblur="updatePersona(${i},'comportamento',this.value)" oninput="handleTa(this,'p-comp-${i}',700)">${p.comportamento||''}</textarea></div>
@@ -1085,9 +1086,11 @@ function closePopup(){document.getElementById('tagPopup').style.display='none';}
 window.showPersonaForm=function(){
   const wrap=document.getElementById('personaFormWrap');if(!wrap)return;
   wrap.innerHTML=`<div class="persona-form">
-    <div class="f-grp" style="display:flex;gap:8px;align-items:flex-end">
-      <div style="flex-shrink:0"><label class="f-lbl">Tipo</label><select class="f-sel" id="pfTipo"><option>Decisor</option><option>Influenciador</option><option>Usuário</option><option>Patrocinador</option></select></div>
-      <div style="flex:1"><label class="f-lbl">Cargo</label><input class="f-inp" id="pfCargo" placeholder="Ex: CISO, Diretor de TI..."></div>
+    <div class="f-grp">
+      <label class="f-lbl">Tipo</label>
+      <select class="f-sel" id="pfTipo" style="margin-bottom:10px"><option>Decisor</option><option>Influenciador</option><option>Usuário</option><option>Patrocinador</option></select>
+      <label class="f-lbl">Cargo</label>
+      <input class="f-inp" id="pfCargo" placeholder="Ex: CISO, Diretor de TI...">
     </div>
     <div class="f-grp"><label class="f-lbl">Perfil</label><textarea class="f-inp" id="pfPerfil" style="min-height:60px;resize:vertical" placeholder="Descreva o perfil deste decisor..."></textarea></div>
     <div class="f-grp"><label class="f-lbl">Comportamento</label><textarea class="f-inp" id="pfComport" style="min-height:60px;resize:vertical" placeholder="Como se comporta no processo de compra..."></textarea></div>
@@ -1110,8 +1113,10 @@ window.addPersona=function(){
   setSaveStatus('unsaved');renderPanel();
 };
 window.removePersona=function(i){
-  const s=getSol();if(!s||!s.personas)return;
-  s.personas.splice(i,1);setSaveStatus('unsaved');renderPanel();
+  const s=getSol();if(!s)return;
+  if(!s.personas)s.personas=[];
+  if(i>=0&&i<s.personas.length){s.personas.splice(i,1);}
+  setSaveStatus('unsaved');renderPanel();
 };
 window.updatePersona=function(i,field,val){
   const s=getSol();if(!s||!s.personas||!s.personas[i])return;
