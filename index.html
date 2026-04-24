@@ -29,7 +29,7 @@
   --border:#3a5080;--border2:#4e6898;
   --text:#eaf2ff;--muted:#90a8cc;--muted2:#a8bcd8;
   --z1t:#a8a8e8;--z2t:#e8a060;--z3t:#60b0ff;--z4t:#90a8c0;
-  --cyber:#60a5fa;--gov:#34d399;--infra:#f87171;--smart:#c084fc;
+  --blue:#77acff;--blue-h:#5a96f0;--cyber:#60a5fa;--gov:#34d399;--infra:#f87171;--smart:#c084fc;
   --danger:#f87171;--danger-bg:rgba(248,113,113,.1);--danger-bd:rgba(248,113,113,.3);
   --success:#34d399;
   --shadow:0 2px 8px rgba(0,0,0,.2),0 8px 24px rgba(0,0,0,.15);
@@ -303,11 +303,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
 .meto-zones-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:28px}
 .meto-zone-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);padding:20px;position:relative;min-width:0}
 .meto-zone-card:hover{border-color:var(--blue)}
-.meto-zbadge{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.meto-card-title{font-size:var(--fs-md);font-weight:800;margin-bottom:3px}
-.meto-card-sub{font-size:11px;color:var(--muted2);margin-bottom:10px;font-weight:600}
-.meto-card p{font-size:var(--fs-sm);line-height:1.7;color:var(--muted2);margin-bottom:8px}
-.meto-kpi{display:inline-flex;background:var(--s2);border:1.5px solid var(--border);border-radius:5px;padding:3px 9px;font-size:10px;font-weight:700;margin:0 4px 4px 0}
+.meto-zbadge{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.meto-card-title{font-size:var(--fs-md);font-weight:800;margin-bottom:4px;line-height:1.2}
+.meto-card-sub{font-size:11px;color:var(--muted2);margin-bottom:12px;font-weight:600;line-height:1.4}
+.meto-card-body{font-size:var(--fs-sm);line-height:1.7;color:var(--muted2);margin-bottom:14px}
+.meto-card p{font-size:var(--fs-sm);line-height:1.7;color:var(--muted2);margin-bottom:0}
+.meto-kpis{display:flex;flex-wrap:wrap;gap:4px;margin-top:0}
+.meto-kpi{display:inline-flex;background:var(--s2);border:1.5px solid var(--border);border-radius:5px;padding:3px 9px;font-size:10px;font-weight:700}
 /* axes */
 .meto-axes{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);padding:20px;margin-bottom:28px}
 .meto-axes-title{font-size:var(--fs-md);font-weight:700;margin-bottom:12px}
@@ -522,19 +524,31 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:va
           <div class="meto-zones-grid">
             <div class="meto-zone-card">
               <div class="meto-zbadge" style="color:var(--z1t)"><span style="background:var(--z1t);width:8px;height:8px;border-radius:2px;display:inline-block"></span>Zona 1 <button class="pencil-btn" onclick="openMetoEdit('zone','1',-1)" title="Editar">✏</button></div>
-              <div class="meto-card-title">Evangelização</div><div class="meto-card-sub">Baixa Consciência + Média/Alta Complexidade</div><p>O cliente não tem consciência do risco. Foco em criar consciência — não converter leads imediatamente.</p><div><span class="meto-kpi">Awareness</span><span class="meto-kpi">Sem outbound frio</span><span class="meto-kpi">Thought Leadership</span></div>
+              <div class="meto-card-title">Evangelização</div>
+              <div class="meto-card-sub">Baixa Consciência + Média/Alta Complexidade</div>
+              <div class="meto-card-body">O cliente não tem consciência do risco. Foco em criar consciência — não converter leads imediatamente.</div>
+              <div class="meto-kpis"><span class="meto-kpi">Awareness</span><span class="meto-kpi">Sem outbound frio</span><span class="meto-kpi">Thought Leadership</span></div>
             </div>
             <div class="meto-zone-card">
               <div class="meto-zbadge" style="color:var(--z2t)"><span style="background:var(--z2t);width:8px;height:8px;border-radius:2px;display:inline-block"></span>Zona 2 <button class="pencil-btn" onclick="openMetoEdit('zone','2',-1)" title="Editar">✏</button></div>
-              <div class="meto-card-title">Especialização Competitiva</div><div class="meto-card-sub">Alta/Média Consciência + Alta/Média Complexidade</div><p>O cliente sabe que precisa, mas tem medo de quem vai operar. A Tripla precisa provar diferenciação.</p><div><span class="meto-kpi">Pipeline qualificado</span><span class="meto-kpi">WinRate</span><span class="meto-kpi">ABM</span></div>
+              <div class="meto-card-title">Especialização Competitiva</div>
+              <div class="meto-card-sub">Alta/Média Consciência + Alta/Média Complexidade</div>
+              <div class="meto-card-body">O cliente sabe que precisa, mas tem medo de quem vai operar. A Tripla precisa provar diferenciação.</div>
+              <div class="meto-kpis"><span class="meto-kpi">Pipeline qualificado</span><span class="meto-kpi">WinRate</span><span class="meto-kpi">ABM</span></div>
             </div>
             <div class="meto-zone-card">
               <div class="meto-zbadge" style="color:var(--z3t)"><span style="background:var(--z3t);width:8px;height:8px;border-radius:2px;display:inline-block"></span>Zona 3 <button class="pencil-btn" onclick="openMetoEdit('zone','3',-1)" title="Editar">✏</button></div>
-              <div class="meto-card-title">Captura de Demanda</div><div class="meto-card-sub">Alta Consciência + Baixa/Média Complexidade</div><p>A venda é transacional. O mercado entende o problema. Foco em capturar demanda existente com velocidade.</p><div><span class="meto-kpi">Velocidade</span><span class="meto-kpi">CAC baixo</span><span class="meto-kpi">Volume</span></div>
+              <div class="meto-card-title">Captura de Demanda</div>
+              <div class="meto-card-sub">Alta Consciência + Baixa/Média Complexidade</div>
+              <div class="meto-card-body">A venda é transacional. O mercado entende o problema. Foco em capturar demanda existente com velocidade.</div>
+              <div class="meto-kpis"><span class="meto-kpi">Velocidade</span><span class="meto-kpi">CAC baixo</span><span class="meto-kpi">Volume</span></div>
             </div>
             <div class="meto-zone-card">
               <div class="meto-zbadge" style="color:var(--z4t)"><span style="background:var(--z4t);width:8px;height:8px;border-radius:2px;display:inline-block"></span>Zona 4 <button class="pencil-btn" onclick="openMetoEdit('zone','4',-1)" title="Editar">✏</button></div>
-              <div class="meto-card-title">Zona Morta</div><div class="meto-card-sub">Baixa Consciência + Baixa Complexidade</div><p>Custo de conscientização supera o retorno esperado. Sem investimento proativo — cross-sell reativo apenas.</p><div><span class="meto-kpi">Sem SDR ativo</span><span class="meto-kpi">Revisão periódica</span></div>
+              <div class="meto-card-title">Zona Morta</div>
+              <div class="meto-card-sub">Baixa Consciência + Baixa Complexidade</div>
+              <div class="meto-card-body">Custo de conscientização supera o retorno esperado. Sem investimento proativo — cross-sell reativo apenas.</div>
+              <div class="meto-kpis"><span class="meto-kpi">Sem SDR ativo</span><span class="meto-kpi">Revisão periódica</span></div>
             </div>
           </div>
         </div>
@@ -994,19 +1008,39 @@ window.openTagPopup=function(e,field,typeId,ri){
   if(!isEditing)return;e.stopPropagation();
   popField=field;popTypeId=typeId;popRI=ri;popIsNew=(ri===-1);
   const s=getSol();
-  const sel=document.getElementById('popSel');
-  sel.innerHTML='<option value="">Selecione...</option>';
   const types=field==='canal'?CCONF.canais:CCONF.materiais;
   const cats=types?.[typeId]||[];
-  cats.forEach(cat=>{const og=document.createElement('optgroup');og.label=cat.name;cat.tags.forEach(tag=>{const o=document.createElement('option');o.value=tag;o.textContent=tag;og.appendChild(o);});sel.appendChild(og);});
-  if(!popIsNew){const arr=field==='canal'?(s.canais||[]):(s.materiais||[]);const cur=arr[ri];if(cur)sel.value=cur.label||'';}
+  const hasCats=cats.length>0;
+  const sel=document.getElementById('popSel');
+  const freeInp=document.getElementById('popFreeInp');
+  if(hasCats){
+    sel.style.display='block';if(freeInp)freeInp.style.display='none';
+    sel.innerHTML='<option value="">Selecione...</option>';
+    cats.forEach(cat=>{const og=document.createElement('optgroup');og.label=cat.name;cat.tags.forEach(tag=>{const o=document.createElement('option');o.value=tag;o.textContent=tag;og.appendChild(o);});sel.appendChild(og);});
+    if(!popIsNew){const arr=field==='canal'?(s.canais||[]):(s.materiais||[]);const cur=arr[ri];if(cur)sel.value=cur.label||'';}
+  } else {
+    sel.style.display='none';
+    if(!freeInp){
+      const inp=document.createElement('input');inp.className='pop-inp';inp.id='popFreeInp';inp.placeholder='Digite o nome do material...';inp.maxLength=80;
+      sel.parentNode.insertBefore(inp,sel.nextSibling);
+    } else {
+      freeInp.style.display='block';freeInp.value='';
+      if(!popIsNew){const arr=(s.materiais||[]);const cur=arr[ri];if(cur)freeInp.value=cur.label||'';}
+    }
+    setTimeout(()=>document.getElementById('popFreeInp')?.focus(),50);
+  }
   document.getElementById('popLbl').textContent=popIsNew?'Adicionar':'Editar';
   document.getElementById('popDel').style.display=popIsNew?'none':'block';
   const popup=document.getElementById('tagPopup');popup.style.display='block';
-  positionPopup(popup,e,280,120);
+  positionPopup(popup,e,280,hasCats?130:110);
 };
 window.saveTag=function(){
-  const val=document.getElementById('popSel').value;if(!val){closePopup();showToast('Selecione uma opção.');return;}
+  const hasSel=document.getElementById('popSel')&&document.getElementById('popSel').style.display!=='none';
+  const hasTxt=document.getElementById('popFreeInp')&&document.getElementById('popFreeInp').style.display!=='none';
+  let val='';
+  if(hasTxt)val=(document.getElementById('popFreeInp').value||'').trim();
+  else val=document.getElementById('popSel').value;
+  if(!val){closePopup();showToast('Preencha o campo.');return;}
   const s=getSol();const obj={typeId:popTypeId,label:val};
   if(popField==='canal'){if(!s.canais)s.canais=[];if(popIsNew)s.canais.push(obj);else s.canais[popRI]=obj;}
   else{if(!s.materiais)s.materiais=[];if(popIsNew)s.materiais.push(obj);else s.materiais[popRI]=obj;}
